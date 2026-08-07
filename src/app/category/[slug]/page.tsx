@@ -8,17 +8,18 @@ interface PageProps {
 }
 
 const categoryMap: Record<string, { title: string; icon: string; filter: (v: Video) => boolean }> = {
-  movies: { title: "Movies", icon: "🎬", filter: (v) => v.type === "movie" },
+  documentaries: { title: "Documentaries", icon: "🎬", filter: (v) => v.type === "documentary" },
   series: { title: "Series", icon: "📺", filter: (v) => v.type === "series" },
+  reports: { title: "Reports & Editorials", icon: "📋", filter: (v) => v.type === "report" || v.type === "editorial" },
   bangla: { title: "Bangla Content", icon: "🇧🇩", filter: (v) => v.language === "Bangla" },
   english: { title: "English Content", icon: "🎬", filter: (v) => v.language === "English" },
   trending: { title: "Trending Now", icon: "🔥", filter: () => true },
   "new-releases": { title: "New Releases", icon: "✨", filter: (v) => v.year === 2025 },
-  "action-thriller": { title: "Action & Thriller", icon: "💥", filter: (v) => v.genre.some((g) => ["Action", "Thriller"].includes(g)) },
-  romance: { title: "Romance", icon: "💕", filter: (v) => v.genre.includes("Romance") },
-  drama: { title: "Drama", icon: "🎭", filter: (v) => v.genre.includes("Drama") },
-  "bangla-movies": { title: "Bangla Movies", icon: "🇧🇩", filter: (v) => v.language === "Bangla" && v.type === "movie" },
-  "english-movies": { title: "English Movies", icon: "🎬", filter: (v) => v.language === "English" && v.type === "movie" },
+  "human-rights": { title: "Human Rights", icon: "⚖️", filter: (v) => v.genre.some((g) => ["Human Rights", "Justice"].includes(g)) },
+  "press-freedom": { title: "Press Freedom", icon: "📰", filter: (v) => v.genre.some((g) => ["Press Freedom", "Editorial"].includes(g)) },
+  "climate-justice": { title: "Climate Justice", icon: "🌍", filter: (v) => v.genre.some((g) => ["Climate Justice", "Environmental Rights"].includes(g)) },
+  "bangla-documentaries": { title: "Bangla Documentaries", icon: "🇧🇩", filter: (v) => v.language === "Bangla" && v.type === "documentary" },
+  "english-documentaries": { title: "English Documentaries", icon: "🎬", filter: (v) => v.language === "English" && v.type === "documentary" },
   "web-series": { title: "Web Series", icon: "📺", filter: (v) => v.type === "series" },
 };
 

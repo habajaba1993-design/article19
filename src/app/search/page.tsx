@@ -4,7 +4,7 @@ import SearchPageClient from "./SearchPageClient";
 
 export const metadata: Metadata = {
   title: "Search | Article 19",
-  description: "Search movies, series, and content on Article 19 streaming platform.",
+  description: "Search documentaries, reports, series, and content on Article 19 streaming platform.",
 };
 
 export default function SearchPage() {
