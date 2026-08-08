@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { categories } from "@/lib/data";
@@ -12,6 +12,23 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const searchRef = useRef<HTMLFormElement>(null);
+
+  // Close search on outside click
+  useEffect(() => {
+    if (!searchOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside as EventListener);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside as EventListener);
+    };
+  }, [searchOpen]);
 
   // Scroll-based navbar background
   useEffect(() => {
@@ -129,36 +146,80 @@ export default function Navbar() {
         {/* Right Tools */}
         <div className="flex items-center gap-4">
           {/* Search Form */}
-          <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+          <form ref={searchRef} onSubmit={handleSearchSubmit} className="relative flex items-center">
             {searchOpen ? (
-              <div
-                className="flex items-center rounded-full px-3 py-1.5 w-60 animate-scale-in"
-                style={{
-                  background: "rgba(20, 22, 28, 0.95)",
-                  backdropFilter: "blur(20px)",
-                  border: "1px solid var(--border-subtle)",
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Search content..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent text-xs outline-none pr-2"
-                  style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)" }}
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={() => setSearchOpen(false)}
-                  className="shrink-0 transition-colors"
-                  style={{ color: "var(--text-muted)" }}
+              <>
+                {/* Desktop inline search */}
+                <div
+                  className="hidden sm:flex items-center rounded-full px-3 py-1.5 w-60 animate-scale-in"
+                  style={{
+                    background: "rgba(20, 22, 28, 0.95)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid var(--border-subtle)",
+                  }}
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
+                  <input
+                    type="text"
+                    placeholder="Search content..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-transparent text-xs outline-none pr-2"
+                    style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)" }}
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setSearchOpen(false)}
+                    className="shrink-0 transition-colors"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                {/* Mobile full-width search bar — positioned below navbar */}
+                <div
+                  className="sm:hidden fixed left-0 right-0 top-16 z-50 px-4 py-3 animate-slide-down"
+                  style={{
+                    background: "linear-gradient(180deg, rgba(12, 14, 18, 0.98), rgba(12, 14, 18, 0.95))",
+                    backdropFilter: "blur(20px)",
+                    borderBottom: "1px solid rgba(212, 160, 74, 0.15)",
+                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  <div
+                    className="flex items-center rounded-xl px-4 py-2.5"
+                    style={{
+                      background: "var(--bg-elevated)",
+                      border: "1px solid rgba(212, 160, 74, 0.2)",
+                    }}
+                  >
+                    <svg className="w-4 h-4 shrink-0 mr-3" style={{ color: "var(--accent-gold)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Search content..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-transparent text-sm outline-none"
+                      style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)" }}
+                      autoFocus
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setSearchOpen(false)}
+                      className="shrink-0 ml-2 p-1 rounded-full transition-colors"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </>
             ) : (
               <button
                 type="button"
@@ -194,11 +255,30 @@ export default function Navbar() {
 
       {/* Mobile Drawer — animated slide-down */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
-          mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${
+          mobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-4 py-3 space-y-1" style={{ background: "rgba(20, 22, 28, 0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid var(--border-subtle)" }}>
+        <div
+          className="relative px-5 py-5 space-y-1"
+          style={{
+            background: "linear-gradient(180deg, rgba(18, 20, 26, 0.98) 0%, rgba(12, 14, 18, 0.99) 100%)",
+            backdropFilter: "blur(30px)",
+            WebkitBackdropFilter: "blur(30px)",
+            borderBottom: "1px solid rgba(212, 160, 74, 0.15)",
+            boxShadow: "0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.03)",
+          }}
+        >
+          {/* Top gold accent line */}
+          <div
+            className="absolute top-0 left-5 right-5 h-[1px]"
+            style={{ background: "linear-gradient(90deg, transparent, rgba(212, 160, 74, 0.3), transparent)" }}
+          />
+          {/* Ambient glow */}
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[80px] rounded-full pointer-events-none"
+            style={{ background: "rgba(212, 160, 74, 0.04)", filter: "blur(40px)" }}
+          />
           <MobileLink href="/" onClick={() => setMobileMenuOpen(false)}>Home</MobileLink>
           <MobileLink href="/category/documentaries" onClick={() => setMobileMenuOpen(false)}>Documentaries</MobileLink>
           <MobileLink href="/category/reports" onClick={() => setMobileMenuOpen(false)}>Reports</MobileLink>
@@ -229,9 +309,21 @@ function MobileLink({ href, onClick, children }: { href: string; onClick: () => 
     <Link
       href={href}
       onClick={onClick}
-      className="block text-sm font-medium py-2.5 px-3 rounded-lg transition-all"
+      className="relative flex items-center gap-3 text-sm font-semibold py-3 px-4 rounded-xl transition-all duration-200"
       style={{ color: "var(--text-secondary)" }}
+      onTouchStart={(e) => {
+        e.currentTarget.style.background = "rgba(212, 160, 74, 0.08)";
+        e.currentTarget.style.color = "var(--text-primary)";
+      }}
+      onTouchEnd={(e) => {
+        e.currentTarget.style.background = "transparent";
+        e.currentTarget.style.color = "var(--text-secondary)";
+      }}
     >
+      <span
+        className="w-1.5 h-1.5 rounded-full shrink-0"
+        style={{ background: "var(--accent-gold)", opacity: 0.4 }}
+      />
       {children}
     </Link>
   );

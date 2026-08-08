@@ -429,6 +429,22 @@ html {
   overflow-y: visible;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  will-change: scroll-position;
+  -ms-overflow-style: none;
+}
+
+@media (max-width: 639px) {
+  .cards-track {
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 24px;
+  }
+}
+
+.cards-track > * {
+  scroll-snap-align: start;
 }
 
 /* ── Resting Card (Clean Thumbnail) ── */
@@ -517,7 +533,7 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(12,14,18,0.8) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(12, 14, 18, 0.8) 100%);
   z-index: 4;
   padding: 20px;
   text-align: center;
@@ -528,7 +544,7 @@ html {
   font-size: 22px;
   line-height: 1.1;
   color: var(--accent-gold);
-  text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   margin-top: auto;
   margin-bottom: 12px;
 }
@@ -612,7 +628,7 @@ html {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* ── SPOTLIGHT — Portrait poster ── */
@@ -706,11 +722,11 @@ html {
 .pv-card-thumb--minimal {
   aspect-ratio: 1 / 1 !important;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .pv-card--minimal:hover .pv-card-thumb--minimal {
-  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
 }
 
 .pv-card-minimal-info {

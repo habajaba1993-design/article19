@@ -9,7 +9,6 @@ import {
   newReleases,
   banglaContent,
   englishContent,
-  seriesContent,
   featuredArticles,
   latestArticles,
 } from "@/lib/data";
@@ -25,8 +24,8 @@ export default function Home() {
         <VideoCarousel title="Featured Reports" videos={trendingVideos} cardVariant="featured" />
         <VideoCarousel title="Latest Releases" videos={newReleases} cardVariant="new" />
         <VideoCarousel title="Bangladesh Focus" videos={banglaContent} cardVariant="spotlight" />
-        <VideoCarousel title="Global Reports" videos={englishContent} cardVariant="minimal" />
-        <VideoCarousel title="Investigative Series" videos={seriesContent} cardVariant="cinematic" />
+        <VideoCarousel title="Global Focus" videos={englishContent} cardVariant="minimal" />
+
       </div>
 
       {/* ── Articles / Editorials Section ── */}

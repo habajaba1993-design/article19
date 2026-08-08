@@ -92,7 +92,7 @@ export default function VideoCarousel({ title, videos, cardVariant = "default" }
       <div className="relative group/carousel">
         {/* Left Edge Gradient & Button */}
         <div
-          className={`absolute left-0 top-0 bottom-0 z-30 w-24 sm:w-32 transition-opacity duration-500 flex items-center justify-start px-2 sm:px-6 ${
+          className={`absolute left-0 top-0 bottom-0 z-30 w-24 sm:w-32 transition-opacity duration-500 hidden sm:flex items-center justify-start px-2 sm:px-6 ${
             canScrollLeft ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
           style={{
@@ -138,7 +138,7 @@ export default function VideoCarousel({ title, videos, cardVariant = "default" }
 
         {/* Right Edge Gradient & Button */}
         <div
-          className={`absolute right-0 top-0 bottom-0 z-30 w-24 sm:w-32 transition-opacity duration-500 flex items-center justify-end px-2 sm:px-6 ${
+          className={`absolute right-0 top-0 bottom-0 z-30 w-24 sm:w-32 transition-opacity duration-500 hidden sm:flex items-center justify-end px-2 sm:px-6 ${
             canScrollRight ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
           style={{

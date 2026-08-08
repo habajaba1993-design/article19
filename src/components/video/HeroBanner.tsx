@@ -138,7 +138,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
       {/* ── Left / Right Nav Arrows ── */}
       <button
         onClick={goPrev}
-        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full transition-all duration-300"
+        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 hidden sm:flex items-center justify-center rounded-full transition-all duration-300"
         style={{ color: "rgba(240, 237, 232, 0.5)" }}
         onMouseEnter={(e) => {
           e.currentTarget.style.color = "var(--text-primary)";
@@ -156,7 +156,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
       </button>
       <button
         onClick={goNext}
-        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full transition-all duration-300"
+        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 hidden sm:flex items-center justify-center rounded-full transition-all duration-300"
         style={{ color: "rgba(240, 237, 232, 0.5)" }}
         onMouseEnter={(e) => {
           e.currentTarget.style.color = "var(--text-primary)";
