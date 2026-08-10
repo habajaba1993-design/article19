@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12">
         {/* Main Footer */}
         <ScrollReveal>
-          <div className="py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {/* Brand & Description */}
             <div className="lg:col-span-1">
               <Link href="/" className="flex items-center gap-2.5 mb-5 group">
@@ -39,18 +39,9 @@ export default function Footer() {
             <div>
               <h3 className="text-xs font-semibold mb-5 uppercase tracking-[0.15em]" style={{ color: "var(--text-primary)" }}>Information</h3>
               <ul className="space-y-3">
-                <FooterLink href="/about">About Us</FooterLink>
+                <FooterLink href="/about">About</FooterLink>
                 <FooterLink href="/faq">FAQ</FooterLink>
-                <FooterLink href="/advertise">Paid Advertise With Us</FooterLink>
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div>
-              <h3 className="text-xs font-semibold mb-5 uppercase tracking-[0.15em]" style={{ color: "var(--text-primary)" }}>Legal</h3>
-              <ul className="space-y-3">
-                <FooterLink href="/privacy">Privacy Policy</FooterLink>
-                <FooterLink href="/terms">Terms and Conditions</FooterLink>
+                <FooterLink href="/advertise">Paid Advertise</FooterLink>
               </ul>
             </div>
 

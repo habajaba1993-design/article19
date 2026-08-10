@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Video, formatViews } from "@/lib/data";
 import VideoCard from "@/components/video/VideoCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import DonationBanner from "@/components/ui/DonationBanner";
 
 interface WatchPageClientProps {
   video: Video;
@@ -288,6 +289,9 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                 </div>
               </div>
             </ScrollReveal>
+
+            {/* Support Banner */}
+            <DonationBanner />
           </div>
 
           {/* Right Column: Related Content */}

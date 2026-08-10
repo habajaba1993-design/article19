@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Article, formatDate } from "@/lib/data";
 import ArticleCard from "@/components/article/ArticleCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import DonationBanner from "@/components/ui/DonationBanner";
 
 interface ArticleDetailClientProps {
   article: Article;
@@ -151,6 +152,9 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
             ))}
           </div>
         </div>
+
+        {/* Support Banner */}
+        <DonationBanner />
       </div>
 
       {/* Related Articles */}

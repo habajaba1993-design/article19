@@ -4,12 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { categories } from "@/lib/data";
+import DonateModal from "@/components/ui/DonateModal";
 
 export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const searchRef = useRef<HTMLFormElement>(null);
@@ -82,8 +84,6 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           <NavLink href="/" active={pathname === "/"}>Home</NavLink>
           <NavLink href="/category/documentaries" active={pathname.includes("/category/documentaries")}>Documentaries</NavLink>
-          <NavLink href="/category/reports" active={pathname.includes("/category/reports")}>Reports</NavLink>
-          <NavLink href="/category/series" active={pathname.includes("/category/series")}>Series</NavLink>
           <NavLink href="/articles" active={pathname.includes("/articles")}>Articles</NavLink>
 
           {/* Topics Dropdown */}
@@ -145,6 +145,19 @@ export default function Navbar() {
 
         {/* Right Tools */}
         <div className="flex items-center gap-4">
+          {/* Donate Button (Desktop) */}
+          <button
+            onClick={() => setIsDonateOpen(true)}
+            className="hidden sm:flex items-center justify-center px-4 py-2 rounded-full font-bold text-xs transition-all duration-300 shadow-md hover:-translate-y-0.5 hover:shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, var(--accent-gold), #C07D20)",
+              color: "#0C0E12",
+              boxShadow: "0 4px 15px rgba(212, 160, 74, 0.25)",
+            }}
+          >
+            Support Us
+          </button>
+
           {/* Search Form */}
           <form ref={searchRef} onSubmit={handleSearchSubmit} className="relative flex items-center">
             {searchOpen ? (
@@ -281,11 +294,26 @@ export default function Navbar() {
           />
           <MobileLink href="/" onClick={() => setMobileMenuOpen(false)}>Home</MobileLink>
           <MobileLink href="/category/documentaries" onClick={() => setMobileMenuOpen(false)}>Documentaries</MobileLink>
-          <MobileLink href="/category/reports" onClick={() => setMobileMenuOpen(false)}>Reports</MobileLink>
-          <MobileLink href="/category/series" onClick={() => setMobileMenuOpen(false)}>Series</MobileLink>
           <MobileLink href="/articles" onClick={() => setMobileMenuOpen(false)}>Articles</MobileLink>
+          
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setIsDonateOpen(true);
+            }}
+            className="w-full mt-4 flex items-center justify-center px-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 shadow-md"
+            style={{
+              background: "linear-gradient(135deg, var(--accent-gold), #C07D20)",
+              color: "#0C0E12",
+              boxShadow: "0 4px 15px rgba(212, 160, 74, 0.25)",
+            }}
+          >
+            Support Us
+          </button>
         </div>
       </div>
+
+      <DonateModal isOpen={isDonateOpen} onClose={() => setIsDonateOpen(false)} />
     </header>
   );
 }

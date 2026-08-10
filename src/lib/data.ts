@@ -40,13 +40,14 @@ export interface Category {
 
 export const categories: Category[] = [
   { id: "1", name: "Featured Reports", slug: "featured", icon: "📋" },
-  { id: "2", name: "Investigations", slug: "investigations", icon: "🔍" },
   { id: "3", name: "Freedom of Press", slug: "press-freedom", icon: "📰" },
   { id: "4", name: "Human Dignity", slug: "human-dignity", icon: "⚖️" },
   { id: "5", name: "Women's Rights", slug: "womens-rights", icon: "✊" },
-  { id: "6", name: "Digital Rights", slug: "digital-rights", icon: "🔒" },
   { id: "7", name: "Climate Justice", slug: "climate-justice", icon: "🌍" },
   { id: "8", name: "Refugee Stories", slug: "refugee-stories", icon: "🕊️" },
+  { id: "9", name: "Latest Releases", slug: "new-releases", icon: "✨" },
+  { id: "10", name: "Bangladesh Focus", slug: "bangla", icon: "🇧🇩" },
+  { id: "11", name: "Global Focus", slug: "english", icon: "🌐" },
 ];
 
 export const videos: Video[] = [
