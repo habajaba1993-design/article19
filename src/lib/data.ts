@@ -31,6 +31,23 @@ export interface Article {
   featured?: boolean;
 }
 
+export interface Podcast {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  audioUrl: string;
+  duration: string;
+  episode: number;
+  season: number;
+  host: string;
+  guest?: string;
+  publishedAt: string;
+  category: string;
+  tags: string[];
+  featured?: boolean;
+}
+
 export interface Category {
   id: string;
   name: string;
@@ -383,3 +400,148 @@ export function formatDate(dateStr: string): string {
     day: "numeric",
   });
 }
+
+// ── Podcasts ──
+
+export const podcasts: Podcast[] = [
+  {
+    id: "p1",
+    title: "The Silenced Majority",
+    description:
+      "In this opening episode, we explore how censorship operates in the digital age — not through blunt force, but through algorithmic suppression, shadow banning, and the quiet erosion of public discourse. Featuring interviews with activists from Bangladesh, Myanmar, and Egypt.",
+    thumbnail: "/thumbnails/movie1.jpg",
+    audioUrl: "",
+    duration: "42 min",
+    episode: 1,
+    season: 1,
+    host: "Farhan Ahmed",
+    guest: "Dr. Ayesha Siddiqua",
+    publishedAt: "2025-08-10",
+    category: "Freedom of Expression",
+    tags: ["Censorship", "Digital Rights", "Free Speech"],
+    featured: true,
+  },
+  {
+    id: "p2",
+    title: "Borders, Walls & Human Lives",
+    description:
+      "Refugees don't just flee countries — they flee into legal limbo. This episode examines the human cost of immigration policy, the role of international law, and the voices of those caught between borders with no place to call home.",
+    thumbnail: "/thumbnails/movie2.jpg",
+    audioUrl: "",
+    duration: "38 min",
+    episode: 2,
+    season: 1,
+    host: "Farhan Ahmed",
+    guest: "Nusrat Jahan",
+    publishedAt: "2025-08-03",
+    category: "Refugee Crisis",
+    tags: ["Refugees", "Migration", "International Law"],
+    featured: true,
+  },
+  {
+    id: "p3",
+    title: "Press Under Siege",
+    description:
+      "Journalists are being jailed, surveilled, and killed at record rates. We speak with reporters who have risked everything to publish the truth — and ask what press freedom really means in 2025.",
+    thumbnail: "/thumbnails/series1.jpg",
+    audioUrl: "",
+    duration: "51 min",
+    episode: 3,
+    season: 1,
+    host: "Farhan Ahmed",
+    guest: "Rahul Dey",
+    publishedAt: "2025-07-27",
+    category: "Press Freedom",
+    tags: ["Journalism", "Press Freedom", "Surveillance"],
+    featured: true,
+  },
+  {
+    id: "p4",
+    title: "Climate Displacement: The Invisible Crisis",
+    description:
+      "By 2050, 200 million people could be displaced by climate change. This episode travels to Bangladesh's disappearing coastline to hear from communities already living this reality — and the activists fighting for climate justice.",
+    thumbnail: "/thumbnails/movie4.jpg",
+    audioUrl: "",
+    duration: "45 min",
+    episode: 4,
+    season: 1,
+    host: "Farhan Ahmed",
+    guest: "Tasnim Rahman",
+    publishedAt: "2025-07-20",
+    category: "Climate Justice",
+    tags: ["Climate Change", "Displacement", "Bangladesh"],
+  },
+  {
+    id: "p5",
+    title: "Women on the Frontlines",
+    description:
+      "From the streets of Dhaka to the courts of The Hague, women human rights defenders are driving some of the most consequential movements of our time. This episode celebrates their courage and examines the unique threats they face.",
+    thumbnail: "/thumbnails/movie5.jpg",
+    audioUrl: "",
+    duration: "47 min",
+    episode: 5,
+    season: 1,
+    host: "Farhan Ahmed",
+    guest: "Maliha Khan",
+    publishedAt: "2025-07-13",
+    category: "Women's Rights",
+    tags: ["Women's Rights", "Activism", "South Asia"],
+  },
+  {
+    id: "p6",
+    title: "Digital Chains: Surveillance & the State",
+    description:
+      "Pegasus spyware, internet shutdowns, and social media monitoring — how governments are turning technology against their own people. A deep-dive into digital authoritarianism and the fight for privacy.",
+    thumbnail: "/thumbnails/movie3.jpg",
+    audioUrl: "",
+    duration: "55 min",
+    episode: 6,
+    season: 1,
+    host: "Farhan Ahmed",
+    guest: "Dr. Kamal Hossain",
+    publishedAt: "2025-07-06",
+    category: "Digital Rights",
+    tags: ["Surveillance", "Privacy", "Digital Rights"],
+  },
+  {
+    id: "p7",
+    title: "The Rana Plaza Decade: Has Anything Changed?",
+    description:
+      "Ten years after the worst industrial disaster in modern history, we revisit the garment workers, the survivors, and the promises that were made. What progress has been achieved — and what has been quietly forgotten?",
+    thumbnail: "/thumbnails/series2.jpg",
+    audioUrl: "",
+    duration: "49 min",
+    episode: 7,
+    season: 1,
+    host: "Farhan Ahmed",
+    guest: "Maliha Khan",
+    publishedAt: "2025-06-29",
+    category: "Labor Rights",
+    tags: ["Labor Rights", "Garment Industry", "Rana Plaza"],
+  },
+  {
+    id: "p8",
+    title: "Echoes of Justice: The ICC and Accountability",
+    description:
+      "Can international courts truly deliver justice? From the Rohingya genocide case to war crimes tribunals, we examine whether the international legal system is up to the challenge of holding the powerful accountable.",
+    thumbnail: "/thumbnails/movie1.jpg",
+    audioUrl: "",
+    duration: "44 min",
+    episode: 8,
+    season: 1,
+    host: "Farhan Ahmed",
+    publishedAt: "2025-06-22",
+    category: "Justice",
+    tags: ["International Law", "ICC", "Accountability", "Rohingya"],
+  },
+];
+
+export const featuredPodcasts = podcasts.filter((p) => p.featured);
+export const latestPodcasts = [...podcasts].sort(
+  (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+);
+
+export function getPodcastById(id: string): Podcast | undefined {
+  return podcasts.find((p) => p.id === id);
+}
+

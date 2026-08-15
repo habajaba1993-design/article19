@@ -7,6 +7,7 @@ import { Video, formatViews } from "@/lib/data";
 import VideoCard from "@/components/video/VideoCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import DonationBanner from "@/components/ui/DonationBanner";
+import AdCarousel from "@/components/ui/AdCarousel";
 
 interface WatchPageClientProps {
   video: Video;
@@ -294,20 +295,23 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
             <DonationBanner />
           </div>
 
-          {/* Right Column: Related Content */}
+          {/* Right Column: Related Content + Ads */}
           <div className="lg:col-span-1">
             <div className="sticky" style={{ top: "calc(var(--nav-height) + 20px)" }}>
               <h2 className="text-lg font-bold mb-5 flex items-center gap-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
                 <span className="w-1 h-5 rounded-full" style={{ background: "var(--accent-gold)" }} />
                 Related Content
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-4 mb-8">
                 {relatedVideos.map((rv, index) => (
                   <ScrollReveal key={rv.id} delay={index * 80}>
                     <RelatedVideoCard video={rv} />
                   </ScrollReveal>
                 ))}
               </div>
+
+              {/* Ad Sidebar */}
+              <AdCarousel />
             </div>
           </div>
         </div>

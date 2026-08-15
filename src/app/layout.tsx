@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import IntroVideo from "@/components/ui/IntroVideo";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -47,8 +48,9 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${plusJakarta.variable} ${dmSerif.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <IntroVideo />
         <Navbar />
-        <main className="flex-1 page-enter">{children}</main>
+        <main className="flex-1 page-enter relative z-10">{children}</main>
         <Footer />
       </body>
     </html>

@@ -7,6 +7,7 @@ import { Article, formatDate } from "@/lib/data";
 import ArticleCard from "@/components/article/ArticleCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import DonationBanner from "@/components/ui/DonationBanner";
+import AdCarousel from "@/components/ui/AdCarousel";
 
 interface ArticleDetailClientProps {
   article: Article;
@@ -57,110 +58,122 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
         </div>
       </div>
 
-      {/* Article Content */}
-      <div className="max-w-[800px] mx-auto px-6 sm:px-8 -mt-20 relative z-10">
-        {/* Category Badge */}
-        <div className="mb-4 animate-fade-in-up">
-          <span
-            className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.15em]"
-            style={{ background: "var(--accent-gold)", color: "#0C0E12" }}
-          >
-            {article.category}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h1
-          className="font-display text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6 animate-fade-in-up"
-          style={{ color: "var(--text-primary)", animationDelay: "80ms" }}
-        >
-          {article.title}
-        </h1>
-
-        {/* Meta */}
-        <div
-          className="flex flex-wrap items-center gap-4 mb-8 pb-8 animate-fade-in-up"
-          style={{ borderBottom: "1px solid var(--border-subtle)", animationDelay: "160ms" }}
-        >
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
-              style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)" }}
-            >
-              {article.author.charAt(0)}
-            </div>
-            <div>
-              <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{article.author}</p>
-              <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                {formatDate(article.publishedAt)} · {article.readTime}
-              </p>
-            </div>
-          </div>
-
-          <div className="ml-auto">
-            <button
-              onClick={handleShare}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300"
-              style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
-            >
-              {copied ? (
-                <>
-                  <svg className="w-4 h-4" style={{ color: "#22c55e" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span style={{ color: "#22c55e" }}>Copied!</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                  </svg>
-                  Share
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Article Body */}
-        <article className="mb-12">
-          {paragraphs.map((p, i) => (
-            <p
-              key={i}
-              className="text-base leading-[1.85] mb-6"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              {p}
-            </p>
-          ))}
-        </article>
-
-        {/* Tags */}
-        <div className="mb-12 pb-8" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
-          <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>
-            Tags
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {article.tags.map((tag) => (
+      {/* Article Content + Ad Sidebar */}
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 -mt-20 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-8 lg:gap-10">
+          {/* Left Column: Article Content */}
+          <div className="max-w-[800px]">
+            {/* Category Badge */}
+            <div className="mb-4 animate-fade-in-up">
               <span
-                key={tag}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold"
-                style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+                className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.15em]"
+                style={{ background: "var(--accent-gold)", color: "#0C0E12" }}
               >
-                {tag}
+                {article.category}
               </span>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* Support Banner */}
-        <DonationBanner />
+            {/* Title */}
+            <h1
+              className="font-display text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6 animate-fade-in-up"
+              style={{ color: "var(--text-primary)", animationDelay: "80ms" }}
+            >
+              {article.title}
+            </h1>
+
+            {/* Meta */}
+            <div
+              className="flex flex-wrap items-center gap-4 mb-8 pb-8 animate-fade-in-up"
+              style={{ borderBottom: "1px solid var(--border-subtle)", animationDelay: "160ms" }}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
+                  style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)" }}
+                >
+                  {article.author.charAt(0)}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{article.author}</p>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+                    {formatDate(article.publishedAt)} · {article.readTime}
+                  </p>
+                </div>
+              </div>
+
+              <div className="ml-auto">
+                <button
+                  onClick={handleShare}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300"
+                  style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+                >
+                  {copied ? (
+                    <>
+                      <svg className="w-4 h-4" style={{ color: "#22c55e" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span style={{ color: "#22c55e" }}>Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                      </svg>
+                      Share
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Article Body */}
+            <article className="mb-12">
+              {paragraphs.map((p, i) => (
+                <p
+                  key={i}
+                  className="text-base leading-[1.85] mb-6"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  {p}
+                </p>
+              ))}
+            </article>
+
+            {/* Tags */}
+            <div className="mb-12 pb-8" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
+              <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>
+                Tags
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {article.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold"
+                    style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Support Banner */}
+            <DonationBanner />
+          </div>
+
+          {/* Right Column: Ad Sidebar — Desktop Only */}
+          <aside className="hidden lg:block" style={{ paddingTop: "20px" }}>
+            <div className="sticky" style={{ top: "calc(var(--nav-height) + 24px)" }}>
+              <AdCarousel />
+            </div>
+          </aside>
+        </div>
       </div>
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (
         <ScrollReveal>
-          <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 pb-20">
+          <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-16 pb-20" style={{ borderTop: "1px solid var(--border-subtle)" }}>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-1 h-6 rounded-full" style={{ background: "var(--accent-gold)" }} />
               <h2 className="font-display text-xl" style={{ color: "var(--text-primary)" }}>

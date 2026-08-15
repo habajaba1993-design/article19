@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { categories } from "@/lib/data";
+import { categories, videos, articles, podcasts } from "@/lib/data";
+import type { Video, Article, Podcast } from "@/lib/data";
 import DonateModal from "@/components/ui/DonateModal";
 
 export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchClosing, setSearchClosing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -15,13 +18,25 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const searchRef = useRef<HTMLFormElement>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Smooth close with exit animation
+  const closeSearch = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    setSearchClosing(true);
+    closeTimerRef.current = setTimeout(() => {
+      setSearchOpen(false);
+      setSearchClosing(false);
+      setSearchQuery("");
+    }, 300);
+  };
 
   // Close search on outside click
   useEffect(() => {
     if (!searchOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-        setSearchOpen(false);
+        closeSearch();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -45,16 +60,31 @@ export default function Navbar() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      const q = searchQuery.trim();
       setSearchOpen(false);
+      setSearchClosing(false);
+      setSearchQuery("");
+      window.location.href = `/search?q=${encodeURIComponent(q)}`;
     }
   };
 
+  // Live search results
+  const liveResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (q.length < 2) return { videos: [] as Video[], articles: [] as Article[], podcasts: [] as Podcast[] };
+    return {
+      videos: videos.filter(v => v.title.toLowerCase().includes(q) || v.genre.some(g => g.toLowerCase().includes(q))).slice(0, 3),
+      articles: articles.filter(a => a.title.toLowerCase().includes(q) || a.category.toLowerCase().includes(q)).slice(0, 2),
+      podcasts: podcasts.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)).slice(0, 2),
+    };
+  }, [searchQuery]);
+  const hasLiveResults = liveResults.videos.length + liveResults.articles.length + liveResults.podcasts.length > 0;
+  const showDropdown = searchOpen && !searchClosing && searchQuery.trim().length >= 2;
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-500 ${
-        scrolled ? "navbar-solid" : "navbar-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-500 ${scrolled ? "navbar-solid" : "navbar-transparent"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 
@@ -84,6 +114,7 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           <NavLink href="/" active={pathname === "/"}>Home</NavLink>
           <NavLink href="/category/documentaries" active={pathname.includes("/category/documentaries")}>Documentaries</NavLink>
+          <NavLink href="/podcast" active={pathname.includes("/podcast")}>Podcast</NavLink>
           <NavLink href="/articles" active={pathname.includes("/articles")}>Articles</NavLink>
 
           {/* Topics Dropdown */}
@@ -148,14 +179,14 @@ export default function Navbar() {
           {/* Donate Button (Desktop) */}
           <button
             onClick={() => setIsDonateOpen(true)}
-            className="hidden sm:flex items-center justify-center px-4 py-2 rounded-full font-bold text-xs transition-all duration-300 shadow-md hover:-translate-y-0.5 hover:shadow-lg"
+            className="hidden sm:flex group items-center justify-center px-5 py-2 rounded-full font-bold text-sm transition-all duration-300 hover:scale-105 hover:brightness-110 active:scale-95"
             style={{
               background: "linear-gradient(135deg, var(--accent-gold), #C07D20)",
               color: "#0C0E12",
-              boxShadow: "0 4px 15px rgba(212, 160, 74, 0.25)",
+              boxShadow: "0 4px 15px rgba(212, 160, 74, 0.4)",
             }}
           >
-            Support Us
+            <span className="flex items-center gap-1.5">Donate <svg xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:scale-110" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
           </button>
 
           {/* Search Form */}
@@ -164,7 +195,7 @@ export default function Navbar() {
               <>
                 {/* Desktop inline search */}
                 <div
-                  className="hidden sm:flex items-center rounded-full px-3 py-1.5 w-60 animate-scale-in"
+                  className={`hidden sm:flex items-center rounded-full px-5 py-2 w-72 ${searchClosing ? 'animate-search-collapse' : 'animate-search-expand'}`}
                   style={{
                     background: "rgba(20, 22, 28, 0.95)",
                     backdropFilter: "blur(20px)",
@@ -176,24 +207,44 @@ export default function Navbar() {
                     placeholder="Search content..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-transparent text-xs outline-none pr-2"
-                    style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)" }}
+                    className="w-full bg-transparent text-sm outline-none pr-2"
+                    style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)", fontFamily: "var(--font-body)" }}
                     autoFocus
                   />
                   <button
-                    type="button"
-                    onClick={() => setSearchOpen(false)}
-                    className="shrink-0 transition-colors"
-                    style={{ color: "var(--text-muted)" }}
+                    type="submit"
+                    className="shrink-0 transition-colors p-0.5"
+                    style={{ color: "var(--accent-gold)" }}
+                    aria-label="Search"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => closeSearch()}
+                    className="shrink-0 transition-colors p-0.5"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
+                {/* Desktop search dropdown */}
+                {showDropdown && (
+                  <SearchDropdown
+                    results={liveResults}
+                    hasResults={hasLiveResults}
+                    query={searchQuery}
+                    onClose={() => closeSearch()}
+                    className="hidden sm:block absolute top-full right-0 mt-2 w-[380px]"
+                  />
+                )}
                 {/* Mobile full-width search bar — positioned below navbar */}
                 <div
-                  className="sm:hidden fixed left-0 right-0 top-16 z-50 px-4 py-3 animate-slide-down"
+                  className={`sm:hidden fixed left-0 right-0 top-16 z-50 px-4 py-3 ${searchClosing ? 'animate-search-slide-up' : 'animate-search-slide-down'}`}
                   style={{
                     background: "linear-gradient(180deg, rgba(12, 14, 18, 0.98), rgba(12, 14, 18, 0.95))",
                     backdropFilter: "blur(20px)",
@@ -217,13 +268,23 @@ export default function Navbar() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full bg-transparent text-sm outline-none"
-                      style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)" }}
+                      style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)", fontFamily: "var(--font-body)" }}
                       autoFocus
                     />
                     <button
+                      type="submit"
+                      className="shrink-0 ml-2 p-1.5 rounded-full transition-colors"
+                      style={{ color: "var(--accent-gold)" }}
+                      aria-label="Search"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </button>
+                    <button
                       type="button"
-                      onClick={() => setSearchOpen(false)}
-                      className="shrink-0 ml-2 p-1 rounded-full transition-colors"
+                      onClick={() => closeSearch()}
+                      className="shrink-0 ml-1 p-1 rounded-full transition-colors"
                       style={{ color: "var(--text-muted)" }}
                     >
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -231,6 +292,16 @@ export default function Navbar() {
                       </svg>
                     </button>
                   </div>
+                  {/* Mobile search dropdown */}
+                  {showDropdown && (
+                    <SearchDropdown
+                      results={liveResults}
+                      hasResults={hasLiveResults}
+                      query={searchQuery}
+                      onClose={() => { setSearchOpen(false); setSearchQuery(""); }}
+                      className="mt-3"
+                    />
+                  )}
                 </div>
               </>
             ) : (
@@ -268,9 +339,8 @@ export default function Navbar() {
 
       {/* Mobile Drawer — animated slide-down */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${
-          mobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${mobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <div
           className="relative px-5 py-5 space-y-1"
@@ -294,21 +364,22 @@ export default function Navbar() {
           />
           <MobileLink href="/" onClick={() => setMobileMenuOpen(false)}>Home</MobileLink>
           <MobileLink href="/category/documentaries" onClick={() => setMobileMenuOpen(false)}>Documentaries</MobileLink>
+          <MobileLink href="/podcast" onClick={() => setMobileMenuOpen(false)}>Podcast</MobileLink>
           <MobileLink href="/articles" onClick={() => setMobileMenuOpen(false)}>Articles</MobileLink>
-          
+
           <button
             onClick={() => {
               setMobileMenuOpen(false);
               setIsDonateOpen(true);
             }}
-            className="w-full mt-4 flex items-center justify-center px-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 shadow-md"
+            className="w-full mt-5 flex group items-center justify-center px-5 py-3 rounded-xl font-bold text-base transition-all duration-300 active:scale-95 hover:brightness-110"
             style={{
               background: "linear-gradient(135deg, var(--accent-gold), #C07D20)",
               color: "#0C0E12",
-              boxShadow: "0 4px 15px rgba(212, 160, 74, 0.25)",
+              boxShadow: "0 4px 15px rgba(212, 160, 74, 0.4)",
             }}
           >
-            Support Us
+            <span className="flex items-center gap-1.5">Donate <svg xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:scale-110" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
           </button>
         </div>
       </div>
@@ -322,9 +393,8 @@ function NavLink({ href, active, children }: { href: string; active: boolean; ch
   return (
     <Link
       href={href}
-      className={`text-sm font-medium transition-colors nav-link-hover ${
-        active ? "font-semibold nav-link-active" : ""
-      }`}
+      className={`text-sm font-medium transition-colors nav-link-hover ${active ? "font-semibold nav-link-active" : ""
+        }`}
       style={{ color: active ? "var(--accent-gold)" : "var(--text-secondary)" }}
     >
       {children}
@@ -354,5 +424,134 @@ function MobileLink({ href, onClick, children }: { href: string; onClick: () => 
       />
       {children}
     </Link>
+  );
+}
+
+/* ─── Live Search Dropdown ─── */
+
+interface SearchDropdownProps {
+  results: { videos: Video[]; articles: Article[]; podcasts: Podcast[] };
+  hasResults: boolean;
+  query: string;
+  onClose: () => void;
+  className?: string;
+}
+
+function SearchDropdown({ results, hasResults, query, onClose, className = "" }: SearchDropdownProps) {
+  const typeLabels: Record<string, string> = { documentary: "Documentary", report: "Report", series: "Series", editorial: "Editorial" };
+
+  return (
+    <div
+      className={`rounded-xl overflow-hidden animate-slide-down ${className}`}
+      style={{
+        background: "rgba(18, 20, 26, 0.98)",
+        backdropFilter: "blur(24px)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderTop: "2px solid rgba(212, 160, 74, 0.4)",
+        boxShadow: "0 20px 60px rgba(0, 0, 0, 0.6)",
+        maxHeight: "70vh",
+        overflowY: "auto",
+      }}
+    >
+      {hasResults ? (
+        <div className="py-2">
+          {/* Video results */}
+          {results.videos.length > 0 && (
+            <div>
+              <p className="px-4 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>Videos</p>
+              {results.videos.map((v) => (
+                <Link
+                  key={v.id}
+                  href={`/watch/${v.id}`}
+                  onClick={onClose}
+                  className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150"
+                  style={{ color: "var(--text-secondary)" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-secondary)"; }}
+                >
+                  <div className="w-12 h-8 rounded overflow-hidden shrink-0 relative" style={{ background: "var(--bg-elevated)" }}>
+                    <Image src={v.thumbnail} alt={v.title} fill className="object-cover" sizes="48px" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold truncate" style={{ color: "inherit" }}>{v.title}</p>
+                    <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>{typeLabels[v.type] || v.type} · {v.duration}</p>
+                  </div>
+                  <svg className="w-3.5 h-3.5 shrink-0 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Article results */}
+          {results.articles.length > 0 && (
+            <div>
+              <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>Articles</p>
+              {results.articles.map((a) => (
+                <Link
+                  key={a.id}
+                  href={`/articles/${a.id}`}
+                  onClick={onClose}
+                  className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150"
+                  style={{ color: "var(--text-secondary)" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-secondary)"; }}
+                >
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "rgba(212, 160, 74, 0.1)" }}>
+                    <svg className="w-4 h-4" style={{ color: "var(--accent-gold)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold truncate" style={{ color: "inherit" }}>{a.title}</p>
+                    <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>{a.category} · {a.readTime}</p>
+                  </div>
+                  <svg className="w-3.5 h-3.5 shrink-0 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Podcast results */}
+          {results.podcasts.length > 0 && (
+            <div>
+              <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>Podcasts</p>
+              {results.podcasts.map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/podcast?play=${p.id}`}
+                  onClick={onClose}
+                  className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150"
+                  style={{ color: "var(--text-secondary)" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-secondary)"; }}
+                >
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "rgba(212, 160, 74, 0.1)" }}>
+                    <svg className="w-4 h-4" style={{ color: "var(--accent-gold)" }} fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3zm7 9v2a7 7 0 01-14 0v-2H3v2a9 9 0 008 8.94V23h2v-2.06A9 9 0 0021 12v-2h-2z" /></svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold truncate" style={{ color: "inherit" }}>{p.title}</p>
+                    <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>S{p.season} E{p.episode} · {p.duration}</p>
+                  </div>
+                  <svg className="w-3.5 h-3.5 shrink-0 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* See all results */}
+          <Link
+            href={`/search?q=${encodeURIComponent(query.trim())}`}
+            onClick={onClose}
+            className="flex items-center justify-center gap-2 px-4 py-3 text-xs font-bold transition-colors"
+            style={{ color: "var(--accent-gold)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            See all results for &quot;{query.trim()}&quot;
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+        </div>
+      ) : (
+        <div className="px-4 py-6 text-center">
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>No results for &quot;{query.trim()}&quot;</p>
+        </div>
+      )}
+    </div>
   );
 }
