@@ -33,8 +33,8 @@ export default function PodcastPage() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-6"
                 style={{ background: "rgba(212,160,74,0.1)", border: "1px solid rgba(212,160,74,0.25)", color: "var(--accent-gold)" }}>
                 <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
-                  <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                  <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z" />
+                  <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
                 </svg>
                 Audio Podcast
               </div>
@@ -70,9 +70,9 @@ export default function PodcastPage() {
                       onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.12)"; }}
                       onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}>
                       {playingPodcast?.id === heroEpisode.id ? (
-                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
                       ) : (
-                        <svg className="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg className="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                       )}
                     </button>
                   </div>
@@ -181,9 +181,9 @@ function EpisodeCard({ podcast, isPlaying, onPlay, index }: { podcast: Podcast; 
               transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1), background 0.3s ease",
             }}>
               {isPlaying ? (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
               ) : (
-                <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               )}
             </div>
           </div>
@@ -216,7 +216,7 @@ function EpisodeCard({ podcast, isPlaying, onPlay, index }: { podcast: Podcast; 
           {isPlaying && (
             <div className="mt-3 flex items-center gap-2" style={{ animation: "fadeIn 0.4s ease-out" }}>
               <div className="flex items-end gap-[2px] h-4">
-                {[1,2,3,4].map(i => <div key={i} className="w-[3px] rounded-full eq-bar" style={{ background: "var(--accent-gold)" }} />)}
+                {[1, 2, 3, 4].map(i => <div key={i} className="w-[3px] rounded-full eq-bar" style={{ background: "var(--accent-gold)" }} />)}
               </div>
               <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>Now Playing</span>
             </div>

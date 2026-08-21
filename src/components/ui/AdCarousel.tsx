@@ -4,31 +4,16 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { adSlots, type Ad } from "@/lib/adData";
 
-export default function AdCarousel() {
+export default function AdCarousel({ maxSlots }: { maxSlots?: number } = {}) {
   if (adSlots.length === 0) return null;
+
+  const slotsToShow = maxSlots ? adSlots.slice(0, maxSlots) : adSlots;
 
   return (
     <div className="ad-sidebar-column" id="ad-sidebar">
-      {/* Sponsored Label */}
-      <div className="flex items-center gap-2 mb-4">
-        <div
-          className="w-1.5 h-1.5 rounded-full"
-          style={{
-            background: "var(--accent-gold)",
-            boxShadow: "0 0 8px rgba(212, 160, 74, 0.5)",
-          }}
-        />
-        <span
-          className="text-[10px] font-bold uppercase tracking-[0.2em]"
-          style={{ color: "var(--accent-gold)" }}
-        >
-          Sponsored
-        </span>
-      </div>
-
       {/* Stacked Ad Slots — each slot is a carousel */}
       <div className="flex flex-col gap-5">
-        {adSlots.map((slotAds, slotIndex) => (
+        {slotsToShow.map((slotAds, slotIndex) => (
           <AdSlotCarousel
             key={slotIndex}
             ads={slotAds}

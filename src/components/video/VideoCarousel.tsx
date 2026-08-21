@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Video } from "@/lib/data";
 import VideoCard from "./VideoCard";
@@ -12,6 +14,7 @@ interface VideoCarouselProps {
   icon?: string;
   videos: Video[];
   cardVariant?: CardVariant;
+  categorySlug?: string;
 }
 
 const variantWidths: Record<CardVariant, string> = {
@@ -23,7 +26,7 @@ const variantWidths: Record<CardVariant, string> = {
   cinematic: "clamp(300px, 28vw, 440px)",
 };
 
-export default function VideoCarousel({ title, videos, cardVariant = "default" }: VideoCarouselProps) {
+export default function VideoCarousel({ title, videos, cardVariant = "default", categorySlug }: VideoCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -68,24 +71,19 @@ export default function VideoCarousel({ title, videos, cardVariant = "default" }
           </h2>
         </div>
 
-        <button
-          className="group/more flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300"
+        <Link
+          href={categorySlug ? `/category/${categorySlug}` : "#"}
+          className="group/more flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 view-all-hover"
           style={{
             color: "var(--text-muted)",
             background: "transparent",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = "var(--accent-gold)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = "var(--text-muted)";
           }}
         >
           <span>View All</span>
           <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover/more:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
-        </button>
+        </Link>
       </div>
 
       {/* Carousel Wrapper */}

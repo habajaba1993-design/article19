@@ -290,31 +290,32 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                 </div>
               </div>
             </ScrollReveal>
-
-            {/* Support Banner */}
-            <DonationBanner />
           </div>
 
-          {/* Right Column: Related Content + Ads */}
+          {/* Right Column: Ads + Related Content */}
           <div className="lg:col-span-1">
             <div className="sticky" style={{ top: "calc(var(--nav-height) + 20px)" }}>
-              <h2 className="text-lg font-bold mb-5 flex items-center gap-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
+              {/* Ad Sidebar — top of sidebar */}
+              <AdCarousel maxSlots={1} />
+
+              {/* Related Content — below ads */}
+              <h2 className="text-lg font-bold mb-5 mt-8 flex items-center gap-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
                 <span className="w-1 h-5 rounded-full" style={{ background: "var(--accent-gold)" }} />
                 Related Content
               </h2>
-              <div className="space-y-4 mb-8">
+              <div className="space-y-4">
                 {relatedVideos.map((rv, index) => (
                   <ScrollReveal key={rv.id} delay={index * 80}>
                     <RelatedVideoCard video={rv} />
                   </ScrollReveal>
                 ))}
               </div>
-
-              {/* Ad Sidebar */}
-              <AdCarousel />
             </div>
           </div>
         </div>
+
+        {/* Support Banner — always at the bottom */}
+        <DonationBanner />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export default function DonationBanner() {
 
   return (
     <>
-      <div 
+      <div
         className="relative w-full rounded-2xl overflow-hidden mt-12 mb-4 animate-fade-in-up"
         style={{
           background: "linear-gradient(135deg, rgba(18, 20, 26, 0.95), rgba(12, 14, 18, 0.98))",
@@ -17,9 +17,9 @@ export default function DonationBanner() {
         }}
       >
         {/* Glow Effect */}
-        <div 
+        <div
           className="absolute top-0 right-0 w-1/2 h-full pointer-events-none opacity-20 mix-blend-screen"
-          style={{ 
+          style={{
             background: "radial-gradient(circle at right, var(--accent-gold), transparent 70%)",
             filter: "blur(40px)"
           }}
@@ -34,7 +34,7 @@ export default function DonationBanner() {
               Article 19 relies on reader and viewer contributions to maintain independent, fearless journalism. Help us keep our platform accessible to everyone.
             </p>
           </div>
-          
+
           <div className="shrink-0">
             <button
               onClick={() => setIsDonateOpen(true)}

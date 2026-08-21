@@ -21,10 +21,10 @@ export default function Home() {
 
       {/* Content Carousels */}
       <div className="relative z-20 pb-8">
-        <VideoCarousel title="Featured Reports" videos={trendingVideos} cardVariant="featured" />
-        <VideoCarousel title="Latest Releases" videos={newReleases} cardVariant="new" />
-        <VideoCarousel title="Bangladesh Focus" videos={banglaContent} cardVariant="spotlight" />
-        <VideoCarousel title="Global Focus" videos={englishContent} cardVariant="minimal" />
+        <VideoCarousel title="Featured Reports" videos={trendingVideos} cardVariant="featured" categorySlug="trending" />
+        <VideoCarousel title="Latest Releases" videos={newReleases} cardVariant="new" categorySlug="new-releases" />
+        <VideoCarousel title="Bangladesh Focus" videos={banglaContent} cardVariant="spotlight" categorySlug="bangla" />
+        <VideoCarousel title="Global Focus" videos={englishContent} cardVariant="minimal" categorySlug="english" />
 
       </div>
 
@@ -50,11 +50,11 @@ export default function Home() {
               </div>
               <Link
                 href="/articles"
-                className="hidden sm:flex items-center gap-1.5 text-xs font-bold transition-all duration-300 hover:text-[var(--accent-gold)]"
+                className="group/more hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 view-all-hover"
                 style={{ color: "var(--text-muted)" }}
               >
                 View All Articles
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover/more:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </Link>
