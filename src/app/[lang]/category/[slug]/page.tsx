@@ -4,7 +4,7 @@ import CategoryPageClient from "./CategoryPageClient";
 import type { Metadata } from "next";
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ lang: string; slug: string }>;
 }
 
 const categoryMap: Record<string, { title: string; icon: string; filter: (v: Video) => boolean }> = {

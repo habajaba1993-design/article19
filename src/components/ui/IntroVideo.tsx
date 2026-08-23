@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useLang } from "@/lib/LangContext";
 
 export default function IntroVideo() {
   const [show, setShow] = useState(false);
@@ -10,6 +11,7 @@ export default function IntroVideo() {
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const rafRef = useRef<number | null>(null);
+  const { dict } = useLang();
 
   useEffect(() => {
     // Only show once per session
@@ -95,10 +97,8 @@ export default function IntroVideo() {
 
   if (!show) return null;
 
-  // SVG circle props for progress ring
-  const radius = 22;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  // Progress angle for conic gradient (0 to 360 degrees)
+  const progressAngle = (progress / 100) * 360;
 
   return (
     <div
@@ -193,7 +193,7 @@ export default function IntroVideo() {
           />
         </div>
 
-        {/* Skip button */}
+        {/* Skip button with progress ring border */}
         <button
           onClick={dismiss}
           className="intro-skip-btn"
@@ -203,7 +203,7 @@ export default function IntroVideo() {
             alignItems: "center",
             gap: "10px",
             padding: "12px 24px 12px 18px",
-            border: "1px solid rgba(255,255,255,0.2)",
+            border: "none",
             borderRadius: "50px",
             background: "rgba(0,0,0,0.5)",
             backdropFilter: "blur(20px)",
@@ -216,32 +216,23 @@ export default function IntroVideo() {
             transition: "all 0.3s ease",
           }}
         >
-          {/* Progress ring */}
-          <svg
-            width="50"
-            height="50"
+          {/* Progress ring — conic gradient border that tracks video time */}
+          <span
+            aria-hidden="true"
             style={{
               position: "absolute",
-              inset: "-1px",
-              width: "calc(100% + 2px)",
-              height: "calc(100% + 2px)",
-              pointerEvents: "none",
+              inset: "-2px",
+              borderRadius: "50px",
+              background: `conic-gradient(from 0deg, rgba(212,160,74,0.8) ${progressAngle}deg, rgba(255,255,255,0.12) ${progressAngle}deg)`,
+              zIndex: -1,
+              transition: "background 0.15s linear",
+              mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+              maskComposite: "exclude",
+              WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+              WebkitMaskComposite: "xor",
+              padding: "2px",
             }}
-          >
-            <rect
-              x="0.5"
-              y="0.5"
-              width="calc(100% - 1px)"
-              height="calc(100% - 1px)"
-              rx="25"
-              ry="25"
-              fill="none"
-              stroke="rgba(212,160,74,0.4)"
-              strokeWidth="2"
-              strokeDasharray={`${(progress / 100) * 300} 300`}
-              style={{ transition: "stroke-dasharray 0.1s linear" }}
-            />
-          </svg>
+          />
 
           {/* Skip icon */}
           <svg
@@ -257,7 +248,7 @@ export default function IntroVideo() {
             <polygon points="5 4 15 12 5 20 5 4" />
             <line x1="19" y1="5" x2="19" y2="19" />
           </svg>
-          Skip
+          {dict.common.skip}
         </button>
       </div>
 
@@ -307,7 +298,7 @@ export default function IntroVideo() {
               <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
             </svg>
           )}
-          {isMuted ? "Tap to unmute" : "Sound on"}
+          {isMuted ? dict.common.tapToUnmute : dict.common.soundOn}
         </button>
       </div>
 

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Video, formatViews } from "@/lib/data";
 import VideoCard from "@/components/video/VideoCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { useLang } from "@/lib/LangContext";
 
 interface CategoryPageClientProps {
   title: string;
@@ -14,6 +15,7 @@ interface CategoryPageClientProps {
 }
 
 export default function CategoryPageClient({ title, icon, videos, slug }: CategoryPageClientProps) {
+  const { dict } = useLang();
   const [sortBy, setSortBy] = useState<"popular" | "newest" | "rating">("popular");
   const [filterType, setFilterType] = useState<"all" | "documentary" | "report" | "series">("all");
   const [sortOpen, setSortOpen] = useState(false);
@@ -115,7 +117,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
                 }}
               >
                 <span className="text-sm">{icon}</span>
-                Category
+                {dict.category.category}
               </div>
               <h1
                 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight mb-4"
@@ -130,11 +132,11 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
                 {description}
               </p>
               <div className="flex items-center gap-5 flex-wrap">
-                <StatBlock value={String(videos.length)} label="Titles" />
+                <StatBlock value={String(videos.length)} label={dict.category.titles} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
-                <StatBlock value={formatViews(totalViews)} label="Total Views" />
+                <StatBlock value={formatViews(totalViews)} label={dict.category.totalViews} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
-                <StatBlock value={`★ ${avgRating}`} label="Avg Rating" />
+                <StatBlock value={`★ ${avgRating}`} label={dict.category.avgRating} />
               </div>
             </div>
 
@@ -153,7 +155,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
                     <Image src={heroVideo.thumbnail} alt={heroVideo.title} fill className="object-cover" />
                     <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(26,29,37,1) 0%, rgba(26,29,37,0.4) 50%, transparent 100%)" }} />
                     <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider"
-                      style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}>Top Rated</div>
+                      style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}>{dict.category.topRated}</div>
                     <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[11px] font-extrabold"
                       style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(8px)", color: "#4ade80" }}>★ {heroVideo.rating}</div>
                   </div>
@@ -183,17 +185,17 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
               {/* Filters */}
               <div className="w-full sm:w-auto overflow-x-auto hide-scrollbar">
                 <div className="flex items-center gap-2 sm:gap-3 min-w-max">
-                  <FilterPill active={filterType === "all"} onClick={() => setFilterType("all")}>All Content</FilterPill>
-                  <FilterPill active={filterType === "documentary"} onClick={() => setFilterType("documentary")}>Documentaries</FilterPill>
-                  <FilterPill active={filterType === "report"} onClick={() => setFilterType("report")}>Reports</FilterPill>
-                  <FilterPill active={filterType === "series"} onClick={() => setFilterType("series")}>Series</FilterPill>
+                  <FilterPill active={filterType === "all"} onClick={() => setFilterType("all")}>{dict.category.allContent}</FilterPill>
+                  <FilterPill active={filterType === "documentary"} onClick={() => setFilterType("documentary")}>{dict.category.documentaries}</FilterPill>
+                  <FilterPill active={filterType === "report"} onClick={() => setFilterType("report")}>{dict.category.reports}</FilterPill>
+                  <FilterPill active={filterType === "series"} onClick={() => setFilterType("series")}>{dict.category.series}</FilterPill>
                 </div>
               </div>
 
               {/* Sort Selector */}
               <div className="relative shrink-0" ref={sortRef}>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Sort:</span>
+                  <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.category.sort}:</span>
                   <button
                     onClick={() => setSortOpen(!sortOpen)}
                     className="flex items-center gap-2 text-xs sm:text-sm font-semibold transition-all duration-300"
@@ -207,7 +209,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
                     }}
                     id="sort-select"
                   >
-                    <span>{sortBy === "popular" ? "Most Viewed" : sortBy === "newest" ? "Newest" : "Top Rated"}</span>
+                    <span>{sortBy === "popular" ? dict.category.mostViewed : sortBy === "newest" ? dict.category.newest : dict.category.topRatedSort}</span>
                     <svg
                       className="w-3.5 h-3.5 transition-transform duration-300"
                       style={{ transform: sortOpen ? "rotate(180deg)" : "rotate(0)", color: "var(--accent-gold)" }}
@@ -232,9 +234,9 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
                   >
                     <div className="py-1.5">
                       {([
-                        { value: "popular" as const, label: "Most Viewed", icon: "🔥" },
-                        { value: "newest" as const, label: "Newest", icon: "✨" },
-                        { value: "rating" as const, label: "Top Rated", icon: "⭐" },
+                        { value: "popular" as const, label: dict.category.mostViewed, icon: "🔥" },
+                        { value: "newest" as const, label: dict.category.newest, icon: "✨" },
+                        { value: "rating" as const, label: dict.category.topRatedSort, icon: "⭐" },
                       ]).map((option) => (
                         <button
                           key={option.value}
@@ -278,7 +280,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
         <div className="flex items-center gap-3 mb-8">
           <div className="w-1 h-7 rounded-full" style={{ background: "var(--accent-gold)", boxShadow: "0 0 8px rgba(212,160,74,0.3)" }} />
           <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
-            {filterType === "all" ? title : filterType.charAt(0).toUpperCase() + filterType.slice(1) + " in " + title}
+            {filterType === "all" ? title : filterType.charAt(0).toUpperCase() + filterType.slice(1) + " " + dict.category.in + " " + title}
           </h2>
           <span className="text-sm font-semibold ml-1" style={{ color: "var(--text-muted)" }}>({displayVideos.length})</span>
         </div>
@@ -300,8 +302,8 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>No content found</h3>
-            <p className="text-xs mt-1.5" style={{ color: "var(--text-muted)" }}>Try switching filters or browse another topic.</p>
+            <h3 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>{dict.category.noContent}</h3>
+            <p className="text-xs mt-1.5" style={{ color: "var(--text-muted)" }}>{dict.category.tryFilters}</p>
           </div>
         )}
       </section>

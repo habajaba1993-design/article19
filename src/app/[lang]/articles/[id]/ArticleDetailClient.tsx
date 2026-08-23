@@ -8,6 +8,7 @@ import ArticleCard from "@/components/article/ArticleCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import DonationBanner from "@/components/ui/DonationBanner";
 import AdCarousel from "@/components/ui/AdCarousel";
+import { useLang } from "@/lib/LangContext";
 
 interface ArticleDetailClientProps {
   article: Article;
@@ -15,6 +16,7 @@ interface ArticleDetailClientProps {
 }
 
 export default function ArticleDetailClient({ article, relatedArticles }: ArticleDetailClientProps) {
+  const { dict } = useLang();
   const [copied, setCopied] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -112,14 +114,14 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
                       <svg className="w-4 h-4" style={{ color: "#22c55e" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span style={{ color: "#22c55e" }}>Copied!</span>
+                      <span style={{ color: "#22c55e" }}>{dict.articleDetail.copied}</span>
                     </>
                   ) : (
                     <>
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                       </svg>
-                      Share
+                      {dict.articleDetail.share}
                     </>
                   )}
                 </button>
@@ -142,7 +144,7 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
             {/* Tags */}
             <div className="mb-12 pb-8" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
               <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>
-                Tags
+                {dict.articleDetail.tags}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) => (
@@ -177,7 +179,7 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
             <div className="flex items-center gap-3 mb-6">
               <div className="w-1 h-6 rounded-full" style={{ background: "var(--accent-gold)" }} />
               <h2 className="font-display text-xl" style={{ color: "var(--text-primary)" }}>
-                Related Articles
+                {dict.articleDetail.relatedArticles}
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

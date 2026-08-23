@@ -1,7 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { useLang } from "@/lib/LangContext";
 
 export default function Footer() {
+  const { lang, dict } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
+
   return (
     <footer style={{ background: "var(--bg-secondary)", borderTop: "1px solid var(--border-subtle)" }}>
       <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12">
@@ -10,7 +16,7 @@ export default function Footer() {
           <div className="py-14 flex flex-col lg:flex-row justify-between gap-10 lg:gap-16">
             {/* Brand & Description */}
             <div className="lg:max-w-md">
-              <Link href="/" className="flex items-center gap-2.5 mb-5 group">
+              <Link href={l("/")} className="flex items-center gap-2.5 mb-5 group">
                 <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-lg shadow-md transition-all duration-300 group-hover:scale-110"
                   style={{
@@ -26,28 +32,28 @@ export default function Footer() {
                     Article<span style={{ color: "var(--accent-gold)" }}>19</span>
                   </span>
                   <span className="text-[9px] font-bold tracking-[0.2em] uppercase mt-0.5" style={{ color: "var(--text-muted)" }}>
-                    Human Rights Media
+                    {dict.nav.humanRightsMedia}
                   </span>
                 </div>
               </Link>
               <p className="text-sm leading-relaxed mb-6 lg:mb-0" style={{ color: "var(--text-secondary)" }}>
-                Your premium destination for exclusive cinematic experiences, documentaries, and original series. Dive into the world of endless entertainment.
+                {dict.footer.tagline}
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h3 className="text-xs font-semibold mb-5 uppercase tracking-[0.15em]" style={{ color: "var(--text-primary)" }}>Information</h3>
+              <h3 className="text-xs font-semibold mb-5 uppercase tracking-[0.15em]" style={{ color: "var(--text-primary)" }}>{dict.footer.information}</h3>
               <ul className="space-y-3">
-                <FooterLink href="/about">About</FooterLink>
-                <FooterLink href="/faq">FAQ</FooterLink>
-                <FooterLink href="/advertise">Paid Advertise</FooterLink>
+                <FooterLink href={l("/about")}>{dict.footer.about}</FooterLink>
+                <FooterLink href={l("/faq")}>{dict.footer.faq}</FooterLink>
+                <FooterLink href={l("/advertise")}>{dict.footer.advertise}</FooterLink>
               </ul>
             </div>
 
             {/* Contact Details & Socials */}
             <div>
-              <h3 className="text-xs font-semibold mb-5 uppercase tracking-[0.15em]" style={{ color: "var(--text-primary)" }}>Contact</h3>
+              <h3 className="text-xs font-semibold mb-5 uppercase tracking-[0.15em]" style={{ color: "var(--text-primary)" }}>{dict.footer.contact}</h3>
               <div className="space-y-3 mb-6">
                 <p className="text-sm flex items-center gap-3" style={{ color: "var(--text-secondary)" }}>
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,11 +91,11 @@ export default function Footer() {
           style={{ borderTop: "1px solid var(--border-subtle)" }}
         >
           <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-            © {new Date().getFullYear()} Article 19. All rights reserved.
+            © {new Date().getFullYear()} Article 19. {dict.footer.rights}
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="footer-link text-xs" style={{ color: "var(--text-muted)" }}>Privacy Policy</Link>
-            <Link href="/terms" className="footer-link text-xs" style={{ color: "var(--text-muted)" }}>Terms and Conditions</Link>
+            <Link href={l("/privacy")} className="footer-link text-xs" style={{ color: "var(--text-muted)" }}>{dict.footer.privacy}</Link>
+            <Link href={l("/terms")} className="footer-link text-xs" style={{ color: "var(--text-muted)" }}>{dict.footer.terms}</Link>
           </div>
         </div>
       </div>

@@ -1,0 +1,176 @@
+{
+  "nav": {
+    "home": "Home",
+    "documentaries": "Documentaries",
+    "podcast": "Podcast",
+    "articles": "Articles",
+    "topics": "Topics",
+    "donate": "Donate",
+    "searchPlaceholder": "Search content...",
+    "humanRightsMedia": "Human Rights Media"
+  },
+  "hero": {
+    "watchNow": "Watch Now",
+    "share": "Share",
+    "shareVia": "Share via",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link Copied!",
+    "typeLabels": {
+      "documentary": "Documentary",
+      "report": "Report",
+      "series": "Series",
+      "editorial": "Editorial"
+    }
+  },
+  "sections": {
+    "featuredReports": "Featured Reports",
+    "latestReleases": "Latest Releases",
+    "bangladeshFocus": "Bangladesh Focus",
+    "globalFocus": "Global Focus",
+    "articlesEditorials": "Articles & Editorials",
+    "articlesSubtitle": "In-depth analysis and opinion on human rights issues",
+    "viewAllArticles": "View All Articles",
+    "viewAll": "View All"
+  },
+  "footer": {
+    "tagline": "Your premium destination for exclusive cinematic experiences, documentaries, and original series. Dive into the world of endless entertainment.",
+    "information": "Information",
+    "contact": "Contact",
+    "about": "About",
+    "faq": "FAQ",
+    "advertise": "Paid Advertise",
+    "privacy": "Privacy Policy",
+    "terms": "Terms and Conditions",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "skip": "Skip",
+    "soundOn": "Sound on",
+    "tapToUnmute": "Tap to unmute"
+  },
+  "search": {
+    "placeholder": "Search content...",
+    "noResults": "No results for",
+    "seeAll": "See all results for",
+    "videos": "Videos",
+    "articles": "Articles",
+    "podcasts": "Podcasts",
+    "discoverContent": "Discover Content",
+    "resultsFor": "Results for",
+    "search": "Search",
+    "all": "All",
+    "resultsFound": "results found",
+    "resultFound": "result found",
+    "noResultsFound": "No results found",
+    "noResultsMessage": "We couldn't find anything matching",
+    "tryDifferent": "Try different keywords or explore our topics below.",
+    "browseAll": "Browse All Content",
+    "browseByTopic": "Browse by Topic",
+    "searchDocumentaries": "Search documentaries, reports, articles, podcasts...",
+    "host": "Host",
+    "guest": "Guest"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "goHome": "Go Home",
+    "search": "Search"
+  },
+  "articlesPage": {
+    "badge": "Articles & Editorials",
+    "heroTitle": "In-Depth",
+    "heroTitleAccent": "Analysis",
+    "heroTitleSuffix": "& Opinion",
+    "heroSubtitle": "Investigative writing, sharp editorials, and expert analysis on human rights, press freedom, and social justice issues that shape our world.",
+    "articles": "Articles",
+    "topics": "Topics",
+    "newArticles": "New Articles",
+    "weekly": "Weekly",
+    "featured": "Featured",
+    "allArticles": "All Articles"
+  },
+  "donate": {
+    "title": "Empower Truth",
+    "subtitle": "Your contribution fuels independent journalism and protects human rights worldwide.",
+    "selectAmount": "Select Amount",
+    "customAmount": "Enter Custom Amount",
+    "enterAmount": "Enter amount",
+    "proceed": "Proceed with",
+    "processing": "Processing...",
+    "securedBy": "Secured by SSLCommerz",
+    "thankYou": "Thank You",
+    "thankYouMessage": "Your generous contribution of",
+    "thankYouSuffix": "helps protect human rights and media freedom.",
+    "continueBrowsing": "Continue Browsing"
+  },
+  "watch": {
+    "clickToPlay": "Click to Play",
+    "nowPlaying": "NOW PLAYING",
+    "save": "Save",
+    "saved": "Saved",
+    "share": "Share",
+    "linkCopied": "Link Copied!",
+    "views": "views",
+    "overview": "Overview",
+    "topicsTags": "Topics & Tags",
+    "relatedContent": "Related Content"
+  },
+  "podcast": {
+    "audioPodcast": "Audio Podcast",
+    "heroTitle": "Article<accent>19</accent> Podcast",
+    "heroSubtitle": "Deep conversations on human rights, justice, and the stories that shape our world. Listen to investigators, activists, and survivors share their truth.",
+    "episodes": "Episodes",
+    "season": "Season",
+    "newEpisodes": "New Episodes",
+    "weekly": "Weekly",
+    "latestEpisode": "Latest Episode",
+    "allEpisodes": "All Episodes",
+    "noEpisodes": "No episodes found in this category.",
+    "nowPlaying": "Now Playing",
+    "host": "Host",
+    "guest": "Guest",
+    "neverMiss": "Never Miss an Episode",
+    "subscribeText": "Subscribe to the Article 19 Podcast and get new episodes delivered directly to your favorite podcast app."
+  },
+  "category": {
+    "category": "Category",
+    "titles": "Titles",
+    "totalViews": "Total Views",
+    "avgRating": "Avg Rating",
+    "topRated": "Top Rated",
+    "allContent": "All Content",
+    "documentaries": "Documentaries",
+    "reports": "Reports",
+    "series": "Series",
+    "sort": "Sort",
+    "mostViewed": "Most Viewed",
+    "newest": "Newest",
+    "topRatedSort": "Top Rated",
+    "noContent": "No content found",
+    "tryFilters": "Try switching filters or browse another topic.",
+    "in": "in"
+  },
+  "donationBanner": {
+    "title": "Support Truth & Human Rights",
+    "subtitle": "Article 19 relies on reader and viewer contributions to maintain independent, fearless journalism. Help us keep our platform accessible to everyone.",
+    "donateNow": "Donate Now"
+  },
+  "articleDetail": {
+    "share": "Share",
+    "copied": "Copied!",
+    "tags": "Tags",
+    "relatedArticles": "Related Articles"
+  },
+  "udhr": {
+    "quote": "Everyone has the right to freedom of opinion and expression; this right includes freedom to hold opinions without interference.",
+    "attribution": "Article 19 — Universal Declaration of Human Rights"
+  },
+  "meta": {
+    "siteTitle": "Article 19 | Human Rights Media Platform",
+    "siteDescription": "Article 19 is a human rights media platform publishing documentaries, investigative reports, and editorial content on freedom of expression, justice, and human dignity worldwide.",
+    "ogTitle": "Article 19 | Human Rights Media Platform",
+    "ogDescription": "Documentaries, investigations, and stories that defend human rights and amplify voices for justice.",
+    "articlesTitle": "Articles & Editorials | Article 19",
+    "articlesDescription": "In-depth articles, editorials, and analysis on human rights, press freedom, and social justice."
+  }
+}

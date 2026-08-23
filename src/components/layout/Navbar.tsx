@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { categories, videos, articles, podcasts } from "@/lib/data";
 import type { Video, Article, Podcast } from "@/lib/data";
 import DonateModal from "@/components/ui/DonateModal";
+import { useLang } from "@/lib/LangContext";
 
 export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -17,6 +18,13 @@ export default function Navbar() {
   const [isDonateOpen, setIsDonateOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { lang, dict } = useLang();
+
+  // Strip locale prefix for path matching
+  const pathWithoutLang = pathname.replace(/^\/(en|bn)/, "") || "/";
+
+  // Helper to prefix links with current locale
+  const l = (path: string) => `/${lang}${path}`;
   const searchRef = useRef<HTMLFormElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -64,7 +72,7 @@ export default function Navbar() {
       setSearchOpen(false);
       setSearchClosing(false);
       setSearchQuery("");
-      window.location.href = `/search?q=${encodeURIComponent(q)}`;
+      window.location.href = `/${lang}/search?q=${encodeURIComponent(q)}`;
     }
   };
 
@@ -89,7 +97,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+        <Link href={l("/")} className="flex items-center gap-2.5 shrink-0 group">
           <div
             className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-lg shadow-md transition-all duration-300 group-hover:scale-110"
             style={{
@@ -105,17 +113,17 @@ export default function Navbar() {
               Article<span style={{ color: "var(--accent-gold)" }}>19</span>
             </span>
             <span className="text-[9px] font-bold tracking-[0.2em] uppercase mt-0.5" style={{ color: "var(--text-muted)" }}>
-              Human Rights Media
+              {dict.nav.humanRightsMedia}
             </span>
           </div>
         </Link>
 
         {/* Clean Center Navigation Menu */}
         <nav className="hidden md:flex items-center gap-8">
-          <NavLink href="/" active={pathname === "/"}>Home</NavLink>
-          <NavLink href="/category/documentaries" active={pathname.includes("/category/documentaries")}>Documentaries</NavLink>
-          <NavLink href="/podcast" active={pathname.includes("/podcast")}>Podcast</NavLink>
-          <NavLink href="/articles" active={pathname.includes("/articles")}>Articles</NavLink>
+          <NavLink href={l("/")} active={pathWithoutLang === "/"}>{dict.nav.home}</NavLink>
+          <NavLink href={l("/category/documentaries")} active={pathWithoutLang.includes("/category/documentaries")}>{dict.nav.documentaries}</NavLink>
+          <NavLink href={l("/podcast")} active={pathWithoutLang.includes("/podcast")}>{dict.nav.podcast}</NavLink>
+          <NavLink href={l("/articles")} active={pathWithoutLang.includes("/articles")}>{dict.nav.articles}</NavLink>
 
           {/* Topics Dropdown */}
           <div className="relative group">
@@ -125,7 +133,7 @@ export default function Navbar() {
               onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; }}
               onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-secondary)"; }}
             >
-              Topics
+              {dict.nav.topics}
               <svg
                 className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180"
                 style={{ color: "var(--text-muted)" }}
@@ -150,7 +158,7 @@ export default function Navbar() {
                   {categories.map((cat) => (
                     <Link
                       key={cat.id}
-                      href={`/category/${cat.slug}`}
+                      href={l(`/category/${cat.slug}`)}
                       className="flex items-center gap-3 px-4 py-2.5 text-[13px] font-medium transition-all duration-200 relative"
                       style={{ color: "rgba(255, 255, 255, 0.6)" }}
                       onMouseEnter={(e) => {
@@ -176,6 +184,37 @@ export default function Navbar() {
 
         {/* Right Tools */}
         <div className="flex items-center gap-4">
+          {/* Language Switcher — Premium Globe Toggle */}
+          <button
+            onClick={() => {
+              const target = lang === 'en' ? 'bn' : 'en';
+              router.push(pathname.replace(/^\/(en|bn)/, `/${target}`));
+            }}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 hover:scale-105 active:scale-95 group"
+            style={{
+              background: 'rgba(212, 160, 74, 0.08)',
+              border: '1px solid rgba(212, 160, 74, 0.2)',
+              color: 'var(--accent-gold)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(212, 160, 74, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(212, 160, 74, 0.4)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(212, 160, 74, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(212, 160, 74, 0.08)';
+              e.currentTarget.style.borderColor = 'rgba(212, 160, 74, 0.2)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            aria-label="Switch language"
+          >
+            <svg className="w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-[25deg]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+            </svg>
+            <span className="tracking-wide">{lang === 'en' ? 'বাংলা' : 'English'}</span>
+          </button>
+
           {/* Donate Button (Desktop) */}
           <button
             onClick={() => setIsDonateOpen(true)}
@@ -186,7 +225,7 @@ export default function Navbar() {
               boxShadow: "0 4px 15px rgba(212, 160, 74, 0.4)",
             }}
           >
-            <span className="flex items-center gap-1.5">Donate <svg xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:scale-110" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
+            <span className="flex items-center gap-1.5">{dict.nav.donate} <svg xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:scale-110" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
           </button>
 
           {/* Search Form */}
@@ -204,7 +243,7 @@ export default function Navbar() {
                 >
                   <input
                     type="text"
-                    placeholder="Search content..."
+                    placeholder={dict.nav.searchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full bg-transparent text-sm outline-none pr-2"
@@ -264,7 +303,7 @@ export default function Navbar() {
                     </svg>
                     <input
                       type="text"
-                      placeholder="Search content..."
+                      placeholder={dict.nav.searchPlaceholder}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full bg-transparent text-sm outline-none"
@@ -362,10 +401,34 @@ export default function Navbar() {
             className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[80px] rounded-full pointer-events-none"
             style={{ background: "rgba(212, 160, 74, 0.04)", filter: "blur(40px)" }}
           />
-          <MobileLink href="/" onClick={() => setMobileMenuOpen(false)}>Home</MobileLink>
-          <MobileLink href="/category/documentaries" onClick={() => setMobileMenuOpen(false)}>Documentaries</MobileLink>
-          <MobileLink href="/podcast" onClick={() => setMobileMenuOpen(false)}>Podcast</MobileLink>
-          <MobileLink href="/articles" onClick={() => setMobileMenuOpen(false)}>Articles</MobileLink>
+          <MobileLink href={l("/")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.home}</MobileLink>
+          <MobileLink href={l("/category/documentaries")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.documentaries}</MobileLink>
+          <MobileLink href={l("/podcast")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.podcast}</MobileLink>
+          <MobileLink href={l("/articles")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.articles}</MobileLink>
+
+          {/* Mobile Language Switcher */}
+          <div className="flex items-center gap-3 px-4 py-3">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                const target = lang === 'en' ? 'bn' : 'en';
+                router.push(pathname.replace(/^\/(en|bn)/, `/${target}`));
+              }}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 active:scale-95 w-full"
+              style={{
+                background: 'rgba(212, 160, 74, 0.08)',
+                border: '1px solid rgba(212, 160, 74, 0.2)',
+                color: 'var(--accent-gold)',
+              }}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+              </svg>
+              <span>{lang === 'en' ? 'বাংলায় দেখুন' : 'Switch to English'}</span>
+              <svg className="w-4 h-4 ml-auto opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+            </button>
+          </div>
 
           <button
             onClick={() => {
@@ -379,7 +442,7 @@ export default function Navbar() {
               boxShadow: "0 4px 15px rgba(212, 160, 74, 0.4)",
             }}
           >
-            <span className="flex items-center gap-1.5">Donate <svg xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:scale-110" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
+            <span className="flex items-center gap-1.5">{dict.nav.donate} <svg xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:scale-110" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
           </button>
         </div>
       </div>
@@ -438,6 +501,8 @@ interface SearchDropdownProps {
 }
 
 function SearchDropdown({ results, hasResults, query, onClose, className = "" }: SearchDropdownProps) {
+  const { lang, dict } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
   const typeLabels: Record<string, string> = { documentary: "Documentary", report: "Report", series: "Series", editorial: "Editorial" };
 
   return (
@@ -458,11 +523,11 @@ function SearchDropdown({ results, hasResults, query, onClose, className = "" }:
           {/* Video results */}
           {results.videos.length > 0 && (
             <div>
-              <p className="px-4 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>Videos</p>
+              <p className="px-4 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>{dict.search.videos}</p>
               {results.videos.map((v) => (
                 <Link
                   key={v.id}
-                  href={`/watch/${v.id}`}
+                  href={l(`/watch/${v.id}`)}
                   onClick={onClose}
                   className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150"
                   style={{ color: "var(--text-secondary)" }}
@@ -485,11 +550,11 @@ function SearchDropdown({ results, hasResults, query, onClose, className = "" }:
           {/* Article results */}
           {results.articles.length > 0 && (
             <div>
-              <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>Articles</p>
+              <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>{dict.search.articles}</p>
               {results.articles.map((a) => (
                 <Link
                   key={a.id}
-                  href={`/articles/${a.id}`}
+                  href={l(`/articles/${a.id}`)}
                   onClick={onClose}
                   className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150"
                   style={{ color: "var(--text-secondary)" }}
@@ -512,11 +577,11 @@ function SearchDropdown({ results, hasResults, query, onClose, className = "" }:
           {/* Podcast results */}
           {results.podcasts.length > 0 && (
             <div>
-              <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>Podcasts</p>
+              <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>{dict.search.podcasts}</p>
               {results.podcasts.map((p) => (
                 <Link
                   key={p.id}
-                  href={`/podcast?play=${p.id}`}
+                  href={l(`/podcast?play=${p.id}`)}
                   onClick={onClose}
                   className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150"
                   style={{ color: "var(--text-secondary)" }}
@@ -538,7 +603,7 @@ function SearchDropdown({ results, hasResults, query, onClose, className = "" }:
 
           {/* See all results */}
           <Link
-            href={`/search?q=${encodeURIComponent(query.trim())}`}
+            href={`/${lang}/search?q=${encodeURIComponent(query.trim())}`}
             onClick={onClose}
             className="flex items-center justify-center gap-2 px-4 py-3 text-xs font-bold transition-colors"
             style={{ color: "var(--accent-gold)", borderTop: "1px solid rgba(255,255,255,0.06)" }}

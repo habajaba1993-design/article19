@@ -6,6 +6,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { Video } from "@/lib/data";
 import VideoCard from "./VideoCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { useLang } from "@/lib/LangContext";
 
 export type CardVariant = "default" | "featured" | "new" | "spotlight" | "minimal" | "cinematic";
 
@@ -30,6 +31,8 @@ export default function VideoCarousel({ title, videos, cardVariant = "default", 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { lang, dict } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
 
   const checkScroll = useCallback(() => {
     if (scrollRef.current) {
@@ -72,14 +75,14 @@ export default function VideoCarousel({ title, videos, cardVariant = "default", 
         </div>
 
         <Link
-          href={categorySlug ? `/category/${categorySlug}` : "#"}
+          href={categorySlug ? l(`/category/${categorySlug}`) : "#"}
           className="group/more flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 view-all-hover"
           style={{
             color: "var(--text-muted)",
             background: "transparent",
           }}
         >
-          <span>View All</span>
+          <span>{dict.sections.viewAll}</span>
           <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover/more:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>

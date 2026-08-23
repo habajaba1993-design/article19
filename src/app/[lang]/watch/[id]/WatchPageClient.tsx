@@ -8,6 +8,7 @@ import VideoCard from "@/components/video/VideoCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import DonationBanner from "@/components/ui/DonationBanner";
 import AdCarousel from "@/components/ui/AdCarousel";
+import { useLang } from "@/lib/LangContext";
 
 interface WatchPageClientProps {
   video: Video;
@@ -15,6 +16,8 @@ interface WatchPageClientProps {
 }
 
 export default function WatchPageClient({ video, relatedVideos }: WatchPageClientProps) {
+  const { lang, dict } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -112,7 +115,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                   </svg>
                 </button>
                 <p className="mt-4 text-sm font-semibold tracking-wide" style={{ color: "rgba(240,237,232,0.9)" }}>
-                  Click to Play · <span style={{ color: "var(--accent-gold)" }}>{video.duration}</span>
+                  {dict.watch.clickToPlay} · <span style={{ color: "var(--accent-gold)" }}>{video.duration}</span>
                 </p>
               </div>
             )}
@@ -121,7 +124,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
             {isPlaying && (
               <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold animate-slide-down" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)", border: "1px solid var(--border-subtle)", color: "var(--text-primary)" }}>
                 <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: "var(--accent-crimson)" }} />
-                <span>NOW PLAYING · {video.duration}</span>
+                <span>{dict.watch.nowPlaying} · {video.duration}</span>
               </div>
             )}
 
@@ -232,7 +235,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
-                {favorited ? "Saved" : "Save"}
+                {favorited ? dict.watch.saved : dict.watch.save}
               </button>
 
               <button
@@ -250,7 +253,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                   </svg>
                 )}
                 <span style={copied ? { color: "#22c55e" } : undefined}>
-                  {copied ? "Link Copied!" : "Share"}
+                  {copied ? dict.watch.linkCopied : dict.watch.share}
                 </span>
               </button>
 
@@ -259,14 +262,14 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                {formatViews(video.views)} views
+                {formatViews(video.views)} {dict.watch.views}
               </div>
             </div>
 
             {/* Story Overview */}
             <ScrollReveal>
               <div className="mb-8">
-                <h2 className="text-lg font-bold mb-3" style={{ color: "var(--text-primary)" }}>Overview</h2>
+                <h2 className="text-lg font-bold mb-3" style={{ color: "var(--text-primary)" }}>{dict.watch.overview}</h2>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {video.description}
                 </p>
@@ -276,7 +279,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
             {/* Genres */}
             <ScrollReveal delay={100}>
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>Topics & Tags</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>{dict.watch.topicsTags}</h3>
                 <div className="flex flex-wrap gap-2.5">
                   {video.genre.map((g) => (
                     <span
@@ -301,12 +304,12 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
               {/* Related Content — below ads */}
               <h2 className="text-lg font-bold mb-5 mt-8 flex items-center gap-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
                 <span className="w-1 h-5 rounded-full" style={{ background: "var(--accent-gold)" }} />
-                Related Content
+                {dict.watch.relatedContent}
               </h2>
               <div className="space-y-4">
                 {relatedVideos.map((rv, index) => (
                   <ScrollReveal key={rv.id} delay={index * 80}>
-                    <RelatedVideoCard video={rv} />
+                    <RelatedVideoCard video={rv} lang={lang} />
                   </ScrollReveal>
                 ))}
               </div>
@@ -321,12 +324,12 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
   );
 }
 
-function RelatedVideoCard({ video }: { video: Video }) {
+function RelatedVideoCard({ video, lang }: { video: Video; lang: string }) {
   const [imgError, setImgError] = useState(false);
 
   return (
     <Link
-      href={`/watch/${video.id}`}
+      href={`/${lang}/watch/${video.id}`}
       className="flex gap-3.5 group rounded-xl p-3 transition-all duration-300 hover:bg-slate-800/30"
       style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}
       id={`related-${video.id}`}

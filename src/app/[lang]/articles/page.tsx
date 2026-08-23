@@ -5,13 +5,34 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getDictionary, hasLocale, type Locale } from "@/lib/i18n";
+import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Articles & Editorials | Article 19",
-  description: "In-depth articles, editorials, and analysis on human rights, press freedom, and social justice.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang as Locale);
+  return {
+    title: dict.meta.articlesTitle,
+    description: dict.meta.articlesDescription,
+  };
+}
 
-export default function ArticlesPage() {
+export default async function ArticlesPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  const dict = await getDictionary(lang as Locale);
+  const l = (path: string) => `/${lang}${path}`;
+
   const heroArticle = featuredArticles[0];
   const categories = Array.from(new Set(latestArticles.map((a) => a.category)));
 
@@ -53,26 +74,26 @@ export default function ArticlesPage() {
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                 </svg>
-                Articles & Editorials
+                {dict.articlesPage.badge}
               </div>
               <h1
                 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight mb-4"
                 style={{ color: "var(--text-primary)" }}
               >
-                In-Depth <span style={{ color: "var(--accent-gold)" }}>Analysis</span> & Opinion
+                {dict.articlesPage.heroTitle} <span style={{ color: "var(--accent-gold)" }}>{dict.articlesPage.heroTitleAccent}</span> {dict.articlesPage.heroTitleSuffix}
               </h1>
               <p
                 className="text-base sm:text-lg leading-relaxed max-w-xl mb-8"
                 style={{ color: "var(--text-secondary)" }}
               >
-                Investigative writing, sharp editorials, and expert analysis on human rights, press freedom, and social justice issues that shape our world.
+                {dict.articlesPage.heroSubtitle}
               </p>
               <div className="flex items-center gap-6 flex-wrap">
-                <StatBlock value={String(latestArticles.length)} label="Articles" />
+                <StatBlock value={String(latestArticles.length)} label={dict.articlesPage.articles} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
-                <StatBlock value={String(categories.length)} label="Topics" />
+                <StatBlock value={String(categories.length)} label={dict.articlesPage.topics} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
-                <StatBlock value="Weekly" label="New Articles" />
+                <StatBlock value={dict.articlesPage.weekly} label={dict.articlesPage.newArticles} />
               </div>
             </div>
 
@@ -81,7 +102,7 @@ export default function ArticlesPage() {
               className="w-full lg:w-[420px] shrink-0 animate-fade-in-up"
               style={{ animationDelay: "150ms" }}
             >
-              <Link href={`/articles/${heroArticle.id}`}>
+              <Link href={l(`/articles/${heroArticle.id}`)}>
                 <div
                   className="rounded-2xl overflow-hidden group cursor-pointer"
                   style={{
@@ -111,7 +132,7 @@ export default function ArticlesPage() {
                       className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider"
                       style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}
                     >
-                      Featured
+                      {dict.articlesPage.featured}
                     </div>
                   </div>
                   <div className="p-5">
@@ -163,7 +184,7 @@ export default function ArticlesPage() {
             className="font-display text-2xl sm:text-3xl tracking-tight"
             style={{ color: "var(--text-primary)" }}
           >
-            All Articles
+            {dict.articlesPage.allArticles}
           </h2>
           <span className="text-sm font-semibold ml-1" style={{ color: "var(--text-muted)" }}>
             ({latestArticles.length})

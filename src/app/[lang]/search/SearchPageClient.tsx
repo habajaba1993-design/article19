@@ -5,10 +5,13 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { videos, articles, podcasts, formatViews, formatDate } from "@/lib/data";
+import { useLang } from "@/lib/LangContext";
 
 const typeLabels: Record<string, string> = { documentary: "Documentary", report: "Report", series: "Series", editorial: "Editorial" };
 
 export default function SearchPageClient() {
+  const { lang, dict } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
   const searchParams = useSearchParams();
   const urlQuery = searchParams.get("q") || "";
   const [query, setQuery] = useState(urlQuery);
@@ -45,10 +48,10 @@ export default function SearchPageClient() {
   const showPodcasts = (activeTab === "all" || activeTab === "podcasts") && podcastResults.length > 0;
 
   const tabs = [
-    { key: "all" as const, label: "All", count: totalResults },
-    { key: "videos" as const, label: "Videos", count: videoResults.length },
-    { key: "articles" as const, label: "Articles", count: articleResults.length },
-    { key: "podcasts" as const, label: "Podcasts", count: podcastResults.length },
+    { key: "all" as const, label: dict.search.all, count: totalResults },
+    { key: "videos" as const, label: dict.search.videos, count: videoResults.length },
+    { key: "articles" as const, label: dict.search.articles, count: articleResults.length },
+    { key: "podcasts" as const, label: dict.search.podcasts, count: podcastResults.length },
   ];
 
   return (
@@ -64,11 +67,11 @@ export default function SearchPageClient() {
         <div className="max-w-4xl mx-auto px-6 sm:px-8 pt-12 pb-8 relative">
           {/* Title with gold accent */}
           <div className="text-center mb-8 animate-fade-in-up">
-            <p className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3" style={{ color: "var(--accent-gold)" }}>Discover Content</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3" style={{ color: "var(--accent-gold)" }}>{dict.search.discoverContent}</p>
             <h1 className="font-display text-4xl sm:text-5xl" style={{ color: "var(--text-primary)" }}>
               {query.trim() ? (
-                <>Results for <span style={{ color: "var(--accent-gold)" }}>&quot;{query}&quot;</span></>
-              ) : "Search"}
+                <>{dict.search.resultsFor} <span style={{ color: "var(--accent-gold)" }}>&quot;{query}&quot;</span></>
+              ) : dict.search.search}
             </h1>
           </div>
 
@@ -84,7 +87,7 @@ export default function SearchPageClient() {
                 </div>
                 <input
                   type="text" value={query} onChange={e => setQuery(e.target.value)}
-                  placeholder="Search documentaries, reports, articles, podcasts..."
+                  placeholder={dict.search.searchDocumentaries}
                   className="w-full py-4 pr-12 bg-transparent outline-none text-base sm:text-lg"
                   style={{ color: "var(--text-primary)", caretColor: "var(--accent-gold)" }}
                   autoFocus={!urlQuery} id="search-page-input"
@@ -103,7 +106,7 @@ export default function SearchPageClient() {
             <div className="mt-8 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <p className="text-sm font-medium" style={{ color: "var(--text-muted)" }}>
-                  <span className="font-bold" style={{ color: "var(--accent-gold)" }}>{totalResults}</span> {totalResults === 1 ? "result" : "results"} found
+                  <span className="font-bold" style={{ color: "var(--accent-gold)" }}>{totalResults}</span> {totalResults === 1 ? dict.search.resultFound : dict.search.resultsFound}
                 </p>
                 <div className="flex items-center gap-1 p-1 rounded-xl" style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}>
                   {tabs.map(tab => (
@@ -145,7 +148,7 @@ export default function SearchPageClient() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {videoResults.map((v, i) => (
-                    <Link key={v.id} href={`/watch/${v.id}`} className="group block rounded-xl overflow-hidden border transition-all duration-300 card-hover-lift" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-subtle)" }}>
+                    <Link key={v.id} href={l(`/watch/${v.id}`)} className="group block rounded-xl overflow-hidden border transition-all duration-300 card-hover-lift" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-subtle)" }}>
                       <div className="relative aspect-video overflow-hidden" style={{ background: "var(--bg-elevated)" }}>
                         <Image src={v.thumbnail} alt={v.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 400px" />
                         <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)" }} />
@@ -190,7 +193,7 @@ export default function SearchPageClient() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {articleResults.map(a => (
-                    <Link key={a.id} href={`/articles/${a.id}`} className="group block rounded-xl overflow-hidden border transition-all duration-300 card-hover-lift" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-subtle)" }}>
+                    <Link key={a.id} href={l(`/articles/${a.id}`)} className="group block rounded-xl overflow-hidden border transition-all duration-300 card-hover-lift" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-subtle)" }}>
                       <div className="relative aspect-[16/9] overflow-hidden" style={{ background: "var(--bg-elevated)" }}>
                         <Image src={a.thumbnail} alt={a.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="400px" />
                         <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)" }} />
@@ -223,7 +226,7 @@ export default function SearchPageClient() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {podcastResults.map(p => (
-                    <Link key={p.id} href={`/podcast?play=${p.id}`} className="group flex gap-5 p-5 rounded-xl border transition-all duration-300 card-hover-lift" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-subtle)" }}>
+                    <Link key={p.id} href={l(`/podcast?play=${p.id}`)} className="group flex gap-5 p-5 rounded-xl border transition-all duration-300 card-hover-lift" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-subtle)" }}>
                       <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden shrink-0 relative" style={{ background: "var(--bg-elevated)" }}>
                         <Image src={p.thumbnail} alt={p.title} fill className="object-cover" sizes="96px" />
                         <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(0,0,0,0.4)" }}>
@@ -240,8 +243,8 @@ export default function SearchPageClient() {
                         <h3 className="text-sm sm:text-base font-bold line-clamp-1 mb-1 transition-colors duration-200 group-hover:text-[var(--accent-gold)]" style={{ color: "var(--text-primary)" }}>{p.title}</h3>
                         <p className="text-xs line-clamp-2 mb-2" style={{ color: "var(--text-muted)" }}>{p.description}</p>
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-semibold" style={{ color: "var(--text-secondary)" }}>Host: {p.host}</span>
-                          {p.guest && <><span className="text-[10px]" style={{ color: "var(--text-muted)" }}>·</span><span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Guest: {p.guest}</span></>}
+                          <span className="text-[10px] font-semibold" style={{ color: "var(--text-secondary)" }}>{dict.search.host}: {p.host}</span>
+                          {p.guest && <><span className="text-[10px]" style={{ color: "var(--text-muted)" }}>·</span><span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>{dict.search.guest}: {p.guest}</span></>}
                         </div>
                       </div>
                     </Link>
@@ -259,10 +262,10 @@ export default function SearchPageClient() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <h3 className="font-display text-xl mb-2" style={{ color: "var(--text-primary)" }}>No results found</h3>
-                <p className="text-sm max-w-md mb-8" style={{ color: "var(--text-muted)" }}>We couldn&apos;t find anything matching &quot;{query}&quot;. Try different keywords or explore our topics below.</p>
-                <Link href="/" className="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(135deg, var(--accent-gold), #C07D20)", color: "#0C0E12" }}>
-                  Browse All Content
+                <h3 className="font-display text-xl mb-2" style={{ color: "var(--text-primary)" }}>{dict.search.noResultsFound}</h3>
+                <p className="text-sm max-w-md mb-8" style={{ color: "var(--text-muted)" }}>{dict.search.noResultsMessage} &quot;{query}&quot;. {dict.search.tryDifferent}</p>
+                <Link href={l("/")} className="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(135deg, var(--accent-gold), #C07D20)", color: "#0C0E12" }}>
+                  {dict.search.browseAll}
                 </Link>
               </div>
             )}
@@ -274,7 +277,7 @@ export default function SearchPageClient() {
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "rgba(212, 160, 74, 0.1)" }}>
                 <svg className="w-4 h-4" style={{ color: "var(--accent-gold)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
               </div>
-              <h2 className="font-display text-2xl" style={{ color: "var(--text-primary)" }}>Browse by Topic</h2>
+              <h2 className="font-display text-2xl" style={{ color: "var(--text-primary)" }}>{dict.search.browseByTopic}</h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {[
@@ -287,7 +290,7 @@ export default function SearchPageClient() {
                 { name: "Podcasts", slug: "/podcast", gradient: "linear-gradient(135deg, #1e3a5f, #1e40af)", icon: "🎙️" },
                 { name: "Articles", slug: "/articles", gradient: "linear-gradient(135deg, #3f3f46, #52525b)", icon: "📄" },
               ].map(cat => (
-                <Link key={cat.slug} href={cat.slug.startsWith("/") ? cat.slug : `/category/${cat.slug}`} className="relative overflow-hidden rounded-xl p-6 sm:p-7 group transition-all duration-300 hover:scale-105 border" style={{ background: cat.gradient, borderColor: "rgba(255,255,255,0.06)", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
+                <Link key={cat.slug} href={cat.slug.startsWith("/") ? l(cat.slug) : l(`/category/${cat.slug}`)} className="relative overflow-hidden rounded-xl p-6 sm:p-7 group transition-all duration-300 hover:scale-105 border" style={{ background: cat.gradient, borderColor: "rgba(255,255,255,0.06)", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
                   <div className="absolute top-0 right-0 text-3xl opacity-20 p-3 transition-transform duration-500 group-hover:scale-125 group-hover:opacity-30">{cat.icon}</div>
                   <span className="text-sm font-bold relative" style={{ color: "#fff" }}>{cat.name}</span>
                   <svg className="w-4 h-4 mt-3 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-60 group-hover:translate-x-0" style={{ color: "#fff" }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

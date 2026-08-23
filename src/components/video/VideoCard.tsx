@@ -6,6 +6,7 @@ import { Video } from "@/lib/data";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import type { CardVariant } from "./VideoCarousel";
+import { useLang } from "@/lib/LangContext";
 
 interface VideoCardProps {
   video: Video;
@@ -26,6 +27,8 @@ export default function VideoCard({ video, index = 0, variant = "default" }: Vid
   const [cardRect, setCardRect] = useState<DOMRect | null>(null);
   const [originX, setOriginX] = useState<"left" | "center" | "right">("center");
   const cardRef = useRef<HTMLDivElement>(null);
+  const { lang } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
   const enterTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -144,7 +147,7 @@ export default function VideoCard({ video, index = 0, variant = "default" }: Vid
         onMouseEnter={handleCardEnter}
         onMouseLeave={handleCardLeave}
       >
-        <Link href={`/watch/${video.id}`} className="block">
+        <Link href={l(`/watch/${video.id}`)} className="block">
           <div className={`pv-card-thumb pv-card-thumb--${variant}`}>
             {!imageError ? (
               <Image
@@ -234,6 +237,7 @@ export default function VideoCard({ video, index = 0, variant = "default" }: Vid
           originX={originX}
           animState={hoverState}
           variant={variant}
+          lang={lang}
           onMouseEnter={handleOverlayEnter}
           onMouseLeave={handleOverlayLeave}
         />,
@@ -252,6 +256,7 @@ interface HoverOverlayProps {
   originX: "left" | "center" | "right";
   animState: "entering" | "visible" | "leaving" | "idle";
   variant: CardVariant;
+  lang: string;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }
@@ -273,6 +278,7 @@ function HoverOverlay({
   originX,
   animState,
   variant,
+  lang,
   onMouseEnter,
   onMouseLeave,
 }: HoverOverlayProps) {
@@ -286,6 +292,7 @@ function HoverOverlay({
         imageError={imageError}
         originX={originX}
         animState={animState}
+        lang={lang}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       />
@@ -352,7 +359,7 @@ function HoverOverlay({
     >
       <div className={`pv-hover-card pv-hover-card--${variant}`}>
         {/* Thumbnail */}
-        <Link href={`/watch/${video.id}`} className="block">
+        <Link href={`/${lang}/watch/${video.id}`} className="block">
           <div className={`pv-hover-thumb pv-hover-thumb--${variant}`}>
             {!imageError ? (
               <Image
@@ -381,13 +388,13 @@ function HoverOverlay({
 
         {/* Metadata panel */}
         <div className={`pv-hover-meta pv-hover-meta--${variant}`}>
-          <Link href={`/watch/${video.id}`}>
+          <Link href={`/${lang}/watch/${video.id}`}>
             <h3 className="pv-hover-title">{video.title}</h3>
           </Link>
 
           {/* Action buttons */}
           <div className="pv-hover-actions">
-            <Link href={`/watch/${video.id}`} className={`pv-hover-action-play pv-hover-action-play--${variant}`}>
+            <Link href={`/${lang}/watch/${video.id}`} className={`pv-hover-action-play pv-hover-action-play--${variant}`}>
               <svg className="w-4 h-4 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z" />
               </svg>
@@ -440,6 +447,7 @@ function SpotlightOverlay({
   imageError,
   originX,
   animState,
+  lang,
   onMouseEnter,
   onMouseLeave,
 }: Omit<HoverOverlayProps, "variant">) {
@@ -484,7 +492,7 @@ function SpotlightOverlay({
           order: openRight ? 0 : 1,
         }}
       >
-        <Link href={`/watch/${video.id}`} className="block relative w-full h-full">
+        <Link href={`/${lang}/watch/${video.id}`} className="block relative w-full h-full">
           {!imageError ? (
             <Image
               src={video.thumbnail}
@@ -514,7 +522,7 @@ function SpotlightOverlay({
         }}
       >
         <div className="pv-spotlight-panel-inner">
-          <Link href={`/watch/${video.id}`}>
+          <Link href={`/${lang}/watch/${video.id}`}>
             <h3 className="pv-spotlight-panel-title">{video.title}</h3>
           </Link>
 
@@ -534,7 +542,7 @@ function SpotlightOverlay({
 
           {/* Action buttons */}
           <div className="pv-spotlight-panel-actions">
-            <Link href={`/watch/${video.id}`} className="pv-spotlight-panel-play-btn">
+            <Link href={`/${lang}/watch/${video.id}`} className="pv-spotlight-panel-play-btn">
               <svg className="w-4 h-4 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z" />
               </svg>

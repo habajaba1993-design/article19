@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Article, formatDate } from "@/lib/data";
 import { useState } from "react";
+import { useLang } from "@/lib/LangContext";
 
 interface ArticleCardProps {
   article: Article;
@@ -12,10 +13,11 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ article, variant = "default" }: ArticleCardProps) {
   const [imageError, setImageError] = useState(false);
+  const { lang } = useLang();
 
   return (
     <Link
-      href={`/articles/${article.id}`}
+      href={`/${lang}/articles/${article.id}`}
       className="group block rounded-2xl overflow-hidden border transition-all duration-300 card-hover-lift"
       style={{
         background: "var(--bg-secondary)",

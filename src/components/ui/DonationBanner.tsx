@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import DonateModal from "./DonateModal";
+import { useLang } from "@/lib/LangContext";
 
 export default function DonationBanner() {
+  const { dict } = useLang();
   const [isDonateOpen, setIsDonateOpen] = useState(false);
 
   return (
@@ -28,10 +30,10 @@ export default function DonationBanner() {
         <div className="relative p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex-1 text-center sm:text-left">
             <h3 className="text-2xl font-display font-bold mb-2" style={{ color: "var(--text-primary)" }}>
-              Support Truth & Human Rights
+              {dict.donationBanner.title}
             </h3>
             <p className="text-sm max-w-xl mx-auto sm:mx-0" style={{ color: "var(--text-secondary)" }}>
-              Article 19 relies on reader and viewer contributions to maintain independent, fearless journalism. Help us keep our platform accessible to everyone.
+              {dict.donationBanner.subtitle}
             </p>
           </div>
 
@@ -49,7 +51,7 @@ export default function DonationBanner() {
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
-                Donate Now
+                {dict.donationBanner.donateNow}
               </span>
             </button>
           </div>

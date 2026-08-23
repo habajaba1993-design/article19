@@ -6,8 +6,10 @@ import { latestPodcasts, featuredPodcasts, formatDate, podcasts } from "@/lib/da
 import type { Podcast } from "@/lib/data";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import AudioPlayer from "@/components/ui/AudioPlayer";
+import { useLang } from "@/lib/LangContext";
 
 export default function PodcastPage() {
+  const { dict } = useLang();
   const [playingPodcast, setPlayingPodcast] = useState<Podcast | null>(null);
   const [filter, setFilter] = useState("all");
   const allCategories = Array.from(new Set(latestPodcasts.map((p) => p.category)));
@@ -36,20 +38,20 @@ export default function PodcastPage() {
                   <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z" />
                   <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
                 </svg>
-                Audio Podcast
+                {dict.podcast.audioPodcast}
               </div>
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight mb-4" style={{ color: "var(--text-primary)" }}>
                 Article<span style={{ color: "var(--accent-gold)" }}>19</span> Podcast
               </h1>
               <p className="text-base sm:text-lg leading-relaxed max-w-xl mb-8" style={{ color: "var(--text-secondary)" }}>
-                Deep conversations on human rights, justice, and the stories that shape our world. Listen to investigators, activists, and survivors share their truth.
+                {dict.podcast.heroSubtitle}
               </p>
               <div className="flex items-center gap-6 flex-wrap">
-                <StatBlock value={String(latestPodcasts.length)} label="Episodes" />
+                <StatBlock value={String(latestPodcasts.length)} label={dict.podcast.episodes} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
-                <StatBlock value="1" label="Season" />
+                <StatBlock value="1" label={dict.podcast.season} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
-                <StatBlock value="Weekly" label="New Episodes" />
+                <StatBlock value={dict.podcast.weekly} label={dict.podcast.newEpisodes} />
               </div>
             </div>
 
@@ -77,7 +79,7 @@ export default function PodcastPage() {
                     </button>
                   </div>
                   <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider"
-                    style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}>Latest Episode</div>
+                    style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}>{dict.podcast.latestEpisode}</div>
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">
@@ -99,7 +101,7 @@ export default function PodcastPage() {
         <div style={{ background: "rgba(12,14,18,0.92)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
           <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-4">
             <div className="flex items-center gap-3 overflow-x-auto hide-scrollbar">
-              <FilterBtn active={filter === "all"} onClick={() => setFilter("all")}>All Episodes</FilterBtn>
+              <FilterBtn active={filter === "all"} onClick={() => setFilter("all")}>{dict.podcast.allEpisodes}</FilterBtn>
               {allCategories.map(c => <FilterBtn key={c} active={filter === c} onClick={() => setFilter(c)}>{c}</FilterBtn>)}
             </div>
           </div>
@@ -111,7 +113,7 @@ export default function PodcastPage() {
         <div className="flex items-center gap-3 mb-8">
           <div className="w-1 h-7 rounded-full" style={{ background: "var(--accent-gold)", boxShadow: "0 0 8px rgba(212,160,74,0.3)" }} />
           <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
-            {filter === "all" ? "All Episodes" : filter}
+            {filter === "all" ? dict.podcast.allEpisodes : filter}
           </h2>
           <span className="text-sm font-semibold ml-1" style={{ color: "var(--text-muted)" }}>({filteredPodcasts.length})</span>
         </div>
@@ -124,7 +126,7 @@ export default function PodcastPage() {
         </div>
         {filteredPodcasts.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-lg font-semibold" style={{ color: "var(--text-muted)" }}>No episodes found in this category.</p>
+            <p className="text-lg font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.noEpisodes}</p>
           </div>
         )}
       </section>
@@ -139,9 +141,9 @@ export default function PodcastPage() {
               <svg className="w-12 h-12 mx-auto mb-5" style={{ color: "var(--accent-gold)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
               </svg>
-              <h2 className="font-display text-2xl sm:text-3xl tracking-tight mb-4" style={{ color: "var(--text-primary)" }}>Never Miss an Episode</h2>
+              <h2 className="font-display text-2xl sm:text-3xl tracking-tight mb-4" style={{ color: "var(--text-primary)" }}>{dict.podcast.neverMiss}</h2>
               <p className="text-sm leading-relaxed max-w-lg mx-auto mb-8" style={{ color: "var(--text-secondary)" }}>
-                Subscribe to the Article 19 Podcast and get new episodes delivered directly to your favorite podcast app.
+                {dict.podcast.subscribeText}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <SubBtn color="#1DB954" label="Spotify" />
@@ -161,6 +163,7 @@ export default function PodcastPage() {
 
 /* ── Episode Card ── */
 function EpisodeCard({ podcast, isPlaying, onPlay, index }: { podcast: Podcast; isPlaying: boolean; onPlay: () => void; index: number }) {
+  const { dict } = useLang();
   return (
     <div className="group podcast-episode-card rounded-xl overflow-hidden cursor-pointer" onClick={onPlay}
       style={{
@@ -203,10 +206,10 @@ function EpisodeCard({ podcast, isPlaying, onPlay, index }: { podcast: Podcast; 
           </h3>
           <p className="text-sm leading-relaxed line-clamp-2 mb-3" style={{ color: "var(--text-secondary)" }}>{podcast.description}</p>
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Host: <span style={{ color: "var(--text-secondary)" }}>{podcast.host}</span></span>
+            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.host}: <span style={{ color: "var(--text-secondary)" }}>{podcast.host}</span></span>
             {podcast.guest && (<>
               <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>·</span>
-              <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Guest: <span style={{ color: "var(--text-secondary)" }}>{podcast.guest}</span></span>
+              <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.guest}: <span style={{ color: "var(--text-secondary)" }}>{podcast.guest}</span></span>
             </>)}
             <div className="ml-auto hidden sm:flex items-center gap-2">
               <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
@@ -218,7 +221,7 @@ function EpisodeCard({ podcast, isPlaying, onPlay, index }: { podcast: Podcast; 
               <div className="flex items-end gap-[2px] h-4">
                 {[1, 2, 3, 4].map(i => <div key={i} className="w-[3px] rounded-full eq-bar" style={{ background: "var(--accent-gold)" }} />)}
               </div>
-              <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>Now Playing</span>
+              <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>{dict.podcast.nowPlaying}</span>
             </div>
           )}
         </div>

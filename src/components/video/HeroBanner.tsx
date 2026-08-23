@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Video } from "@/lib/data";
+import { useLang } from "@/lib/LangContext";
 
 interface HeroBannerProps {
   videos: Video[];
 }
 
-const typeLabels: Record<string, string> = {
+const typeLabelsEn: Record<string, string> = {
   documentary: "Documentary",
   report: "Report",
   series: "Series",
@@ -24,6 +25,10 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const shareRef = useRef<HTMLDivElement>(null);
+  const { lang, dict } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
+
+  const typeLabels = dict.hero.typeLabels as Record<string, string>;
 
   const current = videos[currentIndex];
 
@@ -234,7 +239,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
               }}
             >
               <Link
-                href={`/watch/${current.id}`}
+                href={l(`/watch/${current.id}`)}
                 className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-lg text-sm font-bold transition-all duration-200 hover:opacity-90 active:scale-95"
                 style={{
                   background: "var(--accent-gold)",
@@ -245,7 +250,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
-                Watch Now
+                {dict.hero.watchNow}
               </Link>
 
               {/* Share Button */}
@@ -263,7 +268,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
-                  Share
+                  {dict.hero.share}
                 </button>
 
                 {/* Share Dropdown */}
@@ -276,7 +281,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
                       border: "1px solid var(--border-subtle)",
                     }}
                   >
-                    <p className="text-[10px] font-bold uppercase tracking-wider px-3 py-2" style={{ color: "var(--text-muted)" }}>Share via</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider px-3 py-2" style={{ color: "var(--text-muted)" }}>{dict.hero.shareVia}</p>
                     {[
                       {
                         name: "Facebook",
@@ -306,7 +311,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
                       <button
                         key={platform.name}
                         onClick={() => {
-                          const url = typeof window !== "undefined" ? `${window.location.origin}/watch/${current.id}` : "";
+                          const url = typeof window !== "undefined" ? `${window.location.origin}/${lang}/watch/${current.id}` : "";
                           window.open(platform.getUrl(url, current.title), "_blank", "width=600,height=400");
                           setShareOpen(false);
                         }}
@@ -332,7 +337,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
                     <div style={{ borderTop: "1px solid var(--border-subtle)", marginTop: "4px", paddingTop: "4px" }}>
                       <button
                         onClick={() => {
-                          const url = typeof window !== "undefined" ? `${window.location.origin}/watch/${current.id}` : "";
+                          const url = typeof window !== "undefined" ? `${window.location.origin}/${lang}/watch/${current.id}` : "";
                           navigator.clipboard.writeText(url);
                           setCopied(true);
                           setTimeout(() => { setCopied(false); setShareOpen(false); }, 1500);
@@ -355,7 +360,7 @@ export default function HeroBanner({ videos }: HeroBannerProps) {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                           </svg>
                         )}
-                        {copied ? "Link Copied!" : "Copy Link"}
+                        {copied ? dict.hero.linkCopied : dict.hero.copyLink}
                       </button>
                     </div>
                   </div>

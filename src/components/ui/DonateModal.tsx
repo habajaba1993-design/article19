@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLang } from "@/lib/LangContext";
 
 interface DonateModalProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface DonateModalProps {
 }
 
 export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
+  const { dict } = useLang();
   const [selectedAmount, setSelectedAmount] = useState<number | "custom">(500);
   const [customAmount, setCustomAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -129,9 +131,9 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-display mb-3" style={{ color: "var(--text-primary)" }}>Thank You</h2>
+              <h2 className="text-2xl font-display mb-3" style={{ color: "var(--text-primary)" }}>{dict.donate.thankYou}</h2>
               <p className="text-sm leading-relaxed mb-8 max-w-[280px] mx-auto" style={{ color: "var(--text-secondary)" }}>
-                Your generous contribution of <strong style={{ color: "var(--accent-gold)" }}>{getDisplayAmount()}</strong> helps protect human rights and media freedom.
+                {dict.donate.thankYouMessage} <strong style={{ color: "var(--accent-gold)" }}>{getDisplayAmount()}</strong> {dict.donate.thankYouSuffix}
               </p>
 
               <button
@@ -144,7 +146,7 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
                 }}
               >
                 <div className="absolute inset-0 bg-white/20 translate-x-[-100%] transition-transform duration-700 group-hover:translate-x-[100%]" />
-                <span className="relative z-10">Continue Browsing</span>
+                <span className="relative z-10">{dict.donate.continueBrowsing}</span>
               </button>
             </div>
           ) : (
@@ -167,17 +169,17 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
                 </div>
 
                 <h2 className="text-[22px] font-display mb-2" style={{ color: "var(--text-primary)" }}>
-                  Empower Truth
+                  {dict.donate.title}
                 </h2>
                 <p className="text-[13px] leading-relaxed max-w-[300px] mx-auto" style={{ color: "var(--text-secondary)" }}>
-                  Your contribution fuels independent journalism and protects human rights worldwide.
+                  {dict.donate.subtitle}
                 </p>
               </div>
 
               {/* Amount Selection */}
               <div className="mb-6">
                 <p className="text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ color: "var(--text-muted)" }}>
-                  Select Amount
+                  {dict.donate.selectAmount}
                 </p>
                 <div className="grid grid-cols-4 gap-2">
                   {amounts.map((amount) => (
@@ -224,7 +226,7 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
                       style={{ background: "linear-gradient(90deg, transparent, var(--accent-gold), transparent)" }}
                     />
                   )}
-                  Enter Custom Amount
+                  {dict.donate.customAmount}
                 </button>
               </div>
 
@@ -240,7 +242,7 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
                     </span>
                     <input
                       type="number"
-                      placeholder="Enter amount"
+                      placeholder={dict.donate.enterAmount}
                       value={customAmount}
                       onChange={(e) => setCustomAmount(e.target.value)}
                       className="w-full pl-10 pr-4 py-4 rounded-xl outline-none transition-all duration-300 font-semibold text-lg"
@@ -281,10 +283,10 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Processing...
+                      {dict.donate.processing}
                     </>
                   ) : (
-                    <>Proceed with {getDisplayAmount()}</>
+                    <>{dict.donate.proceed} {getDisplayAmount()}</>
                   )}
                 </span>
               </button>
@@ -293,7 +295,7 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
               <div className="mt-7 mb-5 flex items-center gap-4">
                 <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
                 <span className="text-[9px] font-bold uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>
-                  Secured by SSLCommerz
+                  {dict.donate.securedBy}
                 </span>
                 <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
               </div>

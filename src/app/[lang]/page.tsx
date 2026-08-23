@@ -12,8 +12,20 @@ import {
   featuredArticles,
   latestArticles,
 } from "@/lib/data";
+import { getDictionary, hasLocale, type Locale } from "@/lib/i18n";
+import { notFound } from "next/navigation";
 
-export default function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  const dict = await getDictionary(lang as Locale);
+  const l = (path: string) => `/${lang}${path}`;
+
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
       {/* Hero Banner */}
@@ -21,10 +33,10 @@ export default function Home() {
 
       {/* Content Carousels */}
       <div className="relative z-20 pb-8">
-        <VideoCarousel title="Featured Reports" videos={trendingVideos} cardVariant="featured" categorySlug="trending" />
-        <VideoCarousel title="Latest Releases" videos={newReleases} cardVariant="new" categorySlug="new-releases" />
-        <VideoCarousel title="Bangladesh Focus" videos={banglaContent} cardVariant="spotlight" categorySlug="bangla" />
-        <VideoCarousel title="Global Focus" videos={englishContent} cardVariant="minimal" categorySlug="english" />
+        <VideoCarousel title={dict.sections.featuredReports} videos={trendingVideos} cardVariant="featured" categorySlug="trending" />
+        <VideoCarousel title={dict.sections.latestReleases} videos={newReleases} cardVariant="new" categorySlug="new-releases" />
+        <VideoCarousel title={dict.sections.bangladeshFocus} videos={banglaContent} cardVariant="spotlight" categorySlug="bangla" />
+        <VideoCarousel title={dict.sections.globalFocus} videos={englishContent} cardVariant="minimal" categorySlug="english" />
 
       </div>
 
@@ -41,19 +53,19 @@ export default function Home() {
                 />
                 <div>
                   <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
-                    Articles & Editorials
+                    {dict.sections.articlesEditorials}
                   </h2>
                   <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
-                    In-depth analysis and opinion on human rights issues
+                    {dict.sections.articlesSubtitle}
                   </p>
                 </div>
               </div>
               <Link
-                href="/articles"
+                href={l("/articles")}
                 className="group/more hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 view-all-hover"
                 style={{ color: "var(--text-muted)" }}
               >
-                View All Articles
+                {dict.sections.viewAllArticles}
                 <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover/more:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -96,10 +108,10 @@ export default function Home() {
                 className="font-display text-2xl sm:text-3xl lg:text-4xl leading-relaxed mb-6 max-w-3xl mx-auto"
                 style={{ color: "var(--text-primary)" }}
               >
-                &ldquo;Everyone has the right to freedom of opinion and expression; this right includes freedom to hold opinions without interference.&rdquo;
+                &ldquo;{dict.udhr.quote}&rdquo;
               </p>
               <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: "var(--accent-gold)" }}>
-                Article 19 — Universal Declaration of Human Rights
+                {dict.udhr.attribution}
               </p>
             </div>
           </div>
