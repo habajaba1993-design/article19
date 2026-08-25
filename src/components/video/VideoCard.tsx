@@ -392,29 +392,13 @@ function HoverOverlay({
             <h3 className="pv-hover-title">{video.title}</h3>
           </Link>
 
-          {/* Action buttons */}
+          {/* Actions + Tags — single line */}
           <div className="pv-hover-actions">
             <Link href={`/${lang}/watch/${video.id}`} className={`pv-hover-action-play pv-hover-action-play--${variant}`}>
               <svg className="w-4 h-4 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z" />
               </svg>
             </Link>
-            <button className={`pv-hover-action-btn pv-hover-action-btn--${variant}`} aria-label="Add to Watchlist">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-            </button>
-            <button className={`pv-hover-action-btn pv-hover-action-btn--${variant}`} aria-label="More Info">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Tags */}
-          <div className="pv-hover-tags">
-            <span className={`pv-hover-rating pv-hover-rating--${variant}`}>★ {video.rating}</span>
-            <span className="pv-hover-dot">·</span>
             <span className="pv-hover-year">{video.year}</span>
             <span className="pv-hover-dot">·</span>
             <span className="pv-hover-duration">{video.duration}</span>
@@ -528,8 +512,6 @@ function SpotlightOverlay({
 
           {/* Tags */}
           <div className="pv-spotlight-panel-tags">
-            <span className="pv-spotlight-panel-rating">★ {video.rating}</span>
-            <span className="pv-hover-dot">·</span>
             <span className="pv-spotlight-panel-year">{video.year}</span>
             <span className="pv-hover-dot">·</span>
             <span className="pv-spotlight-panel-duration">{video.duration}</span>
@@ -548,16 +530,6 @@ function SpotlightOverlay({
               </svg>
               <span>Play</span>
             </Link>
-            <button className="pv-spotlight-panel-action" aria-label="Add to Watchlist">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-            </button>
-            <button className="pv-spotlight-panel-action" aria-label="More Info">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
-              </svg>
-            </button>
           </div>
 
           {/* Genres */}

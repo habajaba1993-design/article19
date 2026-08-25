@@ -5,7 +5,7 @@
     "podcast": "Podcast",
     "articles": "Articles",
     "topics": "Topics",
-    "donate": "Donate",
+    "donate": "Support",
     "searchPlaceholder": "Search content...",
     "humanRightsMedia": "Human Rights Media"
   },
@@ -132,6 +132,19 @@
     "neverMiss": "Never Miss an Episode",
     "subscribeText": "Subscribe to the Article 19 Podcast and get new episodes delivered directly to your favorite podcast app."
   },
+  "podcastDetail": {
+    "listenNow": "Listen Now",
+    "nowPlaying": "NOW PLAYING",
+    "share": "Share",
+    "linkCopied": "Link Copied!",
+    "overview": "Episode Overview",
+    "topicsTags": "Topics & Tags",
+    "relatedEpisodes": "Related Episodes",
+    "host": "Host",
+    "guest": "Guest",
+    "subscribe": "Subscribe",
+    "allEpisodes": "All Episodes"
+  },
   "category": {
     "category": "Category",
     "titles": "Titles",
@@ -153,7 +166,7 @@
   "donationBanner": {
     "title": "Support Truth & Human Rights",
     "subtitle": "Article 19 relies on reader and viewer contributions to maintain independent, fearless journalism. Help us keep our platform accessible to everyone.",
-    "donateNow": "Donate Now"
+    "donateNow": "Support"
   },
   "articleDetail": {
     "share": "Share",

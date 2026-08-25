@@ -14,8 +14,8 @@
   --bg-main: #0C0E12;
 
   --text-primary: #F0EDE8;
-  --text-secondary: #9B978F;
-  --text-muted: #6B6660;
+  --text-secondary: #D5D1CB;
+  --text-muted: #BBB6AF;
 
   --border-subtle: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(212, 160, 74, 0.3);
@@ -784,7 +784,7 @@ html {
 
 .pv-card-spotlight-year {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 600;
 }
 
@@ -914,7 +914,7 @@ html {
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.75);
   font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
@@ -1130,7 +1130,7 @@ html {
 .pv-hover-year,
 .pv-hover-duration {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .pv-hover-dot {
@@ -1146,7 +1146,7 @@ html {
   padding: 2px 7px;
   border-radius: 3px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.8);
   margin-left: 2px;
 }
 
@@ -1155,7 +1155,7 @@ html {
 .pv-hover-synopsis {
   font-size: 12px;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -1175,12 +1175,12 @@ html {
 .pv-hover-genre {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.7);
   transition: color 150ms ease;
 }
 
 .pv-hover-genre:hover {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -1400,7 +1400,7 @@ html {
 .pv-spotlight-panel-year,
 .pv-spotlight-panel-duration {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .pv-spotlight-panel-type {
@@ -1419,7 +1419,7 @@ html {
 .pv-spotlight-panel-desc {
   font-size: 11px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.7);
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -1483,7 +1483,7 @@ html {
 .pv-spotlight-panel-genre {
   font-size: 10px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.65);
 }
 
 /* ── Spotlight Animations ── */
@@ -1684,7 +1684,7 @@ html {
 
 .pv-hover-badge--cinematic {
   border-color: rgba(255, 255, 255, 0.2) !important;
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* ═══════════════════════════════════════════════════

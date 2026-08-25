@@ -2,26 +2,22 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { latestPodcasts, featuredPodcasts, formatDate, podcasts } from "@/lib/data";
+import Link from "next/link";
+import { latestPodcasts, featuredPodcasts, formatDate } from "@/lib/data";
 import type { Podcast } from "@/lib/data";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import AudioPlayer from "@/components/ui/AudioPlayer";
 import { useLang } from "@/lib/LangContext";
 
 export default function PodcastPage() {
-  const { dict } = useLang();
-  const [playingPodcast, setPlayingPodcast] = useState<Podcast | null>(null);
+  const { lang, dict } = useLang();
+  const l = (path: string) => `/${lang}${path}`;
   const [filter, setFilter] = useState("all");
   const allCategories = Array.from(new Set(latestPodcasts.map((p) => p.category)));
   const filteredPodcasts = filter === "all" ? latestPodcasts : latestPodcasts.filter((p) => p.category === filter);
   const heroEpisode = featuredPodcasts[0];
 
-  const handlePlay = (podcast: Podcast) => {
-    setPlayingPodcast(playingPodcast?.id === podcast.id ? null : podcast);
-  };
-
   return (
-    <div className="min-h-screen" style={{ paddingTop: "64px", background: "var(--bg-primary)", paddingBottom: playingPodcast ? 80 : 0, transition: "padding-bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1)" }}>
+    <div className="min-h-screen" style={{ paddingTop: "64px", background: "var(--bg-primary)" }}>
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden">
@@ -55,42 +51,37 @@ export default function PodcastPage() {
               </div>
             </div>
 
-            {/* Featured card */}
+            {/* Featured card — links to detail page */}
             <div className="w-full lg:w-[420px] shrink-0 animate-fade-in-up" style={{ animationDelay: "150ms" }}>
-              <div className="rounded-2xl overflow-hidden" style={{
-                background: "var(--bg-elevated)", border: "1px solid rgba(212,160,74,0.15)",
-                boxShadow: "0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(212,160,74,0.05)",
-                transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease",
-              }}>
-                <div className="relative aspect-video overflow-hidden">
-                  <Image src={heroEpisode.thumbnail} alt={heroEpisode.title} fill className="object-cover" />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(26,29,37,1) 0%, rgba(26,29,37,0.4) 50%, transparent 100%)" }} />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button onClick={() => handlePlay(heroEpisode)}
-                      className="w-16 h-16 rounded-full flex items-center justify-center"
-                      style={{ background: "linear-gradient(135deg, var(--accent-gold), #C07D20)", color: "#0C0E12", boxShadow: "0 4px 20px rgba(212,160,74,0.4)", transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1)" }}
-                      onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.12)"; }}
-                      onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}>
-                      {playingPodcast?.id === heroEpisode.id ? (
-                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
-                      ) : (
+              <Link href={l(`/podcast/${heroEpisode.id}`)}>
+                <div className="rounded-2xl overflow-hidden group cursor-pointer" style={{
+                  background: "var(--bg-elevated)", border: "1px solid rgba(212,160,74,0.15)",
+                  boxShadow: "0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(212,160,74,0.05)",
+                  transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease",
+                }}>
+                  <div className="relative aspect-video overflow-hidden">
+                    <Image src={heroEpisode.thumbnail} alt={heroEpisode.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(26,29,37,1) 0%, rgba(26,29,37,0.4) 50%, transparent 100%)" }} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                        style={{ background: "linear-gradient(135deg, var(--accent-gold), #C07D20)", color: "#0C0E12", boxShadow: "0 4px 20px rgba(212,160,74,0.4)" }}>
                         <svg className="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                      )}
-                    </button>
+                      </div>
+                    </div>
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider"
+                      style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}>{dict.podcast.latestEpisode}</div>
                   </div>
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider"
-                    style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}>{dict.podcast.latestEpisode}</div>
-                </div>
-                <div className="p-5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>S{heroEpisode.season} · E{heroEpisode.episode}</span>
-                    <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
-                    <span className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{heroEpisode.duration}</span>
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>S{heroEpisode.season} · E{heroEpisode.episode}</span>
+                      <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
+                      <span className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{heroEpisode.duration}</span>
+                    </div>
+                    <h3 className="text-lg font-bold mb-2 transition-colors duration-300 group-hover:text-[var(--accent-gold)]" style={{ color: "var(--text-primary)" }}>{heroEpisode.title}</h3>
+                    <p className="text-sm leading-relaxed line-clamp-2" style={{ color: "var(--text-secondary)" }}>{heroEpisode.description}</p>
                   </div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: "var(--text-primary)" }}>{heroEpisode.title}</h3>
-                  <p className="text-sm leading-relaxed line-clamp-2" style={{ color: "var(--text-secondary)" }}>{heroEpisode.description}</p>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -118,9 +109,9 @@ export default function PodcastPage() {
           <span className="text-sm font-semibold ml-1" style={{ color: "var(--text-muted)" }}>({filteredPodcasts.length})</span>
         </div>
         <div className="space-y-4">
-          {filteredPodcasts.map((p, i) => (
+          {filteredPodcasts.map((p) => (
             <ScrollReveal key={p.id}>
-              <EpisodeCard podcast={p} isPlaying={playingPodcast?.id === p.id} onPlay={() => handlePlay(p)} index={i} />
+              <EpisodeCard podcast={p} lang={lang} />
             </ScrollReveal>
           ))}
         </div>
@@ -154,79 +145,63 @@ export default function PodcastPage() {
           </div>
         </section>
       </ScrollReveal>
-
-      {/* Audio Player */}
-      <AudioPlayer podcast={playingPodcast} onClose={() => setPlayingPodcast(null)} />
     </div>
   );
 }
 
-/* ── Episode Card ── */
-function EpisodeCard({ podcast, isPlaying, onPlay, index }: { podcast: Podcast; isPlaying: boolean; onPlay: () => void; index: number }) {
+/* ── Episode Card — links to detail page ── */
+function EpisodeCard({ podcast, lang }: { podcast: Podcast; lang: string }) {
   const { dict } = useLang();
   return (
-    <div className="group podcast-episode-card rounded-xl overflow-hidden cursor-pointer" onClick={onPlay}
-      style={{
-        background: isPlaying ? "rgba(212,160,74,0.04)" : "var(--bg-secondary)",
-        borderWidth: 1, borderStyle: "solid",
-        borderColor: isPlaying ? "rgba(212,160,74,0.2)" : "var(--border-subtle)",
-      }}>
-      <div className="flex flex-col sm:flex-row items-stretch">
-        <div className="relative w-full sm:w-44 shrink-0 aspect-video sm:aspect-auto overflow-hidden">
-          <Image src={podcast.thumbnail} alt={podcast.title} fill className="object-cover" style={{ transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)" }}
-            onMouseEnter={e => { (e.target as HTMLElement).style.transform = "scale(1.08)"; }}
-            onMouseLeave={e => { (e.target as HTMLElement).style.transform = "scale(1)"; }} />
-          <div className="absolute inset-0 sm:hidden" style={{ background: "linear-gradient(to top, rgba(20,22,28,0.8), transparent 60%)" }} />
-          <div className="absolute inset-0 flex items-center justify-center" style={{ transition: "opacity 0.3s ease" }}>
-            <div className="w-11 h-11 rounded-full flex items-center justify-center" style={{
-              background: isPlaying ? "linear-gradient(135deg, var(--accent-gold), #C07D20)" : "rgba(255,255,255,0.9)",
-              color: "#0C0E12", boxShadow: isPlaying ? "0 4px 15px rgba(212,160,74,0.4)" : "0 4px 15px rgba(0,0,0,0.3)",
-              transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1), background 0.3s ease",
-            }}>
-              {isPlaying ? (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
-              ) : (
+    <Link href={`/${lang}/podcast/${podcast.id}`}>
+      <div className="group podcast-episode-card rounded-xl overflow-hidden cursor-pointer"
+        style={{
+          background: "var(--bg-secondary)",
+          borderWidth: 1, borderStyle: "solid",
+          borderColor: "var(--border-subtle)",
+          transition: "border-color 0.3s ease, background 0.3s ease",
+        }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(212,160,74,0.2)"; e.currentTarget.style.background = "rgba(212,160,74,0.04)"; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border-subtle)"; e.currentTarget.style.background = "var(--bg-secondary)"; }}
+      >
+        <div className="flex flex-col sm:flex-row items-stretch">
+          <div className="relative w-full sm:w-44 shrink-0 aspect-video sm:aspect-auto overflow-hidden">
+            <Image src={podcast.thumbnail} alt={podcast.title} fill className="object-cover transition-transform duration-600 group-hover:scale-105" />
+            <div className="absolute inset-0 sm:hidden" style={{ background: "linear-gradient(to top, rgba(20,22,28,0.8), transparent 60%)" }} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-11 h-11 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                style={{ background: "rgba(255,255,255,0.9)", color: "#0C0E12", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>
                 <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex-1 p-4 sm:p-5 flex flex-col justify-center min-w-0">
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-            <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>S{podcast.season} · E{podcast.episode}</span>
-            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
-            <span className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{formatDate(podcast.publishedAt)}</span>
-            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
-            <span className="text-[11px] font-semibold" style={{ color: "var(--text-muted)" }}>{podcast.duration}</span>
-          </div>
-          <h3 className="text-base sm:text-lg font-bold mb-1.5 truncate" style={{ color: "var(--text-primary)", transition: "color 0.3s ease" }}
-            onMouseEnter={e => { e.currentTarget.style.color = "var(--accent-gold)"; }}
-            onMouseLeave={e => { e.currentTarget.style.color = "var(--text-primary)"; }}>
-            {podcast.title}
-          </h3>
-          <p className="text-sm leading-relaxed line-clamp-2 mb-3" style={{ color: "var(--text-secondary)" }}>{podcast.description}</p>
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.host}: <span style={{ color: "var(--text-secondary)" }}>{podcast.host}</span></span>
-            {podcast.guest && (<>
-              <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>·</span>
-              <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.guest}: <span style={{ color: "var(--text-secondary)" }}>{podcast.guest}</span></span>
-            </>)}
-            <div className="ml-auto hidden sm:flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
-                style={{ background: "rgba(212,160,74,0.08)", color: "var(--accent-gold)", border: "1px solid rgba(212,160,74,0.15)" }}>{podcast.category}</span>
-            </div>
-          </div>
-          {isPlaying && (
-            <div className="mt-3 flex items-center gap-2" style={{ animation: "fadeIn 0.4s ease-out" }}>
-              <div className="flex items-end gap-[2px] h-4">
-                {[1, 2, 3, 4].map(i => <div key={i} className="w-[3px] rounded-full eq-bar" style={{ background: "var(--accent-gold)" }} />)}
               </div>
-              <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>{dict.podcast.nowPlaying}</span>
             </div>
-          )}
+          </div>
+          <div className="flex-1 p-4 sm:p-5 flex flex-col justify-center min-w-0">
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>S{podcast.season} · E{podcast.episode}</span>
+              <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
+              <span className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{formatDate(podcast.publishedAt)}</span>
+              <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
+              <span className="text-[11px] font-semibold" style={{ color: "var(--text-muted)" }}>{podcast.duration}</span>
+            </div>
+            <h3 className="text-base sm:text-lg font-bold mb-1.5 truncate transition-colors duration-300 group-hover:text-[var(--accent-gold)]" style={{ color: "var(--text-primary)" }}>
+              {podcast.title}
+            </h3>
+            <p className="text-sm leading-relaxed line-clamp-2 mb-3" style={{ color: "var(--text-secondary)" }}>{podcast.description}</p>
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.host}: <span style={{ color: "var(--text-secondary)" }}>{podcast.host}</span></span>
+              {podcast.guest && (<>
+                <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>·</span>
+                <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.guest}: <span style={{ color: "var(--text-secondary)" }}>{podcast.guest}</span></span>
+              </>)}
+              <div className="ml-auto hidden sm:flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+                  style={{ background: "rgba(212,160,74,0.08)", color: "var(--accent-gold)", border: "1px solid rgba(212,160,74,0.15)" }}>{podcast.category}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

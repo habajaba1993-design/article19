@@ -202,11 +202,8 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
               {video.title}
             </h1>
 
-            {/* Badges Bar */}
-            <div className="flex flex-wrap items-center gap-3 mb-6 animate-fade-in-up" style={{ animationDelay: "80ms" }}>
-              <span className="px-3.5 py-1.5 rounded-lg text-xs font-extrabold" style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)", border: "1px solid rgba(212,160,74,0.25)" }}>
-                ★ {video.rating}
-              </span>
+            {/* Info & Actions Bar — Single Line */}
+            <div className="flex flex-wrap items-center gap-3 py-5 mb-6 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
               <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
                 {video.year}
               </span>
@@ -219,28 +216,13 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
               <span className="px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider" style={{ background: "var(--accent-crimson-dim)", color: "#E87070" }}>
                 {video.type}
               </span>
-            </div>
 
-            {/* Actions Bar */}
-            <div className="flex flex-wrap items-center gap-3 py-5 mb-6 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "160ms" }}>
-              <button
-                onClick={handleFavorite}
-                className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${heartBounce ? "animate-heart-bounce" : ""}`}
-                style={{
-                  ...(favorited
-                    ? { background: "#dc2626", borderColor: "#ef4444", color: "#fff", border: "1px solid #ef4444" }
-                    : { background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }),
-                }}
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-                {favorited ? dict.watch.saved : dict.watch.save}
-              </button>
+              {/* Divider */}
+              <div className="w-px h-6 mx-1 hidden sm:block" style={{ background: "var(--border-subtle)" }} />
 
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300"
                 style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
               >
                 {copied ? (
@@ -293,6 +275,11 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                 </div>
               </div>
             </ScrollReveal>
+
+            {/* Support Banner — Desktop: after tags */}
+            <div className="hidden lg:block mt-10">
+              <DonationBanner />
+            </div>
           </div>
 
           {/* Right Column: Ads + Related Content */}
@@ -317,8 +304,10 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
           </div>
         </div>
 
-        {/* Support Banner — always at the bottom */}
-        <DonationBanner />
+        {/* Support Banner — Mobile only: at the bottom */}
+        <div className="lg:hidden">
+          <DonationBanner />
+        </div>
       </div>
     </div>
   );

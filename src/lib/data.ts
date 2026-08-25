@@ -545,3 +545,14 @@ export function getPodcastById(id: string): Podcast | undefined {
   return podcasts.find((p) => p.id === id);
 }
 
+export function getRelatedPodcasts(podcast: Podcast): Podcast[] {
+  return podcasts
+    .filter(
+      (p) =>
+        p.id !== podcast.id &&
+        (p.category === podcast.category ||
+          p.tags.some((t) => podcast.tags.includes(t)))
+    )
+    .slice(0, 6);
+}
+

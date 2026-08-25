@@ -55,7 +55,7 @@ export default async function Home({
                   <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
                     {dict.sections.articlesEditorials}
                   </h2>
-                  <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
+                  <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
                     {dict.sections.articlesSubtitle}
                   </p>
                 </div>

@@ -106,7 +106,7 @@ export const ads: Ad[] = [
     headline: "Protect. Shelter. Empower.",
     description:
       "Over 100 million people are forcibly displaced worldwide. Your support can change lives.",
-    ctaText: "Donate Now",
+    ctaText: "Support",
     ctaUrl: "https://www.unhcr.org",
     category: "Refugee Support",
     accentColor: "#0072BC",
