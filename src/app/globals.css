@@ -335,18 +335,18 @@ html {
 
 .navbar-transparent {
   background: transparent;
-  border-bottom-color: transparent;
+  border-bottom: 1px solid transparent;
   box-shadow: none;
-  transition: background 0.4s ease, border-bottom-color 0.4s ease, box-shadow 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar-solid {
-  background: rgba(12, 14, 18, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom-color: var(--border-subtle);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-  transition: background 0.4s ease, border-bottom-color 0.4s ease, box-shadow 0.4s ease;
+  background: rgba(12, 14, 18, 0.97);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ─── Link Hover Underline ─── */
@@ -494,6 +494,78 @@ html {
 ::selection {
   background: rgba(212, 160, 74, 0.3);
   color: var(--text-primary);
+}
+
+/* ═══════════════════════════════════════════════════
+   Watch Page — Split Hero Grid
+   ═══════════════════════════════════════════════════ */
+
+.watch-hero-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  min-height: 50vh;
+  max-height: 80vh;
+  transition: grid-template-columns 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.watch-hero-video {
+  position: relative;
+  min-height: 50vh;
+  max-height: 80vh;
+}
+
+.watch-hero-ad-sidebar {
+  background: linear-gradient(135deg, #0d0f13, #09090b);
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 1023px) {
+  .watch-hero-grid {
+    grid-template-columns: 1fr !important;
+    max-height: none;
+  }
+
+  .watch-hero-video {
+    min-height: 40vh;
+    max-height: 55vh;
+  }
+
+  .watch-hero-ad-sidebar {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 16px;
+    max-height: 340px;
+  }
+}
+
+/* Ad sidebar internal column layout override — fill height */
+.watch-hero-ad-sidebar .ad-sidebar-column {
+  height: 100%;
+}
+
+.watch-hero-ad-sidebar .ad-slot-carousel {
+  height: 100%;
+}
+
+.watch-hero-ad-sidebar .ad-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.watch-hero-ad-sidebar .ad-slot-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.watch-hero-ad-sidebar .ad-slot-content>div:first-child {
+  flex: 1;
 }
 
 /* ═══════════════════════════════════════════════════

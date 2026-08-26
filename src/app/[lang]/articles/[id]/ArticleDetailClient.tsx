@@ -16,7 +16,7 @@ interface ArticleDetailClientProps {
 }
 
 export default function ArticleDetailClient({ article, relatedArticles }: ArticleDetailClientProps) {
-  const { dict } = useLang();
+  const { lang, dict } = useLang();
   const [copied, setCopied] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -37,56 +37,107 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
 
   return (
     <div className="min-h-screen" style={{ paddingTop: "80px", background: "var(--bg-primary)" }}>
-      {/* Hero Image */}
-      <div className="relative w-full overflow-hidden" style={{ maxHeight: "450px" }}>
-        <div className="relative aspect-[21/9] w-full max-w-[1440px] mx-auto">
-          {!imageError ? (
-            <Image
-              src={article.thumbnail}
-              alt={article.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #1a1510, #0C0E12)" }} />
-          )}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, var(--bg-primary) 0%, rgba(12,14,18,0.5) 50%, rgba(12,14,18,0.3) 100%)" }}
-          />
+
+      {/* ═══ HERO SECTION — Split Layout (2/3 article preview + 1/3 ad) ═══ */}
+      <div className="relative w-full animate-fade-in" style={{ background: "#000" }}>
+        <div className="max-w-[1440px] mx-auto">
+          <div className="watch-hero-grid">
+            {/* ── Left: Article Hero Image (2/3) ── */}
+            <div
+              className="relative w-full overflow-hidden flex items-center justify-center watch-hero-video"
+              style={{ background: "#09090b" }}
+            >
+              {/* Background Thumbnail */}
+              {!imageError ? (
+                <Image
+                  src={article.thumbnail}
+                  alt={article.title}
+                  fill
+                  className="object-cover opacity-80"
+                  sizes="100vw"
+                  priority
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #1a1510, #0C0E12, #14120e)" }} />
+              )}
+
+              {/* Cinematic gradient overlay */}
+              <div
+                className="absolute inset-0 z-10 pointer-events-none"
+                style={{
+                  background: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.1) 100%)",
+                }}
+              />
+
+              {/* Bottom-left: Category + Title + Meta */}
+              <div className="absolute bottom-0 left-0 right-0 z-20 p-6 sm:p-10">
+                <div className="mb-3">
+                  <span
+                    className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.15em]"
+                    style={{ background: "var(--accent-gold)", color: "#0C0E12" }}
+                  >
+                    {article.category}
+                  </span>
+                </div>
+
+                <p
+                  className="font-display text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
+                  style={{ color: "var(--text-primary)", textShadow: "0 2px 12px rgba(0,0,0,0.8)" }}
+                >
+                  {article.title}
+                </p>
+
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold"
+                      style={{ background: "rgba(212,160,74,0.2)", color: "var(--accent-gold)" }}
+                    >
+                      {article.author.charAt(0)}
+                    </div>
+                    <span className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
+                      {article.author}
+                    </span>
+                  </div>
+                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>·</span>
+                  <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
+                    {formatDate(article.publishedAt)}
+                  </span>
+                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>·</span>
+                  <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
+                    {article.readTime}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Right: Ad Carousel Sidebar (1/3) ── */}
+            <div className="watch-hero-ad-sidebar">
+              <div className="h-full flex flex-col justify-center p-4 lg:p-5">
+                <AdCarousel maxSlots={1} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Article Content + Ad Sidebar */}
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 -mt-20 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-8 lg:gap-10">
-          {/* Left Column: Article Content */}
-          <div className="max-w-[800px]">
-            {/* Category Badge */}
-            <div className="mb-4 animate-fade-in-up">
-              <span
-                className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.15em]"
-                style={{ background: "var(--accent-gold)", color: "#0C0E12" }}
-              >
-                {article.category}
-              </span>
-            </div>
-
-            {/* Title */}
+      {/* ═══ CONTENT SECTION — 2/3 + 1/3 Grid Layout ═══ */}
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Left Column — Article Content */}
+          <div className="lg:col-span-2">
             <h1
               className="font-display text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6 animate-fade-in-up"
-              style={{ color: "var(--text-primary)", animationDelay: "80ms" }}
+              style={{ color: "var(--text-primary)" }}
             >
               {article.title}
             </h1>
 
-            {/* Meta */}
+            {/* Meta Bar */}
             <div
               className="flex flex-wrap items-center gap-4 mb-8 pb-8 animate-fade-in-up"
-              style={{ borderBottom: "1px solid var(--border-subtle)", animationDelay: "160ms" }}
+              style={{ borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}
             >
               <div className="flex items-center gap-3">
                 <div
@@ -163,35 +214,24 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
             <DonationBanner />
           </div>
 
-          {/* Right Column: Ad Sidebar — Desktop Only */}
-          <aside className="hidden lg:block" style={{ paddingTop: "20px" }}>
-            <div className="sticky" style={{ top: "calc(var(--nav-height) + 24px)" }}>
-              <AdCarousel />
-            </div>
-          </aside>
-        </div>
-      </div>
-
-      {/* Related Articles */}
-      {relatedArticles.length > 0 && (
-        <ScrollReveal>
-          <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-16 pb-20" style={{ borderTop: "1px solid var(--border-subtle)" }}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-1 h-6 rounded-full" style={{ background: "var(--accent-gold)" }} />
-              <h2 className="font-display text-xl" style={{ color: "var(--text-primary)" }}>
+          {/* Right Column: Related Articles */}
+          <div className="lg:col-span-1">
+            <div className="sticky" style={{ top: "calc(var(--nav-height) + 20px)" }}>
+              <h2 className="text-lg font-bold mb-5 flex items-center gap-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
+                <span className="w-1 h-5 rounded-full" style={{ background: "var(--accent-gold)" }} />
                 {dict.articleDetail.relatedArticles}
               </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedArticles.map((a, index) => (
-                <div key={a.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 80}ms` }}>
-                  <ArticleCard article={a} />
-                </div>
-              ))}
+              <div className="space-y-5">
+                {relatedArticles.map((a, index) => (
+                  <ScrollReveal key={a.id} delay={index * 80}>
+                    <ArticleCard article={a} />
+                  </ScrollReveal>
+                ))}
+              </div>
             </div>
           </div>
-        </ScrollReveal>
-      )}
+        </div>
+      </div>
     </div>
   );
 }

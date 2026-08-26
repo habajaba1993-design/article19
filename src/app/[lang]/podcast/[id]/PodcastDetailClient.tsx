@@ -39,80 +39,119 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
   return (
     <div className="min-h-screen" style={{ paddingTop: "80px", paddingBottom: isPlaying ? 80 : 0, background: "var(--bg-primary)", transition: "padding-bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1)" }}>
 
-      {/* ── Hero Thumbnail (Article-style) ── */}
-      <div className="relative w-full overflow-hidden" style={{ maxHeight: "450px" }}>
-        <div className="relative aspect-[21/9] w-full max-w-[1440px] mx-auto">
-          {!imageError ? (
-            <Image
-              src={podcast.thumbnail}
-              alt={podcast.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #1a1510, #0C0E12)" }} />
-          )}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, var(--bg-primary) 0%, rgba(12,14,18,0.5) 50%, rgba(12,14,18,0.3) 100%)" }}
-          />
-          {/* Centered Play Button on thumbnail */}
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <button
-              onClick={togglePlay}
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-              style={{
-                background: isPlaying ? "rgba(255,255,255,0.15)" : "linear-gradient(135deg, var(--accent-gold), #C07D20)",
-                color: isPlaying ? "#fff" : "#0C0E12",
-                boxShadow: isPlaying ? "none" : "0 8px 40px rgba(212, 160, 74, 0.4)",
-                backdropFilter: isPlaying ? "blur(12px)" : "none",
-              }}
-              aria-label={isPlaying ? "Pause" : "Play"}
+      {/* ═══ HERO SECTION — Split Layout (2/3 podcast preview + 1/3 ad) ═══ */}
+      <div className="relative w-full animate-fade-in" style={{ background: "#000" }}>
+        <div className="max-w-[1440px] mx-auto">
+          <div className="watch-hero-grid">
+            {/* ── Left: Podcast Preview (2/3) ── */}
+            <div
+              className="relative w-full overflow-hidden flex items-center justify-center group watch-hero-video"
+              style={{ background: "#09090b" }}
             >
-              {isPlaying ? (
-                <svg className="w-10 h-10 sm:w-12 sm:h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+              {/* Background Thumbnail */}
+              {!imageError ? (
+                <Image
+                  src={podcast.thumbnail}
+                  alt={podcast.title}
+                  fill
+                  className={`object-cover transition-all duration-700 ${isPlaying ? "scale-105 opacity-30 blur-sm" : "opacity-80"}`}
+                  sizes="100vw"
+                  priority
+                  onError={() => setImageError(true)}
+                />
               ) : (
-                <svg className="w-10 h-10 sm:w-12 sm:h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #1a1510, #0C0E12, #14120e)" }} />
               )}
-            </button>
-          </div>
-          {/* Playing Status Badge */}
-          {isPlaying && (
-            <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold animate-slide-down" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)", border: "1px solid var(--border-subtle)", color: "var(--text-primary)" }}>
-              <div className="flex items-end gap-[2px] h-3">
-                {[1, 2, 3, 4].map(i => <div key={i} className="w-[2.5px] rounded-full eq-bar" style={{ background: "var(--accent-gold)" }} />)}
+
+              {/* Cinematic gradient overlay */}
+              <div
+                className="absolute inset-0 z-10 pointer-events-none"
+                style={{
+                  background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.15) 100%)",
+                }}
+              />
+
+              {/* Centered Play Button */}
+              <div className="absolute inset-0 flex items-center justify-center z-20">
+                <button
+                  onClick={togglePlay}
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  style={{
+                    background: isPlaying ? "rgba(255,255,255,0.15)" : "linear-gradient(135deg, var(--accent-gold), #C07D20)",
+                    color: isPlaying ? "#fff" : "#0C0E12",
+                    boxShadow: isPlaying ? "none" : "0 8px 40px rgba(212, 160, 74, 0.4)",
+                    backdropFilter: isPlaying ? "blur(12px)" : "none",
+                  }}
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                >
+                  {isPlaying ? (
+                    <svg className="w-10 h-10 sm:w-12 sm:h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                  ) : (
+                    <svg className="w-10 h-10 sm:w-12 sm:h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                  )}
+                </button>
               </div>
-              <span>{dict.podcastDetail.nowPlaying} · {podcast.duration}</span>
+
+              {/* Playing Status Badge */}
+              {isPlaying && (
+                <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold animate-slide-down" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)", border: "1px solid var(--border-subtle)", color: "var(--text-primary)" }}>
+                  <div className="flex items-end gap-[2px] h-3">
+                    {[1, 2, 3, 4].map(i => <div key={i} className="w-[2.5px] rounded-full eq-bar" style={{ background: "var(--accent-gold)" }} />)}
+                  </div>
+                  <span>{dict.podcastDetail.nowPlaying} · {podcast.duration}</span>
+                </div>
+              )}
+
+              {/* Bottom-left: Title + Duration bar */}
+              <div className="absolute bottom-0 left-0 right-0 z-20 p-6 sm:p-10">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em]"
+                    style={{ background: "rgba(212,160,74,0.15)", border: "1px solid rgba(212,160,74,0.3)", color: "var(--accent-gold)", backdropFilter: "blur(8px)" }}>
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z" />
+                      <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                    </svg>
+                    S{podcast.season} · E{podcast.episode}
+                  </span>
+                </div>
+                <p
+                  className="font-display text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
+                  style={{ color: "var(--text-primary)", textShadow: "0 2px 12px rgba(0,0,0,0.8)" }}
+                >
+                  {podcast.title}
+                </p>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="text-sm font-semibold" style={{ color: "var(--accent-gold)" }}>
+                    {podcast.duration}
+                  </span>
+                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>·</span>
+                  <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
+                    {podcast.category}
+                  </span>
+                </div>
+              </div>
             </div>
-          )}
+
+            {/* ── Right: Ad Carousel Sidebar (1/3) ── */}
+            <div className="watch-hero-ad-sidebar">
+              <div className="h-full flex flex-col justify-center p-4 lg:p-5">
+                <AdCarousel maxSlots={1} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ── Main Details & Content Grid ── */}
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 -mt-16 relative z-10">
+      {/* ═══ CONTENT SECTION — 2/3 + 1/3 Grid Layout ═══ */}
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Column */}
           <div className="lg:col-span-2">
-            {/* Episode Badge */}
-            <div className="flex items-center gap-2 mb-3 animate-fade-in-up">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em]"
-                style={{ background: "rgba(212,160,74,0.1)", border: "1px solid rgba(212,160,74,0.25)", color: "var(--accent-gold)" }}>
-                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z" />
-                  <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-                </svg>
-                S{podcast.season} · E{podcast.episode}
-              </span>
-            </div>
-
             <h1 className="font-display text-3xl sm:text-4xl tracking-tight mb-4 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
               {podcast.title}
             </h1>
 
-            {/* Info & Actions Bar — Single Line */}
+            {/* Info & Actions Bar */}
             <div className="flex flex-wrap items-center gap-3 py-5 mb-6 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
               <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
                 {podcast.duration}
@@ -124,7 +163,6 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
                 {podcast.category}
               </span>
 
-              {/* Divider */}
               <div className="w-px h-6 mx-1 hidden sm:block" style={{ background: "var(--border-subtle)" }} />
 
               <button
@@ -204,22 +242,18 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
               </div>
             </ScrollReveal>
 
-            {/* Support Banner — Desktop: after tags */}
+            {/* Support Banner — Desktop */}
             <div className="hidden lg:block mt-10">
               <DonationBanner />
             </div>
           </div>
 
-          {/* Right Column: Ads + Related Episodes */}
+          {/* Right Column: Related Episodes */}
           <div className="lg:col-span-1">
             <div className="sticky" style={{ top: "calc(var(--nav-height) + 20px)" }}>
-              {/* Ad Sidebar */}
-              <AdCarousel maxSlots={1} />
-
-              {/* All Episodes Link */}
               <Link
                 href={l("/podcast")}
-                className="flex items-center justify-center gap-2 w-full mt-6 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300"
+                className="flex items-center justify-center gap-2 w-full mb-6 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300"
                 style={{ background: "var(--accent-gold-dim)", border: "1px solid rgba(212,160,74,0.2)", color: "var(--accent-gold)" }}
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -228,8 +262,7 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
                 {dict.podcastDetail.allEpisodes}
               </Link>
 
-              {/* Related Episodes */}
-              <h2 className="text-lg font-bold mb-5 mt-8 flex items-center gap-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
+              <h2 className="text-lg font-bold mb-5 flex items-center gap-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
                 <span className="w-1 h-5 rounded-full" style={{ background: "var(--accent-gold)" }} />
                 {dict.podcastDetail.relatedEpisodes}
               </h2>
@@ -244,7 +277,7 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
           </div>
         </div>
 
-        {/* Support Banner — Mobile only */}
+        {/* Support Banner — Mobile */}
         <div className="lg:hidden">
           <DonationBanner />
         </div>
@@ -265,7 +298,6 @@ function RelatedEpisodeCard({ podcast, lang }: { podcast: Podcast; lang: string 
       className="flex gap-3.5 group rounded-xl p-3 transition-all duration-300 hover:bg-slate-800/30"
       style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}
     >
-      {/* Thumbnail */}
       <div className="relative w-24 h-24 rounded-lg overflow-hidden shrink-0" style={{ background: "var(--bg-elevated)" }}>
         {!imgError ? (
           <Image
@@ -288,7 +320,6 @@ function RelatedEpisodeCard({ podcast, lang }: { podcast: Podcast; lang: string 
         </div>
       </div>
 
-      {/* Info */}
       <div className="flex-1 min-w-0 flex flex-col justify-center">
         <div className="flex items-center gap-1.5 mb-1">
           <span className="text-[10px] font-bold" style={{ color: "var(--accent-gold)" }}>S{podcast.season} · E{podcast.episode}</span>
