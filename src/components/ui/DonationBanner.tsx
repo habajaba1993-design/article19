@@ -48,8 +48,9 @@ export default function DonationBanner() {
             >
               <div className="absolute inset-0 bg-white/20 translate-x-[-100%] transition-transform duration-500 group-hover:translate-x-[100%]" />
               <span className="relative z-10 flex items-center justify-center gap-2 text-base">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                <svg className="w-5 h-5" style={{ filter: "drop-shadow(0 1px 3px rgba(220, 38, 38, 0.6)) drop-shadow(0 4px 8px rgba(190, 18, 60, 0.3))" }} viewBox="0 0 24 24">
+                  <defs><linearGradient id="heartGradBanner" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#F43F5E" /><stop offset="50%" stopColor="#DC2626" /><stop offset="100%" stopColor="#991B1B" /></linearGradient></defs>
+                  <path fill="url(#heartGradBanner)" stroke="#0C0E12" strokeWidth="0.5" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 {dict.donationBanner.donateNow}
               </span>

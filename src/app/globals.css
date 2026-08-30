@@ -556,6 +556,10 @@ html {
   flex-direction: column;
   background: rgba(255, 255, 255, 0.03) !important;
   border-color: rgba(255, 255, 255, 0.06) !important;
+  border-radius: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-right: none !important;
 }
 
 .watch-hero-ad-sidebar .ad-slot-content {

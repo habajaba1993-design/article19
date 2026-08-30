@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import SuggestionModal from "@/components/ui/SuggestionModal";
 import { useLang } from "@/lib/LangContext";
 
 export default function Footer() {
   const { lang, dict } = useLang();
+  const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
   const l = (path: string) => `/${lang}${path}`;
 
   return (
@@ -17,24 +21,14 @@ export default function Footer() {
             {/* Brand & Description */}
             <div className="lg:max-w-md">
               <Link href={l("/")} className="flex items-center gap-2.5 mb-5 group">
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-lg shadow-md transition-all duration-300 group-hover:scale-110"
-                  style={{
-                    background: "linear-gradient(135deg, var(--accent-gold), #C07D20)",
-                    color: "#0C0E12",
-                    boxShadow: "0 4px 15px rgba(212, 160, 74, 0.25)",
-                  }}
-                >
-                  A
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-base font-extrabold tracking-wide leading-none" style={{ color: "var(--text-primary)" }}>
-                    Article<span style={{ color: "var(--accent-gold)" }}>19</span>
-                  </span>
-                  <span className="text-[9px] font-bold tracking-[0.2em] uppercase mt-0.5" style={{ color: "var(--text-muted)" }}>
-                    {dict.nav.humanRightsMedia}
-                  </span>
-                </div>
+                <Image 
+                  src="/logo/1.jpg" 
+                  alt="Article 19 Logo" 
+                  width={80} 
+                  height={80} 
+                  className="h-16 w-16 object-cover transition-transform duration-300 group-hover:scale-105 rounded-full shadow-md" 
+                  unoptimized
+                />
               </Link>
               <p className="text-sm leading-relaxed mb-6 lg:mb-0" style={{ color: "var(--text-secondary)" }}>
                 {dict.footer.tagline}
@@ -48,6 +42,11 @@ export default function Footer() {
                 <FooterLink href={l("/about")}>{dict.footer.about}</FooterLink>
                 <FooterLink href={l("/faq")}>{dict.footer.faq}</FooterLink>
                 <FooterLink href={l("/advertise")}>{dict.footer.advertise}</FooterLink>
+                <li>
+                  <button onClick={() => setIsSuggestionOpen(true)} className="footer-link text-sm text-left transition-colors hover:text-white" style={{ color: "var(--text-secondary)" }}>
+                    Suggest a Topic
+                  </button>
+                </li>
               </ul>
             </div>
 
@@ -63,7 +62,10 @@ export default function Footer() {
                 </p>
               </div>
 
-              {/* Social Icons */}
+              {/* Feedback & Social Icons */}
+              <p className="text-sm font-semibold mb-3 tracking-wide transition-colors duration-300 hover:text-white" style={{ color: "var(--accent-gold)" }}>
+                Feedback for Improvement
+              </p>
               <div className="flex items-center gap-3">
                 <SocialIcon href="#" ariaLabel="Facebook">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" /></svg>
@@ -99,6 +101,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <SuggestionModal isOpen={isSuggestionOpen} onClose={() => setIsSuggestionOpen(false)} />
     </footer>
   );
 }

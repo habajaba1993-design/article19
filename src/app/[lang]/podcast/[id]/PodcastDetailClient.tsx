@@ -132,9 +132,8 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
               </div>
             </div>
 
-            {/* ── Right: Ad Carousel Sidebar (1/3) ── */}
             <div className="watch-hero-ad-sidebar">
-              <div className="h-full flex flex-col justify-center p-4 lg:p-5">
+              <div className="h-full flex flex-col">
                 <AdCarousel maxSlots={1} />
               </div>
             </div>
@@ -152,7 +151,7 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
             </h1>
 
             {/* Info & Actions Bar */}
-            <div className="flex flex-wrap items-center gap-3 py-5 mb-6 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
+            <div className="flex flex-wrap items-center gap-3 py-3 mb-4 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
               <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
                 {podcast.duration}
               </span>
@@ -187,7 +186,7 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
 
             {/* Host & Guest Info */}
             <ScrollReveal>
-              <div className="flex flex-wrap items-center gap-4 mb-8 p-4 rounded-xl" style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}>
+              <div className="flex flex-wrap items-center gap-4 mb-5 p-4 rounded-xl" style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}>
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black" style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)" }}>
                     {podcast.host.charAt(0)}
@@ -216,7 +215,7 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
 
             {/* Episode Overview */}
             <ScrollReveal>
-              <div className="mb-8">
+              <div className="mb-5">
                 <h2 className="text-lg font-bold mb-3" style={{ color: "var(--text-primary)" }}>{dict.podcastDetail.overview}</h2>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {podcast.description}
@@ -243,7 +242,7 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
             </ScrollReveal>
 
             {/* Support Banner — Desktop */}
-            <div className="hidden lg:block mt-10">
+            <div className="hidden lg:block mt-6">
               <DonationBanner />
             </div>
           </div>

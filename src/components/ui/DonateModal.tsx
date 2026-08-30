@@ -163,8 +163,9 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
                     boxShadow: "0 8px 24px rgba(212, 160, 74, 0.08)",
                   }}
                 >
-                  <svg className="w-6 h-6" style={{ color: "var(--accent-gold)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  <svg className="w-6 h-6" style={{ filter: "drop-shadow(0 1px 3px rgba(220, 38, 38, 0.6)) drop-shadow(0 4px 8px rgba(190, 18, 60, 0.3))" }} viewBox="0 0 24 24">
+                    <defs><linearGradient id="heartGradModal" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#F43F5E" /><stop offset="50%" stopColor="#DC2626" /><stop offset="100%" stopColor="#991B1B" /></linearGradient></defs>
+                    <path fill="url(#heartGradModal)" stroke="#0C0E12" strokeWidth="0.5" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </div>
 

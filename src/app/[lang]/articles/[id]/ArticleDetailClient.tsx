@@ -112,9 +112,8 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
               </div>
             </div>
 
-            {/* ── Right: Ad Carousel Sidebar (1/3) ── */}
             <div className="watch-hero-ad-sidebar">
-              <div className="h-full flex flex-col justify-center p-4 lg:p-5">
+              <div className="h-full flex flex-col">
                 <AdCarousel maxSlots={1} />
               </div>
             </div>
@@ -136,7 +135,7 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
 
             {/* Meta Bar */}
             <div
-              className="flex flex-wrap items-center gap-4 mb-8 pb-8 animate-fade-in-up"
+              className="flex flex-wrap items-center gap-4 mb-5 pb-5 animate-fade-in-up"
               style={{ borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}
             >
               <div className="flex items-center gap-3">
@@ -180,11 +179,11 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
             </div>
 
             {/* Article Body */}
-            <article className="mb-12">
+            <article className="mb-6">
               {paragraphs.map((p, i) => (
                 <p
                   key={i}
-                  className="text-base leading-[1.85] mb-6"
+                  className="text-base leading-[1.85] mb-4"
                   style={{ color: "var(--text-secondary)" }}
                 >
                   {p}
@@ -193,7 +192,7 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
             </article>
 
             {/* Tags */}
-            <div className="mb-12 pb-8" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
+            <div className="mb-6 pb-6" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
               <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>
                 {dict.articleDetail.tags}
               </h3>

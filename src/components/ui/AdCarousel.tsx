@@ -10,9 +10,9 @@ export default function AdCarousel({ maxSlots }: { maxSlots?: number } = {}) {
   const slotsToShow = maxSlots ? adSlots.slice(0, maxSlots) : adSlots;
 
   return (
-    <div className="ad-sidebar-column" id="ad-sidebar">
+    <div className="ad-sidebar-column h-full" id="ad-sidebar">
       {/* Stacked Ad Slots — each slot is a carousel */}
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 h-full">
         {slotsToShow.map((slotAds, slotIndex) => (
           <AdSlotCarousel
             key={slotIndex}

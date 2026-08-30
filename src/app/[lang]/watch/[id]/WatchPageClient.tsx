@@ -382,7 +382,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                 display: isPlaying ? "none" : undefined,
               }}
             >
-              <div className="h-full flex flex-col justify-center p-4 lg:p-5">
+              <div className="h-full flex flex-col">
                 <AdCarousel maxSlots={1} />
               </div>
             </div>
@@ -400,7 +400,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
             </h1>
 
             {/* Info & Actions Bar — Single Line */}
-            <div className="flex flex-wrap items-center gap-3 py-5 mb-6 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
+            <div className="flex flex-wrap items-center gap-3 py-3 mb-4 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
               <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
                 {video.year}
               </span>
@@ -447,7 +447,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
 
             {/* Story Overview */}
             <ScrollReveal>
-              <div className="mb-8">
+              <div className="mb-5">
                 <h2 className="text-lg font-bold mb-3" style={{ color: "var(--text-primary)" }}>{dict.watch.overview}</h2>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {video.description}
@@ -474,7 +474,7 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
             </ScrollReveal>
 
             {/* Support Banner — Desktop: after tags */}
-            <div className="hidden lg:block mt-10">
+            <div className="hidden lg:block mt-6">
               <DonationBanner />
             </div>
           </div>

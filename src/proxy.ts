@@ -41,6 +41,6 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip internal Next.js paths and static assets
-    "/((?!_next|api|favicon.ico|thumbnails|opening-video|ads|audio|sitemap.xml|robots.txt).*)",
+    "/((?!_next|api|favicon.ico|thumbnails|opening-video|ads|audio|sitemap.xml|robots.txt|logo).*)",
   ],
 };

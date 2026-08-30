@@ -98,32 +98,23 @@ export default function Navbar() {
 
         {/* Brand Logo */}
         <Link href={l("/")} className="flex items-center gap-2.5 shrink-0 group">
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-lg shadow-md transition-all duration-300 group-hover:scale-110"
-            style={{
-              background: "linear-gradient(135deg, var(--accent-gold), #C07D20)",
-              color: "#0C0E12",
-              boxShadow: "0 4px 15px rgba(212, 160, 74, 0.25)",
-            }}
-          >
-            A
-          </div>
-          <div className="flex flex-col">
-            <span className="text-base font-extrabold tracking-wide leading-none" style={{ color: "var(--text-primary)" }}>
-              Article<span style={{ color: "var(--accent-gold)" }}>19</span>
-            </span>
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase mt-0.5" style={{ color: "var(--text-muted)" }}>
-              {dict.nav.humanRightsMedia}
-            </span>
-          </div>
+          <Image
+            src="/logo/1.jpg"
+            alt="Article 19 Logo"
+            width={64}
+            height={64}
+            className="h-14 w-14 object-cover transition-transform duration-300 group-hover:scale-105 rounded-full shadow-md"
+            priority
+            unoptimized
+          />
         </Link>
 
         {/* Clean Center Navigation Menu */}
         <nav className="hidden md:flex items-center gap-8">
           <NavLink href={l("/")} active={pathWithoutLang === "/"}>{dict.nav.home}</NavLink>
-          <NavLink href={l("/category/documentaries")} active={pathWithoutLang.includes("/category/documentaries")}>{dict.nav.documentaries}</NavLink>
-          <NavLink href={l("/podcast")} active={pathWithoutLang.includes("/podcast")}>{dict.nav.podcast}</NavLink>
           <NavLink href={l("/articles")} active={pathWithoutLang.includes("/articles")}>{dict.nav.articles}</NavLink>
+          <NavLink href={l("/podcast")} active={pathWithoutLang.includes("/podcast")}>{dict.nav.podcast}</NavLink>
+          <NavLink href={l("/category/documentaries")} active={pathWithoutLang.includes("/category/documentaries")}>{dict.nav.documentaries}</NavLink>
 
           {/* Topics Dropdown */}
           <div className="relative group">
@@ -225,7 +216,7 @@ export default function Navbar() {
               boxShadow: "0 4px 15px rgba(212, 160, 74, 0.4)",
             }}
           >
-            <span className="flex items-center gap-1.5">{dict.nav.donate} <svg className="w-[18px] h-[18px] transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></span>
+            <span className="flex items-center gap-1.5">{dict.nav.donate} <svg className="w-[18px] h-[18px] transition-transform duration-300 group-hover:scale-110" style={{ filter: "drop-shadow(0 1px 3px rgba(220, 38, 38, 0.6)) drop-shadow(0 4px 8px rgba(190, 18, 60, 0.3))" }} viewBox="0 0 24 24"><defs><linearGradient id="heartGradNav" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#F43F5E" /><stop offset="50%" stopColor="#DC2626" /><stop offset="100%" stopColor="#991B1B" /></linearGradient></defs><path fill="url(#heartGradNav)" stroke="#0C0E12" strokeWidth="0.5" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></span>
           </button>
 
           {/* Search Form */}
@@ -402,9 +393,9 @@ export default function Navbar() {
             style={{ background: "rgba(212, 160, 74, 0.04)", filter: "blur(40px)" }}
           />
           <MobileLink href={l("/")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.home}</MobileLink>
-          <MobileLink href={l("/category/documentaries")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.documentaries}</MobileLink>
-          <MobileLink href={l("/podcast")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.podcast}</MobileLink>
           <MobileLink href={l("/articles")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.articles}</MobileLink>
+          <MobileLink href={l("/podcast")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.podcast}</MobileLink>
+          <MobileLink href={l("/category/documentaries")} onClick={() => setMobileMenuOpen(false)}>{dict.nav.documentaries}</MobileLink>
 
           {/* Mobile Language Switcher */}
           <div className="flex items-center gap-3 px-4 py-3">
@@ -442,7 +433,7 @@ export default function Navbar() {
               boxShadow: "0 4px 15px rgba(212, 160, 74, 0.4)",
             }}
           >
-            <span className="flex items-center gap-1.5">{dict.nav.donate} <svg className="w-[22px] h-[22px] transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></span>
+            <span className="flex items-center gap-1.5">{dict.nav.donate} <svg className="w-[22px] h-[22px] transition-transform duration-300 group-hover:scale-110" style={{ filter: "drop-shadow(0 1px 3px rgba(220, 38, 38, 0.6)) drop-shadow(0 4px 8px rgba(190, 18, 60, 0.3))" }} viewBox="0 0 24 24"><defs><linearGradient id="heartGradMob" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#F43F5E" /><stop offset="50%" stopColor="#DC2626" /><stop offset="100%" stopColor="#991B1B" /></linearGradient></defs><path fill="url(#heartGradMob)" stroke="#0C0E12" strokeWidth="0.5" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></span>
           </button>
         </div>
       </div>
