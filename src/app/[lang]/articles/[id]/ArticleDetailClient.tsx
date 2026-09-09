@@ -122,12 +122,12 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
       </div>
 
       {/* ═══ CONTENT SECTION — 2/3 + 1/3 Grid Layout ═══ */}
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-10">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 pt-5 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Column — Article Content */}
           <div className="lg:col-span-2">
             <h1
-              className="font-display text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6 animate-fade-in-up"
+              className="font-display text-3xl sm:text-4xl lg:text-5xl leading-tight mb-2 animate-fade-in-up"
               style={{ color: "var(--text-primary)" }}
             >
               {article.title}
@@ -135,7 +135,7 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
 
             {/* Meta Bar */}
             <div
-              className="flex flex-wrap items-center gap-4 mb-5 pb-5 animate-fade-in-up"
+              className="flex flex-wrap items-center gap-4 mb-3 pb-3 animate-fade-in-up"
               style={{ borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}
             >
               <div className="flex items-center gap-3">

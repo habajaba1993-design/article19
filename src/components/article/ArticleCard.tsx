@@ -18,7 +18,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
   return (
     <Link
       href={`/${lang}/articles/${article.id}`}
-      className="group block rounded-2xl overflow-hidden border transition-all duration-300 card-hover-lift"
+      className="group block h-full flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 card-hover-lift"
       style={{
         background: "var(--bg-secondary)",
         borderColor: "var(--border-subtle)",
@@ -74,7 +74,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
       </div>
 
       {/* Content */}
-      <div className="p-5">
+      <div className="p-5 flex-1 flex flex-col">
         <h3
           className="font-display text-lg leading-snug line-clamp-2 mb-3 transition-colors duration-300 group-hover:text-[var(--accent-gold)]"
           style={{ color: "var(--text-primary)" }}
@@ -86,7 +86,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
         </p>
 
         {/* Author & Date */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-auto">
           <span className="text-xs font-semibold" style={{ color: "var(--text-secondary)" }}>
             {article.author}
           </span>

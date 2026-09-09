@@ -391,16 +391,16 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
       </div>
 
       {/* ═══ CONTENT SECTION — Original 2/3 + 1/3 Grid Layout ═══ */}
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-10">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 pt-5 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Column — Details */}
           <div className="lg:col-span-2">
-            <h1 className="font-display text-3xl sm:text-4xl tracking-tight mb-4 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
+            <h1 className="font-display text-3xl sm:text-4xl tracking-tight mb-2 animate-fade-in-up" style={{ color: "var(--text-primary)" }}>
               {video.title}
             </h1>
 
             {/* Info & Actions Bar — Single Line */}
-            <div className="flex flex-wrap items-center gap-3 py-3 mb-4 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
+            <div className="flex flex-wrap items-center gap-3 py-2 mb-3 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
               <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
                 {video.year}
               </span>

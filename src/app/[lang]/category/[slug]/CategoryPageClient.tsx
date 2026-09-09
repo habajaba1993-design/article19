@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Video, formatViews } from "@/lib/data";
 import VideoCard from "@/components/video/VideoCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import AdCarousel from "@/components/ui/AdCarousel";
 import { useLang } from "@/lib/LangContext";
 
 interface CategoryPageClientProps {
@@ -104,7 +105,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
           />
         </div>
 
-        <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-14 sm:py-20">
+        <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-16 pb-8 sm:pt-24 sm:pb-12">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
             {/* Left: Title & Stats */}
             <div className="flex-1 animate-fade-in-up">
@@ -131,7 +132,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
               >
                 {description}
               </p>
-              <div className="flex items-center gap-5 flex-wrap">
+              <div className="flex items-center gap-5 flex-wrap" style={{ display: "none" }}>
                 <StatBlock value={String(videos.length)} label={dict.category.titles} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
                 <StatBlock value={formatViews(totalViews)} label={dict.category.totalViews} />
@@ -178,7 +179,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
       </section>
 
       {/* ── Sticky Filter Bar ── */}
-      <section className="sticky top-16 z-30" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
+      <section className="sticky top-16 z-30" style={{ borderBottom: "1px solid var(--border-subtle)", display: "none" }}>
         <div style={{ background: "rgba(12,14,18,0.92)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
           <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -276,7 +277,7 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
       </section>
 
       {/* ── Video Grid ── */}
-      <section className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-10 pb-20">
+      <section className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-4 pb-20">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-1 h-7 rounded-full" style={{ background: "var(--accent-gold)", boxShadow: "0 0 8px rgba(212,160,74,0.3)" }} />
           <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
@@ -285,27 +286,37 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
           <span className="text-sm font-semibold ml-1" style={{ color: "var(--text-muted)" }}>({displayVideos.length})</span>
         </div>
 
-        {displayVideos.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
-            {displayVideos.map((video, index) => (
-              <ScrollReveal key={video.id}>
-                <div className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
-                  <VideoCard video={video} index={index} />
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-24 text-center rounded-3xl animate-scale-in" style={{ background: "rgba(20, 22, 28, 0.3)", border: "1px solid var(--border-subtle)" }}>
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: "var(--bg-elevated)" }}>
-              <svg className="w-8 h-8" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-              </svg>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-8 lg:gap-10">
+          {/* Left: Video Grid */}
+          {displayVideos.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ alignContent: "start" }}>
+              {displayVideos.map((video, index) => (
+                <ScrollReveal key={video.id}>
+                  <div className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
+                    <VideoCard video={video} index={index} />
+                  </div>
+                </ScrollReveal>
+              ))}
             </div>
-            <h3 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>{dict.category.noContent}</h3>
-            <p className="text-xs mt-1.5" style={{ color: "var(--text-muted)" }}>{dict.category.tryFilters}</p>
-          </div>
-        )}
+          ) : (
+            <div className="flex flex-col items-center justify-center py-24 text-center rounded-3xl animate-scale-in" style={{ background: "rgba(20, 22, 28, 0.3)", border: "1px solid var(--border-subtle)" }}>
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: "var(--bg-elevated)" }}>
+                <svg className="w-8 h-8" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>{dict.category.noContent}</h3>
+              <p className="text-xs mt-1.5" style={{ color: "var(--text-muted)" }}>{dict.category.tryFilters}</p>
+            </div>
+          )}
+
+          {/* Right: Ad Sidebar — Desktop Only */}
+          <aside className="hidden lg:block">
+            <div className="sticky" style={{ top: "calc(var(--nav-height) + 24px)" }}>
+              <AdCarousel />
+            </div>
+          </aside>
+        </div>
       </section>
     </div>
   );

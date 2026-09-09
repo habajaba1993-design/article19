@@ -59,7 +59,7 @@ export default async function ArticlesPage({
           />
         </div>
 
-        <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
+        <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 pt-16 pb-8 sm:pt-24 sm:pb-12">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
             {/* Left: Title & Stats */}
             <div className="flex-1 animate-fade-in-up">
@@ -88,7 +88,7 @@ export default async function ArticlesPage({
               >
                 {dict.articlesPage.heroSubtitle}
               </p>
-              <div className="flex items-center gap-6 flex-wrap">
+              <div className="flex items-center gap-6 flex-wrap" style={{ display: "none" }}>
                 <StatBlock value={String(latestArticles.length)} label={dict.articlesPage.articles} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
                 <StatBlock value={String(categories.length)} label={dict.articlesPage.topics} />
@@ -174,7 +174,7 @@ export default async function ArticlesPage({
       </section>
 
       {/* ── Articles Grid + Ad Sidebar ── */}
-      <section className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-12 pb-20">
+      <section className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 pt-4 pb-20">
         <div className="flex items-center gap-3 mb-8">
           <div
             className="w-1 h-7 rounded-full"
@@ -193,7 +193,7 @@ export default async function ArticlesPage({
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-8 lg:gap-10">
           {/* Left: Articles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ alignContent: "start" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ alignContent: "start" }}>
             {latestArticles.map((article, index) => (
               <ScrollReveal key={article.id}>
                 <div

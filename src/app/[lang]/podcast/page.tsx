@@ -6,6 +6,7 @@ import Link from "next/link";
 import { latestPodcasts, featuredPodcasts, formatDate } from "@/lib/data";
 import type { Podcast } from "@/lib/data";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import AdCarousel from "@/components/ui/AdCarousel";
 import { useLang } from "@/lib/LangContext";
 
 export default function PodcastPage() {
@@ -25,7 +26,7 @@ export default function PodcastPage() {
           <Image src={heroEpisode.thumbnail} alt="" fill className="object-cover" style={{ filter: "blur(40px) brightness(0.3)", transform: "scale(1.2)" }} />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(12,14,18,0.7) 0%, rgba(12,14,18,0.95) 80%, var(--bg-primary) 100%)" }} />
         </div>
-        <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
+        <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 pt-16 pb-8 sm:pt-24 sm:pb-12">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
             <div className="flex-1 animate-fade-in-up">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-6"
@@ -42,7 +43,7 @@ export default function PodcastPage() {
               <p className="text-base sm:text-lg leading-relaxed max-w-xl mb-8" style={{ color: "var(--text-secondary)" }}>
                 {dict.podcast.heroSubtitle}
               </p>
-              <div className="flex items-center gap-6 flex-wrap">
+              <div className="flex items-center gap-6 flex-wrap" style={{ display: "none" }}>
                 <StatBlock value={String(latestPodcasts.length)} label={dict.podcast.episodes} />
                 <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
                 <StatBlock value="1" label={dict.podcast.season} />
@@ -88,7 +89,7 @@ export default function PodcastPage() {
       </section>
 
       {/* ── Filters ── */}
-      <section className="sticky top-16 z-30" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
+      <section className="sticky top-16 z-30" style={{ borderBottom: "1px solid var(--border-subtle)", display: "none" }}>
         <div style={{ background: "rgba(12,14,18,0.92)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
           <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-4">
             <div className="flex items-center gap-3 overflow-x-auto hide-scrollbar">
@@ -100,7 +101,7 @@ export default function PodcastPage() {
       </section>
 
       {/* ── Episodes ── */}
-      <section className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 py-12 pb-24">
+      <section className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 pt-4 pb-20">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-1 h-7 rounded-full" style={{ background: "var(--accent-gold)", boxShadow: "0 0 8px rgba(212,160,74,0.3)" }} />
           <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
@@ -108,12 +109,25 @@ export default function PodcastPage() {
           </h2>
           <span className="text-sm font-semibold ml-1" style={{ color: "var(--text-muted)" }}>({filteredPodcasts.length})</span>
         </div>
-        <div className="space-y-4">
-          {filteredPodcasts.map((p) => (
-            <ScrollReveal key={p.id}>
-              <EpisodeCard podcast={p} lang={lang} />
-            </ScrollReveal>
-          ))}
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-8 lg:gap-10">
+          {/* Left: Episodes Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ alignContent: "start" }}>
+            {filteredPodcasts.map((p, index) => (
+              <ScrollReveal key={p.id}>
+                <div className="animate-fade-in-up" style={{ animationDelay: `${index * 80}ms` }}>
+                  <EpisodeCard podcast={p} lang={lang} />
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          {/* Right: Ad Sidebar — Desktop Only */}
+          <aside className="hidden lg:block">
+            <div className="sticky" style={{ top: "calc(var(--nav-height) + 24px)" }}>
+              <AdCarousel />
+            </div>
+          </aside>
         </div>
         {filteredPodcasts.length === 0 && (
           <div className="text-center py-20">
@@ -149,55 +163,61 @@ export default function PodcastPage() {
   );
 }
 
-/* ── Episode Card — links to detail page ── */
+/* ── Episode Card — vertical layout matching ArticleCard ── */
 function EpisodeCard({ podcast, lang }: { podcast: Podcast; lang: string }) {
   const { dict } = useLang();
   return (
     <Link href={`/${lang}/podcast/${podcast.id}`}>
-      <div className="group podcast-episode-card rounded-xl overflow-hidden cursor-pointer"
+      <div className="group block rounded-2xl overflow-hidden cursor-pointer"
         style={{
           background: "var(--bg-secondary)",
           borderWidth: 1, borderStyle: "solid",
           borderColor: "var(--border-subtle)",
-          transition: "border-color 0.3s ease, background 0.3s ease",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+          transition: "border-color 0.3s ease, background 0.3s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease",
         }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(212,160,74,0.2)"; e.currentTarget.style.background = "rgba(212,160,74,0.04)"; }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border-subtle)"; e.currentTarget.style.background = "var(--bg-secondary)"; }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(212,160,74,0.2)"; e.currentTarget.style.background = "rgba(212,160,74,0.04)"; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,0,0,0.4)"; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border-subtle)"; e.currentTarget.style.background = "var(--bg-secondary)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.3)"; }}
       >
-        <div className="flex flex-col sm:flex-row items-stretch">
-          <div className="relative w-full sm:w-44 shrink-0 aspect-video sm:aspect-auto overflow-hidden">
-            <Image src={podcast.thumbnail} alt={podcast.title} fill className="object-cover transition-transform duration-600 group-hover:scale-105" />
-            <div className="absolute inset-0 sm:hidden" style={{ background: "linear-gradient(to top, rgba(20,22,28,0.8), transparent 60%)" }} />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-11 h-11 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-                style={{ background: "rgba(255,255,255,0.9)", color: "#0C0E12", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>
-                <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-              </div>
+        {/* Thumbnail */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden" style={{ background: "var(--bg-elevated)" }}>
+          <Image src={podcast.thumbnail} alt={podcast.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(26,29,37,0.8) 0%, transparent 60%)" }} />
+          {/* Play Button */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+              style={{ background: "rgba(255,255,255,0.9)", color: "#0C0E12", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>
+              <svg className="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
             </div>
           </div>
-          <div className="flex-1 p-4 sm:p-5 flex flex-col justify-center min-w-0">
-            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-              <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>S{podcast.season} · E{podcast.episode}</span>
-              <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
-              <span className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{formatDate(podcast.publishedAt)}</span>
-              <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
-              <span className="text-[11px] font-semibold" style={{ color: "var(--text-muted)" }}>{podcast.duration}</span>
-            </div>
-            <h3 className="text-base sm:text-lg font-bold mb-1.5 truncate transition-colors duration-300 group-hover:text-[var(--accent-gold)]" style={{ color: "var(--text-primary)" }}>
-              {podcast.title}
-            </h3>
-            <p className="text-sm leading-relaxed line-clamp-2 mb-3" style={{ color: "var(--text-secondary)" }}>{podcast.description}</p>
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.host}: <span style={{ color: "var(--text-secondary)" }}>{podcast.host}</span></span>
-              {podcast.guest && (<>
-                <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>·</span>
-                <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{dict.podcast.guest}: <span style={{ color: "var(--text-secondary)" }}>{podcast.guest}</span></span>
-              </>)}
-              <div className="ml-auto hidden sm:flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
-                  style={{ background: "rgba(212,160,74,0.08)", color: "var(--accent-gold)", border: "1px solid rgba(212,160,74,0.15)" }}>{podcast.category}</span>
-              </div>
-            </div>
+          {/* Category Badge */}
+          <div className="absolute top-3 left-3 z-10">
+            <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider"
+              style={{ background: "rgba(212,160,74,0.9)", color: "#0C0E12" }}>{podcast.category}</span>
+          </div>
+          {/* Duration Badge */}
+          <div className="absolute top-3 right-3 z-10">
+            <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold"
+              style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)", color: "var(--text-secondary)" }}>{podcast.duration}</span>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>S{podcast.season} · E{podcast.episode}</span>
+            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
+            <span className="text-[11px] font-medium" style={{ color: "var(--text-muted)" }}>{formatDate(podcast.publishedAt)}</span>
+          </div>
+          <h3 className="font-display text-lg leading-snug line-clamp-2 mb-3 transition-colors duration-300 group-hover:text-[var(--accent-gold)]" style={{ color: "var(--text-primary)" }}>
+            {podcast.title}
+          </h3>
+          <p className="text-sm line-clamp-2 leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>{podcast.description}</p>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold" style={{ color: "var(--text-secondary)" }}>{podcast.host}</span>
+            {podcast.guest && (
+              <span className="text-xs" style={{ color: "var(--text-muted)" }}>{dict.podcast.guest}: {podcast.guest}</span>
+            )}
           </div>
         </div>
       </div>
