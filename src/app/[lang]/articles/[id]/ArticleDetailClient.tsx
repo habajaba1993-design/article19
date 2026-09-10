@@ -70,46 +70,7 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
                 }}
               />
 
-              {/* Bottom-left: Category + Title + Meta */}
-              <div className="absolute bottom-0 left-0 right-0 z-20 p-6 sm:p-10">
-                <div className="mb-3">
-                  <span
-                    className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.15em]"
-                    style={{ background: "var(--accent-gold)", color: "#0C0E12" }}
-                  >
-                    {article.category}
-                  </span>
-                </div>
 
-                <p
-                  className="font-display text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
-                  style={{ color: "var(--text-primary)", textShadow: "0 2px 12px rgba(0,0,0,0.8)" }}
-                >
-                  {article.title}
-                </p>
-
-                <div className="flex items-center gap-3 flex-wrap">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold"
-                      style={{ background: "rgba(212,160,74,0.2)", color: "var(--accent-gold)" }}
-                    >
-                      {article.author.charAt(0)}
-                    </div>
-                    <span className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
-                      {article.author}
-                    </span>
-                  </div>
-                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>·</span>
-                  <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
-                    {formatDate(article.publishedAt)}
-                  </span>
-                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>·</span>
-                  <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
-                    {article.readTime}
-                  </span>
-                </div>
-              </div>
             </div>
 
             <div className="watch-hero-ad-sidebar">
