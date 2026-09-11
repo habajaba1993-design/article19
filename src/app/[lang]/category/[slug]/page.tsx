@@ -42,9 +42,9 @@ export function generateStaticParams() {
 export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params;
   const cat = categoryMap[slug] || { title: slug.replace(/-/g, " "), icon: "📂", filter: () => true };
-  
+
   let filteredVideos = videos.filter(cat.filter);
-  
+
   // Sort by views for trending
   if (slug === "trending") {
     filteredVideos = [...filteredVideos].sort((a, b) => b.views - a.views);

@@ -123,31 +123,62 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
               {podcast.title}
             </h1>
 
-            {/* Info & Actions Bar */}
+            {/* Info Bar — Host/Guest + Meta + Share — Single Line */}
             <div className="flex flex-wrap items-center gap-3 py-2 mb-3 animate-fade-in-up" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", animationDelay: "80ms" }}>
-              <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
+              {/* Host */}
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black" style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)" }}>
+                  {podcast.host.charAt(0)}
+                </div>
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-wider leading-none mb-0.5" style={{ color: "var(--text-muted)" }}>{dict.podcastDetail.host}</p>
+                  <p className="text-xs font-semibold leading-none" style={{ color: "var(--text-primary)" }}>{podcast.host}</p>
+                </div>
+              </div>
+
+              {/* Guest */}
+              {podcast.guest && (
+                <>
+                  <div className="w-px h-6" style={{ background: "var(--border-subtle)" }} />
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black" style={{ background: "rgba(212,160,74,0.08)", color: "var(--accent-gold)" }}>
+                      {podcast.guest.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-bold uppercase tracking-wider leading-none mb-0.5" style={{ color: "var(--text-muted)" }}>{dict.podcastDetail.guest}</p>
+                      <p className="text-xs font-semibold leading-none" style={{ color: "var(--text-primary)" }}>{podcast.guest}</p>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div className="w-px h-6 mx-1 hidden sm:block" style={{ background: "var(--border-subtle)" }} />
+
+              {/* Meta badges */}
+              <span className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
                 {podcast.duration}
               </span>
-              <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
+              <span className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
                 {formatDate(podcast.publishedAt)}
               </span>
-              <span className="px-3.5 py-1.5 rounded-lg text-xs font-bold" style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)", border: "1px solid rgba(212,160,74,0.2)" }}>
+              <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)", border: "1px solid rgba(212,160,74,0.2)" }}>
                 {podcast.category}
               </span>
 
               <div className="w-px h-6 mx-1 hidden sm:block" style={{ background: "var(--border-subtle)" }} />
 
+              {/* Share */}
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-300"
                 style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
               >
                 {copied ? (
-                  <svg className="w-5 h-5 animate-scale-in" style={{ color: "#22c55e" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 animate-scale-in" style={{ color: "#22c55e" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                   </svg>
                 )}
@@ -156,35 +187,6 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
                 </span>
               </button>
             </div>
-
-            {/* Host & Guest Info */}
-            <ScrollReveal>
-              <div className="flex flex-wrap items-center gap-4 mb-5 p-4 rounded-xl" style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black" style={{ background: "var(--accent-gold-dim)", color: "var(--accent-gold)" }}>
-                    {podcast.host.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{dict.podcastDetail.host}</p>
-                    <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{podcast.host}</p>
-                  </div>
-                </div>
-                {podcast.guest && (
-                  <>
-                    <div className="w-px h-8" style={{ background: "var(--border-subtle)" }} />
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black" style={{ background: "rgba(212,160,74,0.08)", color: "var(--accent-gold)" }}>
-                        {podcast.guest.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{dict.podcastDetail.guest}</p>
-                        <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{podcast.guest}</p>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </ScrollReveal>
 
             {/* Episode Overview */}
             <ScrollReveal>
@@ -198,19 +200,17 @@ export default function PodcastDetailClient({ podcast, relatedPodcasts }: Podcas
 
             {/* Topics & Tags */}
             <ScrollReveal delay={100}>
-              <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>{dict.podcastDetail.topicsTags}</h3>
-                <div className="flex flex-wrap gap-2.5">
-                  {podcast.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer"
-                      style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex items-center flex-wrap gap-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{dict.podcastDetail.topicsTags}</h3>
+                {podcast.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer"
+                    style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+                  >
+                    {t}
+                  </span>
+                ))}
               </div>
             </ScrollReveal>
 

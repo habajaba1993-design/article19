@@ -56,15 +56,15 @@ export interface Category {
 }
 
 export const categories: Category[] = [
-  { id: "1", name: "Featured Reports", slug: "featured", icon: "📋" },
-  { id: "3", name: "Freedom of Press", slug: "press-freedom", icon: "📰" },
+  { id: "1", name: "Featured Reports", slug: "featured-reports", icon: "📋" },
+  { id: "3", name: "Freedom of Press", slug: "freedom-of-press", icon: "📰" },
   { id: "4", name: "Human Dignity", slug: "human-dignity", icon: "⚖️" },
   { id: "5", name: "Women's Rights", slug: "womens-rights", icon: "✊" },
   { id: "7", name: "Climate Justice", slug: "climate-justice", icon: "🌍" },
   { id: "8", name: "Refugee Stories", slug: "refugee-stories", icon: "🕊️" },
-  { id: "9", name: "Latest Releases", slug: "new-releases", icon: "✨" },
-  { id: "10", name: "Bangladesh Focus", slug: "bangla", icon: "🇧🇩" },
-  { id: "11", name: "Global Focus", slug: "english", icon: "🌐" },
+  { id: "9", name: "Latest Releases", slug: "latest-releases", icon: "✨" },
+  { id: "10", name: "Bangladesh Focus", slug: "bangladesh-focus", icon: "🇧🇩" },
+  { id: "11", name: "Global Focus", slug: "global-focus", icon: "🌐" },
 ];
 
 export const videos: Video[] = [
@@ -377,14 +377,20 @@ export function getRelatedVideos(video: Video): Video[] {
 }
 
 export function getRelatedArticles(article: Article): Article[] {
-  return articles
+  const related = articles
     .filter(
       (a) =>
         a.id !== article.id &&
         (a.category === article.category ||
           a.tags.some((t) => article.tags.includes(t)))
-    )
-    .slice(0, 4);
+    );
+
+  if (related.length < 4) {
+    const additional = articles.filter((a) => a.id !== article.id && !related.some(r => r.id === a.id));
+    return [...related, ...additional].slice(0, 4);
+  }
+
+  return related.slice(0, 4);
 }
 
 export function formatViews(views: number): string {

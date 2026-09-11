@@ -209,12 +209,12 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
               {/* Play Overlay Screen when paused */}
               {!isPlaying && (
                 <div
-                  className="absolute inset-0 flex items-center justify-center z-20 animate-fade-in"
+                  className="absolute inset-0 flex flex-col items-end justify-end z-20 animate-fade-in p-6 sm:p-10"
                 >
                   {/* Center Play Button */}
                   <button
                     onClick={togglePlay}
-                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 animate-pulse-glow"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 animate-pulse-glow"
                     style={{ background: "var(--accent-gold)", color: "#0C0E12", boxShadow: "0 8px 40px rgba(212, 160, 74, 0.4)" }}
                     aria-label="Play video"
                     id="main-play-trigger"
@@ -223,6 +223,35 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </button>
+
+                  {/* Bottom-left: Title + Duration glass bar */}
+                  <div className="w-full">
+                    <h2
+                      className="font-display text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
+                      style={{ color: "var(--text-primary)", textShadow: "0 2px 12px rgba(0,0,0,0.8)" }}
+                    >
+                      {video.title}
+                    </h2>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold"
+                        style={{
+                          background: "rgba(212, 160, 74, 0.15)",
+                          border: "1px solid rgba(212, 160, 74, 0.3)",
+                          color: "var(--accent-gold)",
+                          backdropFilter: "blur(8px)",
+                        }}
+                      >
+                        ▶ {dict.watch.clickToPlay}
+                      </span>
+                      <span className="text-sm font-semibold" style={{ color: "var(--accent-gold)" }}>
+                        {video.duration}
+                      </span>
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded" style={{ background: "rgba(255,255,255,0.1)", color: "var(--text-secondary)", backdropFilter: "blur(6px)" }}>
+                        HD
+                      </span>
+                    </div>
+                  </div>
                 </div>
               )}
 

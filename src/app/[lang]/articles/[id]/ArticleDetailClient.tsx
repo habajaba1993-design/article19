@@ -154,10 +154,10 @@ export default function ArticleDetailClient({ article, relatedArticles }: Articl
 
             {/* Tags */}
             <div className="mb-6 pb-6" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
-              <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>
-                {dict.articleDetail.tags}
-              </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex items-center flex-wrap gap-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
+                  {dict.articleDetail.tags}
+                </h3>
                 {article.tags.map((tag) => (
                   <span
                     key={tag}

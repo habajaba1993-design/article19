@@ -114,8 +114,8 @@ export default function PodcastPage() {
           {/* Left: Episodes Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ alignContent: "start" }}>
             {filteredPodcasts.map((p, index) => (
-              <ScrollReveal key={p.id}>
-                <div className="animate-fade-in-up" style={{ animationDelay: `${index * 80}ms` }}>
+              <ScrollReveal key={p.id} className="h-full">
+                <div className="animate-fade-in-up h-full" style={{ animationDelay: `${index * 80}ms` }}>
                   <EpisodeCard podcast={p} lang={lang} />
                 </div>
               </ScrollReveal>
@@ -168,7 +168,7 @@ function EpisodeCard({ podcast, lang }: { podcast: Podcast; lang: string }) {
   const { dict } = useLang();
   return (
     <Link href={`/${lang}/podcast/${podcast.id}`}>
-      <div className="group block rounded-2xl overflow-hidden cursor-pointer"
+      <div className="group block rounded-2xl overflow-hidden cursor-pointer h-full flex flex-col"
         style={{
           background: "var(--bg-secondary)",
           borderWidth: 1, borderStyle: "solid",
@@ -203,7 +203,7 @@ function EpisodeCard({ podcast, lang }: { podcast: Podcast; lang: string }) {
         </div>
 
         {/* Content */}
-        <div className="p-5">
+        <div className="p-5 flex-1 flex flex-col">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-[11px] font-bold" style={{ color: "var(--accent-gold)" }}>S{podcast.season} · E{podcast.episode}</span>
             <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>·</span>
@@ -213,7 +213,7 @@ function EpisodeCard({ podcast, lang }: { podcast: Podcast; lang: string }) {
             {podcast.title}
           </h3>
           <p className="text-sm line-clamp-2 leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>{podcast.description}</p>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-auto">
             <span className="text-xs font-semibold" style={{ color: "var(--text-secondary)" }}>{podcast.host}</span>
             {podcast.guest && (
               <span className="text-xs" style={{ color: "var(--text-muted)" }}>{dict.podcast.guest}: {podcast.guest}</span>
