@@ -1,18 +1,15 @@
 import HeroBanner from "@/components/video/HeroBanner";
 import VideoCarousel from "@/components/video/VideoCarousel";
-import ArticleCard from "@/components/article/ArticleCard";
 import ArticleCarousel from "@/components/article/ArticleCarousel";
-import VideoCard from "@/components/video/VideoCard";
+import PodcastCarousel from "@/components/podcast/PodcastCarousel";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import Link from "next/link";
 import {
   featuredVideos,
-  trendingVideos,
   newReleases,
   banglaContent,
   englishContent,
-  featuredArticles,
   latestArticles,
+  latestPodcasts,
 } from "@/lib/data";
 import { getDictionary, hasLocale, type Locale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
@@ -36,56 +33,14 @@ export default async function Home({
       {/* Content Carousels */}
       <div className="relative z-20 pb-8">
         <ArticleCarousel title={dict.sections.articlesEditorials} articles={latestArticles} cardVariant="featured" />
-        <VideoCarousel title={dict.sections.latestReleases} videos={newReleases} cardVariant="new" categorySlug="latest-releases" />
-        <VideoCarousel title={dict.sections.bangladeshFocus} videos={banglaContent} cardVariant="spotlight" categorySlug="bangladesh-focus" />
-        <VideoCarousel title={dict.sections.globalFocus} videos={englishContent} cardVariant="minimal" categorySlug="global-focus" />
+        <PodcastCarousel title={dict.sections.podcastEpisodes} podcasts={latestPodcasts} />
+        <VideoCarousel title={dict.sections.latestReleases} videos={newReleases} cardVariant="new" categorySlug="new-releases" />
+        <VideoCarousel title={dict.sections.bangladeshFocus} videos={banglaContent} cardVariant="spotlight" categorySlug="bangla" />
+        <VideoCarousel title={dict.sections.globalFocus} videos={englishContent} cardVariant="minimal" categorySlug="english" />
 
       </div>
 
-      {/* ── Featured Reports Section ── */}
-      <ScrollReveal>
-        <section className="px-6 sm:px-8 lg:px-12 py-16" style={{ borderTop: "1px solid var(--border-subtle)" }}>
-          <div className="max-w-[1440px] mx-auto">
-            {/* Section Header */}
-            <div className="flex items-center justify-between mb-10">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-1 h-7 rounded-full"
-                  style={{ background: "var(--accent-gold)", boxShadow: "0 0 8px rgba(212, 160, 74, 0.3)" }}
-                />
-                <div>
-                  <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
-                    {dict.sections.featuredReports}
-                  </h2>
-                </div>
-              </div>
-              <Link
-                href={l("/category/featured-reports")}
-                className="group/more hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 view-all-hover"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {dict.sections.viewAll}
-                <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover/more:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
-            </div>
 
-            {/* Featured Reports Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {trendingVideos.slice(0, 3).map((video, index) => (
-                <div
-                  key={video.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 80}ms` }}
-                >
-                  <VideoCard video={video} index={index} variant="default" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </ScrollReveal>
 
       {/* ── UDHR Quote Banner ── */}
       <ScrollReveal>
