@@ -36,9 +36,9 @@ export default async function Home({
       {/* Content Carousels */}
       <div className="relative z-20 pb-8">
         <ArticleCarousel title={dict.sections.articlesEditorials} articles={latestArticles} cardVariant="featured" />
-        <VideoCarousel title={dict.sections.latestReleases} videos={newReleases} cardVariant="new" categorySlug="new-releases" />
-        <VideoCarousel title={dict.sections.bangladeshFocus} videos={banglaContent} cardVariant="spotlight" categorySlug="bangla" />
-        <VideoCarousel title={dict.sections.globalFocus} videos={englishContent} cardVariant="minimal" categorySlug="english" />
+        <VideoCarousel title={dict.sections.latestReleases} videos={newReleases} cardVariant="new" categorySlug="latest-releases" />
+        <VideoCarousel title={dict.sections.bangladeshFocus} videos={banglaContent} cardVariant="spotlight" categorySlug="bangladesh-focus" />
+        <VideoCarousel title={dict.sections.globalFocus} videos={englishContent} cardVariant="minimal" categorySlug="global-focus" />
 
       </div>
 
@@ -60,7 +60,7 @@ export default async function Home({
                 </div>
               </div>
               <Link
-                href={l("/category/trending")}
+                href={l("/category/featured-reports")}
                 className="group/more hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 view-all-hover"
                 style={{ color: "var(--text-muted)" }}
               >
