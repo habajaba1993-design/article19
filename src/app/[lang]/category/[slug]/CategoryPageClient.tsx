@@ -124,7 +124,13 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
                 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight mb-4"
                 style={{ color: "var(--text-primary)" }}
               >
-                {title}
+                {title.split(' ').map((word, i) => {
+                  const skip = ['of', 'and', 'the', 'in', 'on', 'at', 'to', 'for', 'a', 'an', 'or', 'but', 'nor', 'by', 'with'];
+                  if (i === 0 || !skip.includes(word.toLowerCase())) {
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                  }
+                  return word;
+                }).join(' ')}
               </h1>
               <p
                 className="text-sm sm:text-base leading-relaxed max-w-xl mb-8"
@@ -281,7 +287,13 @@ export default function CategoryPageClient({ title, icon, videos, slug }: Catego
         <div className="flex items-center gap-3 mb-8">
           <div className="w-1 h-7 rounded-full" style={{ background: "var(--accent-gold)", boxShadow: "0 0 8px rgba(212,160,74,0.3)" }} />
           <h2 className="font-display text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
-            {filterType === "all" ? title : filterType.charAt(0).toUpperCase() + filterType.slice(1) + " " + dict.category.in + " " + title}
+            {(() => {
+              const toTitleCase = (s: string) => s.split(' ').map((w, i) => {
+                const skip = ['of', 'and', 'the', 'in', 'on', 'at', 'to', 'for', 'a', 'an', 'or', 'but', 'nor', 'by', 'with'];
+                return (i === 0 || !skip.includes(w.toLowerCase())) ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+              }).join(' ');
+              return filterType === "all" ? toTitleCase(title) : filterType.charAt(0).toUpperCase() + filterType.slice(1) + " " + dict.category.in + " " + toTitleCase(title);
+            })()}
           </h2>
           <span className="text-sm font-semibold ml-1" style={{ color: "var(--text-muted)" }}>({displayVideos.length})</span>
         </div>

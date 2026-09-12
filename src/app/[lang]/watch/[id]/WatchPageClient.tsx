@@ -224,34 +224,6 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
                     </svg>
                   </button>
 
-                  {/* Bottom-left: Title + Duration glass bar */}
-                  <div className="w-full">
-                    <h2
-                      className="font-display text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
-                      style={{ color: "var(--text-primary)", textShadow: "0 2px 12px rgba(0,0,0,0.8)" }}
-                    >
-                      {video.title}
-                    </h2>
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold"
-                        style={{
-                          background: "rgba(212, 160, 74, 0.15)",
-                          border: "1px solid rgba(212, 160, 74, 0.3)",
-                          color: "var(--accent-gold)",
-                          backdropFilter: "blur(8px)",
-                        }}
-                      >
-                        ▶ {dict.watch.clickToPlay}
-                      </span>
-                      <span className="text-sm font-semibold" style={{ color: "var(--accent-gold)" }}>
-                        {video.duration}
-                      </span>
-                      <span className="text-xs font-semibold px-2.5 py-1 rounded" style={{ background: "rgba(255,255,255,0.1)", color: "var(--text-secondary)", backdropFilter: "blur(6px)" }}>
-                        HD
-                      </span>
-                    </div>
-                  </div>
                 </div>
               )}
 
@@ -457,19 +429,17 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
 
             {/* Genres */}
             <ScrollReveal delay={100}>
-              <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>{dict.watch.topicsTags}</h3>
-                <div className="flex flex-wrap gap-2.5">
-                  {video.genre.map((g) => (
-                    <span
-                      key={g}
-                      className="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer"
-                      style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
-                    >
-                      {g}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{dict.watch.topicsTags}</h3>
+                {video.genre.map((g) => (
+                  <span
+                    key={g}
+                    className="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer"
+                    style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)" }}
+                  >
+                    {g}
+                  </span>
+                ))}
               </div>
             </ScrollReveal>
 
@@ -502,8 +472,8 @@ export default function WatchPageClient({ video, relatedVideos }: WatchPageClien
         <div className="lg:hidden">
           <DonationBanner />
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 

@@ -10,17 +10,17 @@ interface PageProps {
 const categoryMap: Record<string, { title: string; icon: string; filter: (v: Video) => boolean }> = {
   documentaries: { title: "Documentaries", icon: "🎬", filter: (v) => v.type === "documentary" },
   series: { title: "Series", icon: "📺", filter: (v) => v.type === "series" },
-  reports: { title: "Reports & editorials", icon: "📋", filter: (v) => v.type === "report" || v.type === "editorial" },
-  bangla: { title: "Bangla content", icon: "🇧🇩", filter: (v) => v.language === "Bangla" },
-  english: { title: "English content", icon: "🎬", filter: (v) => v.language === "English" },
-  trending: { title: "Trending now", icon: "🔥", filter: () => true },
-  "new-releases": { title: "New releases", icon: "✨", filter: (v) => v.year === 2025 },
-  "human-rights": { title: "Human rights", icon: "⚖️", filter: (v) => v.genre.some((g) => ["Human Rights", "Justice"].includes(g)) },
-  "press-freedom": { title: "Press freedom", icon: "📰", filter: (v) => v.genre.some((g) => ["Press Freedom", "Editorial"].includes(g)) },
-  "climate-justice": { title: "Climate justice", icon: "🌍", filter: (v) => v.genre.some((g) => ["Climate Justice", "Environmental Rights"].includes(g)) },
-  "bangla-documentaries": { title: "Bangla documentaries", icon: "🇧🇩", filter: (v) => v.language === "Bangla" && v.type === "documentary" },
-  "english-documentaries": { title: "English documentaries", icon: "🎬", filter: (v) => v.language === "English" && v.type === "documentary" },
-  "web-series": { title: "Web series", icon: "📺", filter: (v) => v.type === "series" },
+  reports: { title: "Reports & Editorials", icon: "📋", filter: (v) => v.type === "report" || v.type === "editorial" },
+  bangla: { title: "Bangla Content", icon: "🇧🇩", filter: (v) => v.language === "Bangla" },
+  english: { title: "English Content", icon: "🎬", filter: (v) => v.language === "English" },
+  trending: { title: "Trending Now", icon: "🔥", filter: () => true },
+  "new-releases": { title: "New Releases", icon: "✨", filter: (v) => v.year === 2025 },
+  "human-rights": { title: "Human Rights", icon: "⚖️", filter: (v) => v.genre.some((g) => ["Human Rights", "Justice"].includes(g)) },
+  "press-freedom": { title: "Press Freedom", icon: "📰", filter: (v) => v.genre.some((g) => ["Press Freedom", "Editorial"].includes(g)) },
+  "climate-justice": { title: "Climate Justice", icon: "🌍", filter: (v) => v.genre.some((g) => ["Climate Justice", "Environmental Rights"].includes(g)) },
+  "bangla-documentaries": { title: "Bangla Documentaries", icon: "🇧🇩", filter: (v) => v.language === "Bangla" && v.type === "documentary" },
+  "english-documentaries": { title: "English Documentaries", icon: "🎬", filter: (v) => v.language === "English" && v.type === "documentary" },
+  "web-series": { title: "Web Series", icon: "📺", filter: (v) => v.type === "series" },
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
