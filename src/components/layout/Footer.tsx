@@ -22,11 +22,11 @@ export default function Footer() {
             <div className="lg:max-w-md">
               <Link href={l("/")} className="flex items-center gap-2.5 mb-5 group">
                 <Image
-                  src="/logo/1.jpg"
+                  src="/logo/logo.png"
                   alt="Article 19 Logo"
                   width={80}
                   height={80}
-                  className="h-16 w-16 object-cover transition-transform duration-300 group-hover:scale-105 rounded-full shadow-md"
+                  className="h-16 w-16 object-contain transition-transform duration-300 group-hover:scale-105"
                   unoptimized
                 />
               </Link>

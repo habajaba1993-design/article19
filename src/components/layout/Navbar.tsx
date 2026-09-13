@@ -99,11 +99,11 @@ export default function Navbar() {
         {/* Brand Logo */}
         <Link href={l("/")} className="flex items-center gap-2.5 shrink-0 group">
           <Image
-            src="/logo/1.jpg"
+            src="/logo/logo.png"
             alt="Article 19 Logo"
             width={64}
             height={64}
-            className="h-14 w-14 object-cover transition-transform duration-300 group-hover:scale-105 rounded-full shadow-md"
+            className="h-14 w-14 object-contain transition-transform duration-300 group-hover:scale-105"
             priority
             unoptimized
           />
